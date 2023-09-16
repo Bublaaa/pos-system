@@ -26,6 +26,24 @@
                         </div>
 
                         <div class="row mb-3">
+                            <label for="position" class="col-md-4 col-form-label text-md-end">{{ __('Position') }}</label>
+
+                            <div class="col-md-6">
+                                <select id="position" class="form-control @error('position') is-invalid @enderror" value="{{ old('name') }}" name="position" required autocomplete="name" autofocus>
+                                   @foreach (\App\Http\Controllers\Auth\RegisterController::POSITION_OPTIONS as $value => $label)
+                                        <option value="{{ $value }}">{{ $label }}</option>
+                                    @endforeach
+                                </select>
+                                @error('position')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                                
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
                             <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
 
                             <div class="col-md-6">

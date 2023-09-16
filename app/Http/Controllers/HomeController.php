@@ -23,6 +23,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $position = auth()->user()->position;
+        
+        // Use $position to determine which view to load
+        if ($position === 'owner') {
+            return view('ownerView');
+        } elseif ($position === 'headbar') {
+            return view('headbarView');
+        }  else {
+            return view('home');
+        }
     }
 }
