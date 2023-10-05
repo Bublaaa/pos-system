@@ -1,33 +1,23 @@
 <!-- Left Sidebar -->
 @if (Auth::check() && Auth::user()->position != null)
-<nav class="navbar navbar-expand-md shadow-sm">
-    <div class="container">
-        <div class="row">
-            <div class="col py-2">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-            <div class="container" id="sidebarCollapse">
-                <div class="list-group list-group-flush">
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <i class="fas fa-home"></i> Dashboard
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <i class="fas fa-user"></i> Profile
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <i class="fas fa-cogs"></i> Settings
-                    </a>
-                </div>
-            </div>
+<div class="container-fluid bg-white" style="height: 100vh; vertical-align:top; width:100%;">
+    <div class="row">
+        <div class="col-md-3 py-4">
+            <a class="navbar-brand" href="{{ url('/') }}">
+                {{ config('app.name', 'Laravel') }}
+            </a>
+        </div>
+        <div class=" list-group-flush ml-3 pr-3">
+            <a href="#" class="list-group-item list-group-item-action p-2 bg-white">
+                <i class="fas fa-home p-2"></i> Dashboard
+            </a>
+            <a href="#" class="list-group-item list-group-item-action p-2 bg-white">
+                <i class="fas fa-user p-2"></i> Profile
+            </a>
+            <a href="#" class="list-group-item list-group-item-action p-2 bg-white">
+                <i class="fas fa-cogs p-2"></i> Settings
+            </a>
         </div>
     </div>
-</nav>
+</div>
 @endif
-
-
-

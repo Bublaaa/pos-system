@@ -1,4 +1,34 @@
+import _ from 'lodash';
+window._ = _;
+
+/**
+ * We'll load jQuery and the Bootstrap jQuery plugin which provides support
+ * for JavaScript based Bootstrap features such as modals and tabs. This
+ * code may be modified to fit the specific needs of your application.
+ */
+
+import Swal from 'sweetalert2';
+window.Swal = Swal;
+
+import Popper from 'popper.js';
+window.Popper = Popper;
+
+import jQuery from 'jquery';
+window.$ = window.jQuery = jQuery;
+
+import DataTable from 'datatables.net-bs4';
+DataTable(window, window.$);
+
 import 'bootstrap';
+import 'admin-lte';
+
+window.SwalWithBootstrap = Swal.mixin({
+  customClass: {
+    confirmButton: 'btn btn-primary mx-3',
+    cancelButton: 'btn btn-danger mx-3',
+  },
+  buttonsStyling: false,
+});
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -9,7 +39,7 @@ import 'bootstrap';
 import axios from 'axios';
 window.axios = axios;
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -19,15 +49,11 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 // import Echo from 'laravel-echo';
 
-// import Pusher from 'pusher-js';
-// window.Pusher = Pusher;
+// window.Pusher = require('pusher-js');
 
 // window.Echo = new Echo({
 //     broadcaster: 'pusher',
-//     key: import.meta.env.VITE_PUSHER_APP_KEY,
-//     wsHost: import.meta.env.VITE_PUSHER_HOST ?? `ws-${import.meta.env.VITE_PUSHER_APP_CLUSTER}.pusher.com`,
-//     wsPort: import.meta.env.VITE_PUSHER_PORT ?? 80,
-//     wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
-//     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
-//     enabledTransports: ['ws', 'wss'],
+//     key: process.env.MIX_PUSHER_APP_KEY,
+//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+//     encrypted: true
 // });
