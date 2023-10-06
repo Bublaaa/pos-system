@@ -27,11 +27,14 @@ class HomeController extends Controller
         
         // Use $position to determine which view to load
         if ($position === 'owner') {
-            return view('ownerView');
+            return redirect('/owner');
         } elseif ($position === 'headbar') {
-            return view('headbarView');
-        }  else {
-            return view('home');
+            return redirect('/headbar');
+        }  elseif ($position === 'employee') {
+            return redirect('/dashboard');
+        }
+        else {
+            return redirect('/login');
         }
     }
 }

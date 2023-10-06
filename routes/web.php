@@ -13,36 +13,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+// Redirect to login
 Route::get('/', function () {
     return redirect('/');
 });
 
 Auth::routes();
 
-// Route::prefix('/')->middleware('auth')->group(function () {
-//     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-//     Route::get('/register', [App\Http\Controllers\HomeController::class, 'create'])->name('register');
-    // Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
-    // Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
-    // Route::resource('products', ProductController::class);
-    // Route::resource('customers', CustomerController::class);
-    // Route::resource('orders', OrderController::class);
-
-    // Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    // Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
-    // Route::post('/cart/change-qty', [CartController::class, 'changeQty']);
-    // Route::delete('/cart/delete', [CartController::class, 'delete']);
-    // Route::delete('/cart/empty', [CartController::class, 'empty']);
-// });
-
-
-
-// Route::get('/', [HomeController::class, 'index']);
-
-Auth::routes();
-
+// Redirect based on user position
 Route::middleware(['auth'])->group(function () {
-   Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('/');
    Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('login');
-//    Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'create'])->name('register');
+});
+
+// Routes for owner
+Route::prefix('owner')->middleware('auth')->group(function () {
+    Route::get('/', [App\Http\Controllers\OwnerController::class, 'index'])->name('owner.dashboard');
+});
+
+// Routes for headbar
+Route::prefix('headbar')->middleware('auth')->group(function () {
+    Route::get('/', [App\Http\Controllers\HeadbarController::class, 'index'])->name('headbar.dashboard');
+});
+
+// Routes for employee
+Route::prefix('dashboard')->middleware('auth')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('employee.dashboard');
 });
