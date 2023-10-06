@@ -13,14 +13,36 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::get('/', function () {
-    return view('home');
+    return redirect('/');
 });
 
 Auth::routes();
 
+// Route::prefix('/')->middleware('auth')->group(function () {
+//     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//     Route::get('/register', [App\Http\Controllers\HomeController::class, 'create'])->name('register');
+    // Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    // Route::post('/settings', [SettingController::class, 'store'])->name('settings.store');
+    // Route::resource('products', ProductController::class);
+    // Route::resource('customers', CustomerController::class);
+    // Route::resource('orders', OrderController::class);
+
+    // Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    // Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+    // Route::post('/cart/change-qty', [CartController::class, 'changeQty']);
+    // Route::delete('/cart/delete', [CartController::class, 'delete']);
+    // Route::delete('/cart/empty', [CartController::class, 'empty']);
+// });
+
+
+
+// Route::get('/', [HomeController::class, 'index']);
+
+Auth::routes();
+
 Route::middleware(['auth'])->group(function () {
-   Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+   Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('/');
+   Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('login');
+//    Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'create'])->name('register');
 });
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('login');
