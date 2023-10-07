@@ -15,21 +15,31 @@ use Illuminate\Support\Facades\Route;
 
 
 // Redirect to login
-Route::get('/', function () {
-    return redirect('/');
-});
 
 Auth::routes();
 
 // Redirect based on user position
 Route::middleware(['auth'])->group(function () {
-   Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('login');
+   Route::get('/', function () {
+        $user = auth()->user();
+        if ($user->position === 'owner') {
+            return redirect()->route('owner.dashboard');
+        } elseif ($user->position === 'headbar') {
+            return redirect()->route('headbar.dashboard'); // Adjust the route name for headbar users
+        } elseif ($user->position === 'employee') {
+            return redirect()->route('employee.dashboard'); // Adjust the route name for headbar users
+        }
+        // Default redirection if position is not recognized
+        return redirect('/login ');
+    });
 });
 
 // Routes for owner
 Route::prefix('owner')->middleware('auth')->group(function () {
     Route::get('/', [App\Http\Controllers\OwnerController::class, 'index'])->name('owner.dashboard');
+    Route::get('/register', [App\Http\Controllers\OwnerController::class, 'index'])->name('owner.register');
 });
+
 
 // Routes for headbar
 Route::prefix('headbar')->middleware('auth')->group(function () {
@@ -37,6 +47,6 @@ Route::prefix('headbar')->middleware('auth')->group(function () {
 });
 
 // Routes for employee
-Route::prefix('dashboard')->middleware('auth')->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('employee.dashboard');
+Route::prefix('employee')->middleware('auth')->group(function () {
+    Route::get('/', [App\Http\Controllers\EmployeeController::class, 'index'])->name('employee.dashboard');
 });

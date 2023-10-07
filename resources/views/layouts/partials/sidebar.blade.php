@@ -17,19 +17,20 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('owner.dashboard')}}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
                         </p>
                     </a>
                 </li>
+                <!-- Owner sidebar -->
+                @if(Auth::user()->position == 'owner')
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('owner.register') }}" class="nav-link">
                         <i class="nav-icon fa fa-plus"></i>
                         <p>Tambah Akun Karyawan</p>
                     </a>
-
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
@@ -73,6 +74,34 @@
                         </li>
                     </ul>
                 </li>
+                <!-- Headbar Sidebar -->
+                @elseif(Auth::user()->position == 'headbar')
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-copy"></i>
+                        <p>
+                            Absensi
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fa fa-plus"></i>
+                        <p>Tambah Stok</p>
+                    </a>
+                </li>
+                <!-- Employee Sidebar -->
+                @else
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-copy"></i>
+                        <p>
+                            Absensi
+                        </p>
+                    </a>
+                </li>
+                @endif
+
                 <li class="nav-item">
                     <a href="#" class="nav-link" onclick="document.getElementById('logout-form').submit()">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
