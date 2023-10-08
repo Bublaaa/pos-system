@@ -1,20 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-
-// Redirect to login
+use \App\Http\Middleware\OwnerMiddleware;
+use \App\Http\Middleware\HeadbarMiddleware;
+use \App\Http\Middleware\EmployeeMiddleware;
 
 Auth::routes();
 
@@ -35,18 +24,18 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Routes for owner
-Route::prefix('owner')->middleware('auth')->group(function () {
+Route::prefix('owner')->middleware(['auth',OwnerMiddleware::class])->group(function () {
     Route::get('/', [App\Http\Controllers\OwnerController::class, 'index'])->name('owner.dashboard');
     Route::get('/register', [App\Http\Controllers\OwnerController::class, 'index'])->name('owner.register');
 });
 
 
 // Routes for headbar
-Route::prefix('headbar')->middleware('auth')->group(function () {
+Route::prefix('headbar')->middleware(['auth',HeadbarMiddleware::class])->group(function () {
     Route::get('/', [App\Http\Controllers\HeadbarController::class, 'index'])->name('headbar.dashboard');
 });
 
 // Routes for employee
-Route::prefix('employee')->middleware('auth')->group(function () {
+Route::prefix('employee')->middleware(['auth',EmployeeMiddleware::class])->group(function () {
     Route::get('/', [App\Http\Controllers\EmployeeController::class, 'index'])->name('employee.dashboard');
 });
