@@ -17,6 +17,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Owner sidebar -->
                 @if(Auth::user()->position == 'owner')
+                <!-- Dashboard -->
                 <li class="nav-item">
                     <a href="{{ route('owner.dashboard') }}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -25,47 +26,77 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('owner.register') }}" class="nav-link">
-                        <i class="nav-icon fa fa-plus"></i>
-                        <p>Tambah Akun Karyawan</p>
-                    </a>
-                </li>
+                <!-- Karyawan -->
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-copy"></i>
+                        <i class="nav-icon fa-solid fa-user-group"></i>
                         <p>
-                            Laporan
+                            Karyawan
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <!-- Tambah karyawan -->
                         <li class="nav-item">
-                            <a href="{{ route('owner.stock') }}" class="nav-link">
-                                <p>Stok</p>
+                            <a href="{{ route('owner.register') }}" class="nav-link">
+                                <p>Tambah Akun Karyawan</p>
                             </a>
                         </li>
+                        <!-- Laporan Absensi -->
                         <li class="nav-item">
-                            <a href="{{ route('owner.absent') }}" class="nav-link">
-                                <p>Absensi</p>
+                            <a href="{{ route('owner.employee.report') }}" class="nav-link">
+                                <p>Laporan Absensi</p>
+                            </a>
+                        </li>
+                        <!-- Laporan Gaji -->
+                        <li class="nav-item">
+                            <a href="{{ route('owner.employee.salary') }}" class="nav-link">
+                                <p>Laporan Penggajian</p>
                             </a>
                         </li>
                     </ul>
                 </li>
+                <!-- Stok -->
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
+                        <i class="nav-icon fa-solid fa-boxes-stacked"></i>
+                        <p>
+                            Stok
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <!-- Laporan Stok -->
+                        <li class="nav-item">
+                            <a href="{{ route('owner.stock.report') }}" class="nav-link">
+                                <p>Laporan Stok</p>
+                            </a>
+                        </li>
+                        <!-- Tambah Stok -->
+                        <li class="nav-item">
+                            <a href="{{ route('owner.add.stock') }}" class="nav-link">
+                                <p>Tambah Stok</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <!-- Menu -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fa-solid fa-utensils"></i>
                         <p>
                             Menu
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <!-- Tambah Menu -->
                         <li class="nav-item">
                             <a href="{{ route('owner.add') }}" class="nav-link">
                                 <p>Tambah Menu</p>
                             </a>
                         </li>
+                        <!-- Edit menu -->
                         <li class="nav-item">
                             <a href="{{ route('owner.edit') }}" class="nav-link">
                                 <p>Edit Menu</p>
@@ -76,7 +107,15 @@
                 <!-- Headbar Sidebar -->
                 @elseif(Auth::user()->position == 'headbar')
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('headbar.dashboard') }}" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Dashboard
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('headbar.attendance') }}" class="nav-link">
                         <i class="nav-icon fas fa-copy"></i>
                         <p>
                             Absensi
@@ -84,7 +123,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('headbar.add.stock') }}" class="nav-link">
                         <i class="nav-icon fa fa-plus"></i>
                         <p>Tambah Stok</p>
                     </a>
@@ -92,7 +131,15 @@
                 <!-- Employee Sidebar -->
                 @else
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('headbar.dashboard') }}" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            Dashboard
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('employee.attendance') }}" class="nav-link">
                         <i class="nav-icon fas fa-copy"></i>
                         <p>
                             Absensi

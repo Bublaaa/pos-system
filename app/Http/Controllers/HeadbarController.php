@@ -8,6 +8,6 @@ class HeadbarController extends Controller
 {
     public function index()
     {
-        return view('../layouts/headbarView');
+        return view('../layouts/contents/dashboard');
     }
 }
