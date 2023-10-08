@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title')</title>
@@ -14,6 +15,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2.0/dist/css/adminlte.min.css">
     <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> -->
 
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     @yield('css')
 </head>
 
@@ -26,13 +28,7 @@
         <!-- Content -->
         <div class="content-wrapper">
             <section class="content">
-                @if(Route::currentRouteName() == 'owner.dashboard')
-                @include('layouts.contents.dashboard')
-                @elseif(Route::currentRouteName() == 'owner.register')
-                @include('auth.register')
-                @endif
-
-                <!-- @yield('content') -->
+                @yield('content')
             </section>
         </div>
         <!-- Footer -->

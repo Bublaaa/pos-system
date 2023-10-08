@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
 
-    <a href="/" class="brand-link">
+    <a href="" class="brand-link">
         <img src="{{ asset('images/logo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
             style="opacity: .8">
         <span class="brand-text font-weight-light">{{ config('app.name') }}</span>
@@ -15,17 +15,16 @@
         </div>
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
+                <!-- Owner sidebar -->
+                @if(Auth::user()->position == 'owner')
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('owner.dashboard') }}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
                         </p>
                     </a>
                 </li>
-                <!-- Owner sidebar -->
-                @if(Auth::user()->position == 'owner')
                 <li class="nav-item">
                     <a href="{{ route('owner.register') }}" class="nav-link">
                         <i class="nav-icon fa fa-plus"></i>
@@ -42,12 +41,12 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('owner.stock') }}" class="nav-link">
                                 <p>Stok</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('owner.absent') }}" class="nav-link">
                                 <p>Absensi</p>
                             </a>
                         </li>
@@ -63,12 +62,12 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('owner.add') }}" class="nav-link">
                                 <p>Tambah Menu</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('owner.edit') }}" class="nav-link">
                                 <p>Edit Menu</p>
                             </a>
                         </li>

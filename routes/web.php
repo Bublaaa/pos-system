@@ -25,8 +25,12 @@ Route::middleware(['auth'])->group(function () {
 
 // Routes for owner
 Route::prefix('owner')->middleware(['auth',OwnerMiddleware::class])->group(function () {
-    Route::get('/', [App\Http\Controllers\OwnerController::class, 'index'])->name('owner.dashboard');
-    Route::get('/register', [App\Http\Controllers\OwnerController::class, 'index'])->name('owner.register');
+    Route::get('/dashboard', [App\Http\Controllers\OwnerController::class, 'index'])->name('owner.dashboard');
+    Route::get('/register', [App\Http\Controllers\OwnerController::class, 'register'])->name('owner.register');
+    Route::get('/stock-report', [App\Http\Controllers\ReportController::class, 'stock'])->name('owner.stock');
+    Route::get('/absent-report', [App\Http\Controllers\ReportController::class, 'absent'])->name('owner.absent');
+    Route::get('/add-menu', [App\Http\Controllers\MenuController::class, 'add'])->name('owner.add');
+    Route::get('/edit-menu', [App\Http\Controllers\MenuController::class, 'edit'])->name('owner.edit');
 });
 
 
