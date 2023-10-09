@@ -131,7 +131,7 @@
                 <!-- Employee Sidebar -->
                 @else
                 <li class="nav-item">
-                    <a href="{{ route('headbar.dashboard') }}" class="nav-link">
+                    <a href="{{ route('employee.dashboard') }}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
