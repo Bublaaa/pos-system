@@ -18,8 +18,4 @@ class EmployeeController extends Controller
     {
         return view('../layouts/contents/salary');
     }
-    public function attendance()
-    {
-        return view('../layouts/contents/employeeAttendance');
-    }
 }

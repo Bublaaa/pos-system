@@ -115,7 +115,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('headbar.attendance') }}" class="nav-link">
+                    <a href="{{ route('headbar-attendance.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-copy"></i>
                         <p>
                             Absensi
@@ -139,7 +139,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('employee.attendance') }}" class="nav-link">
+                    <a href="{{ route('employee-attendance.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-copy"></i>
                         <p>
                             Absensi

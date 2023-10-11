@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use \App\Http\Middleware\OwnerMiddleware;
 use \App\Http\Middleware\HeadbarMiddleware;
 use \App\Http\Middleware\EmployeeMiddleware;
+use App\Http\Controllers\AttendanceController;
+
 
 Auth::routes();
 
@@ -40,13 +42,12 @@ Route::prefix('owner')->middleware(['auth',OwnerMiddleware::class])->group(funct
 // Routes for headbar
 Route::prefix('headbar')->middleware(['auth',HeadbarMiddleware::class])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\MenuController::class, 'index'])->name('headbar.dashboard');
-    Route::get('/attendance', [App\Http\Controllers\EmployeeController::class, 'attendance'])->name('headbar.attendance');
     Route::get('/stock-add', [App\Http\Controllers\StockController::class, 'add'])->name('headbar.add.stock');
+    Route::resource('headbar-attendance', AttendanceController::class);
 });
 
 // Routes for employee
 Route::prefix('employee')->middleware(['auth',EmployeeMiddleware::class])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\MenuController::class, 'index'])->name('employee.dashboard');
-    Route::get('/attendance', [App\Http\Controllers\EmployeeController::class, 'attendance'])->name('employee.attendance');
-
+    Route::resource('employee-attendance', AttendanceController::class);
 });
