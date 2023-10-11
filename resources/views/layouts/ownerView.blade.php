@@ -27,7 +27,7 @@
         @include('layouts/partials/sidebar')
         <!-- Content -->
         <div class="content-wrapper">
-            <section class="content">
+            <section class="content  p-3">
                 @yield('content')
             </section>
         </div>
