@@ -3,7 +3,7 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-        <form action="" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('employee-attendance.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="status">Status</label>
@@ -29,6 +29,9 @@
                 @enderror
             </div>
 
+            <input type="hidden" name="latitude" id="latitude">
+            <input type="hidden" name="longitude" id="longitude">
+
             <div class="form-group">
                 <label for="image">Bukti absen</label>
                 <div class="custom-file">
@@ -49,13 +52,16 @@
 function toggleDescription() {
     var status = document.getElementById('status');
     var descriptionGroup = document.getElementById('descriptionField');
+    var descriptionField = document.getElementById('description');
 
     if (status.value == 0) {
         // Show the description field
         descriptionGroup.style.display = 'block';
+        descriptionField.required = true;
     } else {
         // Hide the description field
         descriptionGroup.style.display = 'none';
+        descriptionField.required = false;
     }
 }
 
@@ -71,10 +77,10 @@ function showPosition(position) {
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
 
-    // alert("Latitude: " + latitude + "\nLongitude: " + longitude);
+    document.getElementById('latitude').value = latitude;
+    document.getElementById('longitude').value = longitude;
+
     console.log(latitude + "," + longitude);
-
-
 }
 
 function showError(error) {
