@@ -5,6 +5,7 @@ use \App\Http\Middleware\OwnerMiddleware;
 use \App\Http\Middleware\HeadbarMiddleware;
 use \App\Http\Middleware\EmployeeMiddleware;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\MenuController;
 
 
 Auth::routes();
@@ -13,21 +14,19 @@ Auth::routes();
 Route::middleware(['auth'])->group(function () {
    Route::get('/', function () {
         $user = auth()->user();
-        if ($user->position === 'owner') {
-            return redirect()->route('owner.dashboard');
-        } elseif ($user->position === 'headbar') {
-            return redirect()->route('headbar.dashboard'); // Adjust the route name for headbar users
-        } elseif ($user->position === 'employee') {
-            return redirect()->route('employee.dashboard'); // Adjust the route name for headbar users
+        if (!$user) {
+            return redirect('/login ');
+        } else {
+            return redirect('/dashboard');
         }
-        // Default redirection if position is not recognized
-        return redirect('/login ');
     });
+});
+Route::middleware(['auth'])->group(function () {
+    Route::resource('dashboard', MenuController::class);
 });
 
 // Routes for owner
 Route::prefix('owner')->middleware(['auth',OwnerMiddleware::class])->group(function () {
-    Route::get('/dashboard', [App\Http\Controllers\MenuController::class, 'index'])->name('owner.dashboard');
     Route::get('/register', [App\Http\Controllers\OwnerController::class, 'register'])->name('owner.register');
     Route::get('/add-menu', [App\Http\Controllers\MenuController::class, 'add'])->name('owner.add');
     Route::get('/edit-menu', [App\Http\Controllers\MenuController::class, 'edit'])->name('owner.edit');
@@ -41,13 +40,11 @@ Route::prefix('owner')->middleware(['auth',OwnerMiddleware::class])->group(funct
 
 // Routes for headbar
 Route::prefix('headbar')->middleware(['auth',HeadbarMiddleware::class])->group(function () {
-    Route::get('/dashboard', [App\Http\Controllers\MenuController::class, 'index'])->name('headbar.dashboard');
     Route::get('/stock-add', [App\Http\Controllers\StockController::class, 'add'])->name('headbar.add.stock');
     Route::resource('headbar-attendance', AttendanceController::class);
 });
 
 // Routes for employee
 Route::prefix('employee')->middleware(['auth',EmployeeMiddleware::class])->group(function () {
-    Route::get('/dashboard', [App\Http\Controllers\MenuController::class, 'index'])->name('employee.dashboard');
     Route::resource('employee-attendance', AttendanceController::class);
 });

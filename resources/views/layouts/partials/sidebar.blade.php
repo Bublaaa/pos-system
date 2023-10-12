@@ -15,18 +15,17 @@
         </div>
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                <!-- Owner sidebar -->
-                @if(Auth::user()->position == 'owner')
-                <!-- Dashboard -->
                 <li class="nav-item">
-                    <a href="{{ route('owner.dashboard') }}" class="nav-link">
+                    <a href="{{ route('dashboard.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
                         </p>
                     </a>
                 </li>
-                <!-- Karyawan -->
+                <!-- Owner sidebar -->
+                @if(Auth::user()->position == 'owner')
+                <!-- Dashboard -->
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa-solid fa-user-group"></i>
@@ -106,14 +105,7 @@
                 </li>
                 <!-- Headbar Sidebar -->
                 @elseif(Auth::user()->position == 'headbar')
-                <li class="nav-item">
-                    <a href="{{ route('headbar.dashboard') }}" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            Dashboard
-                        </p>
-                    </a>
-                </li>
+
                 <li class="nav-item">
                     <a href="{{ route('headbar-attendance.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-copy"></i>
@@ -130,14 +122,7 @@
                 </li>
                 <!-- Employee Sidebar -->
                 @else
-                <li class="nav-item">
-                    <a href="{{ route('employee.dashboard') }}" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            Dashboard
-                        </p>
-                    </a>
-                </li>
+
                 <li class="nav-item">
                     <a href="{{ route('employee-attendance.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-copy"></i>
