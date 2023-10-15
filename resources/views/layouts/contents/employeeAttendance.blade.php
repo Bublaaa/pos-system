@@ -3,7 +3,7 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-        <form action="{{ route('employee-attendance.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('attendance.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="status">Status</label>

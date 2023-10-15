@@ -23,6 +23,8 @@ Route::middleware(['auth'])->group(function () {
 });
 Route::middleware(['auth'])->group(function () {
     Route::resource('dashboard', MenuController::class);
+    Route::resource('attendance', AttendanceController::class);
+
 });
 
 // Routes for owner
@@ -40,10 +42,8 @@ Route::prefix('owner')->middleware(['auth',OwnerMiddleware::class])->group(funct
 // Routes for headbar
 Route::prefix('headbar')->middleware(['auth',HeadbarMiddleware::class])->group(function () {
     Route::get('/stock-add', [App\Http\Controllers\StockController::class, 'add'])->name('headbar.add.stock');
-    Route::resource('headbar-attendance', AttendanceController::class);
 });
 
 // Routes for employee
 Route::prefix('employee')->middleware(['auth',EmployeeMiddleware::class])->group(function () {
-    Route::resource('employee-attendance', AttendanceController::class);
 });

@@ -25,7 +25,7 @@ class AttendanceController extends Controller
             ->whereDate('created_at', $today)
             ->count();
 
-        if ($entriesToday >= 1) {
+        if ($entriesToday > 1) {
             return redirect()->back()->with('error', 'Anda sudah absen hari ini.');
         }
         $attendance = Attendance::create([  
@@ -41,7 +41,7 @@ class AttendanceController extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan absensi.');
         }
         else{
-            return redirect()->route('dashboard')->with('success', 'Absen sukses');
+            return redirect()->back()->with('success', 'Absen sukses');
         }
     }
 }
