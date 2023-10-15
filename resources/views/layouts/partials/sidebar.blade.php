@@ -91,13 +91,13 @@
                     <ul class="nav nav-treeview">
                         <!-- Tambah Menu -->
                         <li class="nav-item">
-                            <a href="{{ route('owner.add') }}" class="nav-link">
+                            <a href="{{ route('menu.create') }}" class="nav-link">
                                 <p>Tambah Menu</p>
                             </a>
                         </li>
                         <!-- Edit menu -->
                         <li class="nav-item">
-                            <a href="{{ route('owner.edit') }}" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <p>Edit Menu</p>
                             </a>
                         </li>

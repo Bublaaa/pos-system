@@ -17,26 +17,31 @@ class AttendanceController extends Controller
     public function store(Request $request)
     {
         $image_path = '';
-        $name = Auth::user()->name;
-        // if ($request->hasFile('image')) {
-        //     $image_path = $request->file('image')->store('attendanceImages', 'public');
-        // }
+        $user = Auth::user();
+        $today = now()->format('Y-m-d');
+
+        // Check if the user has already made 2 entries for today
+        $entriesToday = Attendance::where('name', $user->name)
+            ->whereDate('created_at', $today)
+            ->count();
+
+        if ($entriesToday >= 1) {
+            return redirect()->back()->with('error', 'Anda sudah absen hari ini.');
+        }
         $attendance = Attendance::create([  
-            'name' => $name,
+            'name' => $user->name,
             'description' => $request->description,
             'image' => $image_path,
             'status' => $request->status,
             'latitude' =>$request->latitude,
             'longitude' =>$request->longitude,
         ]);
-        dd($attendance);
 
-        // if (!$attendance) {
-        //     return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan absensi.');
-        // }
-        // if(Auth::user()->position == 'headbar'){
-        //     return redirect()->route('headbar.dashboard')->with('success', 'Absen sukses');
-        // }
-        
+        if (!$attendance) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan absensi.');
+        }
+        else{
+            return redirect()->route('dashboard')->with('success', 'Absen sukses');
+        }
     }
 }

@@ -8,7 +8,7 @@ use App\Models\Menu;
 
 class MenuController extends Controller
 {   
-    private $ingredients=[
+    public $ingredients=[
             [
                 'name' => 'bubuk kopi',
                 'quantity' => '100',
@@ -20,9 +20,14 @@ class MenuController extends Controller
         $menus = $menus->latest()->paginate(10);
         return view('../layouts/contents/dashboard')->with('menus', $menus);;
     }
-    public function add(){
-        return view('../layouts/contents/addmenu')->with('ingredients', $this->ingredients);
+    public function create(){
+        return view('../layouts/contents/addmenu') ->with('ingredients',$ingredients);
     }
+
+    public function edit(){
+        return view('../layouts/contents/editmenu');
+    }
+    
     public function addIngredients(Request $request){
         $ingredient = [
             'name' => $request->ingredientName,
@@ -35,7 +40,5 @@ class MenuController extends Controller
         // dd($this->ingredients);
         dd($request->ingredientName);
     }
-    public function edit(){
-        return view('../layouts/contents/editmenu');
-    }
+    
 }

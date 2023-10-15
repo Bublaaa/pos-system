@@ -27,14 +27,13 @@ Route::middleware(['auth'])->group(function () {
 
 // Routes for owner
 Route::prefix('owner')->middleware(['auth',OwnerMiddleware::class])->group(function () {
+    Route::resource('menu', MenuController::class);
     Route::get('/register', [App\Http\Controllers\OwnerController::class, 'register'])->name('owner.register');
-    Route::get('/add-menu', [App\Http\Controllers\MenuController::class, 'add'])->name('owner.add');
-    Route::get('/edit-menu', [App\Http\Controllers\MenuController::class, 'edit'])->name('owner.edit');
     Route::get('/employee-report', [App\Http\Controllers\EmployeeController::class, 'report'])->name('owner.employee.report');
     Route::get('/employee-salary', [App\Http\Controllers\EmployeeController::class, 'salary'])->name('owner.employee.salary');
     Route::get('/stock-report', [App\Http\Controllers\StockController::class, 'report'])->name('owner.stock.report');
     Route::get('/stock-add', [App\Http\Controllers\StockController::class, 'add'])->name('owner.add.stock');
-    Route::get('/add-menu/ingredient-add', [App\Http\Controllers\MenuController::class, 'addIngredients'])->name('owner.add.ingredient');
+    // Route::get('/add-menu/ingredient-add', [App\Http\Controllers\MenuController::class, 'addIngredients'])->name('owner.add.ingredient');
 });
 
 

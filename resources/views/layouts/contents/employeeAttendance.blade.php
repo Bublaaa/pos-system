@@ -49,6 +49,17 @@
     </div>
 </div>
 <script>
+var successMessage = '{{ session("success") }}';
+var errorMessage = '{{ session("error") }}';
+
+if (successMessage) {
+    // Display a success alert
+    alert(successMessage);
+} else if (errorMessage) {
+    // Display an error alert
+    alert(errorMessage);
+}
+
 function toggleDescription() {
     var status = document.getElementById('status');
     var descriptionGroup = document.getElementById('descriptionField');
