@@ -3,7 +3,7 @@
 @section('content')
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <!-- Tambah menu baru -->
-<form action="" method="POST" enctype="multipart/form-data">
+<form action="{{ route('menu.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="row">
         <!-- Menu Card -->
@@ -17,7 +17,7 @@
                         <div class="form-group">
                             <label for="image">Foto menu</label>
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" name="image" id="image" required=true>
+                                <input type="file" class="custom-file-input" name="image" id="image">
                                 <label class="custom-file-label" for="image">Choose file</label>
                             </div>
                             @error('image')
@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-primary" type="submit">Create</button>
+
                 </div>
             </div>
         </div>
@@ -65,34 +65,34 @@
                             <h5>Bahan baku</h5>
                         </div>
                         <div class="col-6 text-right">
-                            <button name="addIngredient" id="addIngredient" type="button" class="btn btn-primary">Tambah
-                                bahan baku +</button>
+                            <button name="addIngredient" id="addIngredient" type="button" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="container" id="ingredientContainer">
                         <div class="row">
-                            <div class="col">
+                            <div class="col-3">
                                 <p>Nama</p>
                             </div>
-                            <div class="col">
+                            <div class="col-4">
                                 <p>Jumlah</p>
                             </div>
-                            <div class="col">
+                            <div class="col-4">
                                 <p>Satuan</p>
                             </div>
-                            <div class="col">
-                                <p>Action</p>
+                            <div class="col-3">
                             </div>
                         </div>
                         <div class="row ingredient-row">
-                            <div class="col">
+                            <div class="col col-md">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <input type="text" name="ingredientName[]"
+                                        <input type="text" name="ingredients[0][name]"
                                             class="form-control @error('ingredientName') is-invalid @enderror"
-                                            id="ingredientName" placeholder="Nama Bahan"
+                                            id="ingredients[0][name]" placeholder="Nama Bahan"
                                             value="{{ old('ingredientName') }}">
                                         @error('ingredientName')
                                         <span class="invalid-feedback" role="alert">
@@ -105,9 +105,9 @@
                             <div class="col">
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <input type="text" name="ingredientQuantity[]"
+                                        <input type="text" name="ingredients[0][quantity]"
                                             class="form-control @error('ingredientQuantity') is-invalid @enderror"
-                                            id="ingredientQuantity" placeholder="Jumlah Bahan"
+                                            id="ingredients[0][quantity]" placeholder="Jumlah Bahan"
                                             value="{{ old('ingredientQuantity') }}">
                                         @error('ingredientQuantity')
                                         <span class="invalid-feedback" role="alert">
@@ -119,7 +119,7 @@
                             </div>
                             <div class="col">
                                 <div class="form-group">
-                                    <select name="ingredientUnit[]" class="form-control" id="ingredientUnit">
+                                    <select name="ingredients[0][unit]" class="form-control" id="ingredients[0][unit]">
                                         <option value="gram">Gram</option>
                                         <option value="ml"> Mililiter</option>
                                     </select>
@@ -139,8 +139,7 @@
                     </div>
                 </div>
                 <div class=" card-footer">
-                    <a href="{{ route('ingredient.store') }}" class="btn btn-primary">Add
-                        Ingredient</a>
+                    <button class="btn btn-primary" type="submit">Simpan Menu</button>
                 </div>
             </div>
         </div>
@@ -159,9 +158,9 @@ function removeRow(button) {
 }
 
 // Add new row when button clicked
+var ingredientIndex = 0;
 document.getElementById("addIngredient").onclick = function() {
-    var ingredientIndex = 0;
-    ingredientIndex++;
+    ++ingredientIndex;
 
     var newRow = document.createElement("div");
     newRow.className = "row";
@@ -169,9 +168,9 @@ document.getElementById("addIngredient").onclick = function() {
             <div class="col">
                 <div class="form-group">
                     <div class="form-group">
-                        <input type="text" name="ingredientName[${ingredientIndex}]"
+                        <input type="text" name="ingredients[${ingredientIndex}][name]"
                             class="form-control @error('ingredientName') is-invalid @enderror"
-                            id="ingredientName" placeholder="Nama Bahan"
+                            id="ingredients[${ingredientIndex}][name]" placeholder="Nama Bahan"
                             value="{{ old('ingredientName') }}">
                         @error('ingredientName')
                         <span class="invalid-feedback" role="alert">
@@ -184,9 +183,9 @@ document.getElementById("addIngredient").onclick = function() {
             <div class="col">
                 <div class="form-group">
                     <div class="form-group">
-                        <input type="text" name="ingredientQuantity[${ingredientIndex}]"
+                        <input type="text" name="ingredients[${ingredientIndex}][quantity]"
                             class="form-control @error('ingredientQuantity') is-invalid @enderror"
-                            id="ingredientQuantity" placeholder="Jumlah Bahan"
+                            id="ingredients[${ingredientIndex}][quantity]" placeholder="Jumlah Bahan"
                             value="{{ old('ingredientQuantity') }}">
                         @error('ingredientQuantity')
                         <span class="invalid-feedback" role="alert">
@@ -198,7 +197,7 @@ document.getElementById("addIngredient").onclick = function() {
             </div>
             <div class="col">
                 <div class="form-group">
-                    <select name="ingredientUnit[${ingredientIndex}]" class="form-control" id="ingredientUnit">
+                    <select name="ingredients[${ingredientIndex}][unit]" class="form-control" id="ingredients[${ingredientIndex}][unit]">
                         <option value="gram">Gram</option>
                         <option value="ml"> Mililiter</option>
                     </select>
