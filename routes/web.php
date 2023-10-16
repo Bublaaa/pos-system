@@ -5,6 +5,7 @@ use \App\Http\Middleware\OwnerMiddleware;
 use \App\Http\Middleware\HeadbarMiddleware;
 use \App\Http\Middleware\EmployeeMiddleware;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\MenuController;
 
 
@@ -30,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
 // Routes for owner
 Route::prefix('owner')->middleware(['auth',OwnerMiddleware::class])->group(function () {
     Route::resource('menu', MenuController::class);
+    Route::resource('ingredient', IngredientController::class);
     Route::get('/register', [App\Http\Controllers\OwnerController::class, 'register'])->name('owner.register');
     Route::get('/employee-report', [App\Http\Controllers\EmployeeController::class, 'report'])->name('owner.employee.report');
     Route::get('/employee-salary', [App\Http\Controllers\EmployeeController::class, 'salary'])->name('owner.employee.salary');
