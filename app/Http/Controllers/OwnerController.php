@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Menu;
+use App\Models\Ingredient;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,6 +46,8 @@ class OwnerController extends Controller
         return view('../layouts/contents/addmenu');
     }
     public function editMenu(){
-        return view('../layouts/contents/editMenu');
+        $menus = Menu::get();
+        $ingredients = Ingredient::get();
+        return view('../layouts/contents/editMenu')->with(['menus' => $menus, 'ingredients' => $ingredients]);
     }
 }

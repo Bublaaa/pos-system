@@ -1,6 +1,6 @@
 <div class="modal fade" id="detailModal{{str_replace(' ', '', $userName)}}" role="dialog"
     aria-labelledby="detailModalLabel" aria-hidden="false" tabindex="1">
-    <div class=" modal-dialog w-auto" role="document">
+    <div class="modal-dialog w-auto" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5>Attandance Detail {{$userName}}</h5>

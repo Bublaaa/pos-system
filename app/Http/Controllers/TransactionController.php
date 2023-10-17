@@ -16,7 +16,7 @@ class TransactionController extends Controller
     {
         $menus = new Menu();
         $menus = $menus->latest()->paginate(10);
-        return view('../layouts/contents/dashboard')->with('menus', $menus);;
+        return view('../layouts/contents/dashboard')->with('menus', $menus);
     }
 
     /**

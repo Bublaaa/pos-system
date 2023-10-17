@@ -14,7 +14,7 @@
                     </div>
                 </div>
             </div>
-            @include('layouts/partials/menuDetailModal', ['menu' => $menu])
+            @include('layouts/partials/transactionDetailModal', ['menu' => $menu])
             @endforeach
         </div>
     </section>
