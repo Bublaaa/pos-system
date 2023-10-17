@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use App\Models\Menu;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -31,7 +32,23 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'menu_id' => 'required|string',
+            'quantity' => 'required|integer',
+        ]);
+        $user = Auth::user();
+        for($itemCount=1;$itemCount<=$request->quantity;$itemCount++){
+            $transaction = Transaction::create([  
+                'menu_id' => $request->menu_id,
+                'user_name' => $user->name,
+            ]);
+        }
+        if(!$transaction){
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan transaksi');
+        }
+        else {
+            return redirect()->back()->with('success', 'Berhasil menambahkan transaksi');
+        }
     }
 
     /**

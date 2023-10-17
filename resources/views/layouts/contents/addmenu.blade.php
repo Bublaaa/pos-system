@@ -86,32 +86,28 @@
                         <div class="row ingredient-row">
                             <div class="col col-md">
                                 <div class="form-group">
-                                    <div class="form-group">
-                                        <input type="text" name="ingredients[0][name]"
-                                            class="form-control @error('ingredientName') is-invalid @enderror"
-                                            id="ingredients[0][name]" placeholder="Nama Bahan"
-                                            value="{{ old('ingredientName') }}">
-                                        @error('ingredientName')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
+                                    <input type="text" name="ingredients[0][name]"
+                                        class="form-control @error('ingredientName') is-invalid @enderror"
+                                        id="ingredients[0][name]" placeholder="Nama Bahan"
+                                        value="{{ old('ingredientName') }}">
+                                    @error('ingredientName')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
-                                    <div class="form-group">
-                                        <input type="text" name="ingredients[0][quantity]"
-                                            class="form-control @error('ingredientQuantity') is-invalid @enderror"
-                                            id="ingredients[0][quantity]" placeholder="Jumlah Bahan"
-                                            value="{{ old('ingredientQuantity') }}">
-                                        @error('ingredientQuantity')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                        @enderror
-                                    </div>
+                                    <input type="number" name="ingredients[0][quantity]"
+                                        class="form-control @error('ingredientQuantity') is-invalid @enderror"
+                                        id="ingredients[0][quantity]" placeholder="Jumlah Bahan"
+                                        value="{{ old('ingredientQuantity') }}" inputmode="numeric" min="1">
+                                    @error('ingredientQuantity')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col">
