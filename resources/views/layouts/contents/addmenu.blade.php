@@ -10,7 +10,7 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-header">
-                    <h4>Detil menu</h4>
+                    <h5>Detil menu</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -50,9 +50,6 @@
                             @enderror
                         </div>
                     </div>
-                </div>
-                <div class="card-footer">
-
                 </div>
             </div>
         </div>

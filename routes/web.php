@@ -7,7 +7,7 @@ use \App\Http\Middleware\EmployeeMiddleware;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\MenuController;
-
+use App\Http\Controllers\TransactionController;
 
 Auth::routes();
 
@@ -23,7 +23,7 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 Route::middleware(['auth'])->group(function () {
-    Route::resource('dashboard', MenuController::class);
+    Route::resource('dashboard', TransactionController::class);
     Route::resource('attendance', AttendanceController::class);
 
 });
@@ -32,18 +32,24 @@ Route::middleware(['auth'])->group(function () {
 Route::prefix('owner')->middleware(['auth',OwnerMiddleware::class])->group(function () {
     Route::resource('menu', MenuController::class);
     Route::resource('ingredient', IngredientController::class);
-    Route::get('/register', [App\Http\Controllers\OwnerController::class, 'register'])->name('owner.register');
-    Route::get('/employee-report', [App\Http\Controllers\EmployeeController::class, 'report'])->name('owner.employee.report');
-    Route::get('/employee-salary', [App\Http\Controllers\EmployeeController::class, 'salary'])->name('owner.employee.salary');
-    Route::get('/stock-report', [App\Http\Controllers\StockController::class, 'report'])->name('owner.stock.report');
-    Route::get('/stock-add', [App\Http\Controllers\StockController::class, 'add'])->name('owner.add.stock');
-    // Route::get('/add-menu/ingredient-add', [App\Http\Controllers\MenuController::class, 'addIngredients'])->name('owner.add.ingredient');
+    Route::get('/register', [App\Http\Controllers\OwnerController::class, 'register'])->name('register-new-employee');
+    Route::get('/attendance-report', [App\Http\Controllers\OwnerController::class, 'attendanceReport'])->name('attendance-report');
+    Route::get('/salary-report', [App\Http\Controllers\OwnerController::class, 'salaryReport'])->name('salary-report');
+    Route::get('/stock-report', [App\Http\Controllers\OwnerController::class, 'stockReport'])->name('stock-report');
+    Route::get('/add-stock', [App\Http\Controllers\OwnerController::class, 'addStock'])->name('add-stock');
+    Route::get('/add-menu', [App\Http\Controllers\OwnerController::class, 'addMenu'])->name('add-menu');
+    Route::get('/add-edit', [App\Http\Controllers\OwnerController::class, 'editMenu'])->name('edit-menu');
+
+    // Route::get('/employee-report', [App\Http\Controllers\EmployeeController::class, 'report'])->name('owner.employee.report');
+    // Route::get('/employee-salary', [App\Http\Controllers\EmployeeController::class, 'salary'])->name('owner.employee.salary');
+    // Route::get('/stock-report', [App\Http\Controllers\StockController::class, 'report'])->name('owner.stock.report');
+    // Route::get('/stock-add', [App\Http\Controllers\StockController::class, 'add'])->name('owner.add.stock');
 });
 
 
 // Routes for headbar
 Route::prefix('headbar')->middleware(['auth',HeadbarMiddleware::class])->group(function () {
-    Route::get('/stock-add', [App\Http\Controllers\StockController::class, 'add'])->name('headbar.add.stock');
+    Route::get('/add-stock', [App\Http\Controllers\HeadbarController::class, 'addStock'])->name('headbar.add.stock');
 });
 
 // Routes for employee

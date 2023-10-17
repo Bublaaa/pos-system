@@ -37,19 +37,19 @@
                     <ul class="nav nav-treeview">
                         <!-- Tambah karyawan -->
                         <li class="nav-item">
-                            <a href="{{ route('owner.register') }}" class="nav-link">
+                            <a href="{{ route('register-new-employee') }}" class="nav-link">
                                 <p>Tambah Akun Karyawan</p>
                             </a>
                         </li>
                         <!-- Laporan Absensi -->
                         <li class="nav-item">
-                            <a href="{{ route('owner.employee.report') }}" class="nav-link">
+                            <a href="{{ route('attendance-report') }}" class="nav-link">
                                 <p>Laporan Absensi</p>
                             </a>
                         </li>
                         <!-- Laporan Gaji -->
                         <li class="nav-item">
-                            <a href="{{ route('owner.employee.salary') }}" class="nav-link">
+                            <a href="{{ route('salary-report') }}" class="nav-link">
                                 <p>Laporan Penggajian</p>
                             </a>
                         </li>
@@ -67,13 +67,13 @@
                     <ul class="nav nav-treeview">
                         <!-- Laporan Stok -->
                         <li class="nav-item">
-                            <a href="{{ route('owner.stock.report') }}" class="nav-link">
+                            <a href="{{ route('stock-report') }}" class="nav-link">
                                 <p>Laporan Stok</p>
                             </a>
                         </li>
                         <!-- Tambah Stok -->
                         <li class="nav-item">
-                            <a href="{{ route('owner.add.stock') }}" class="nav-link">
+                            <a href="{{ route('add-stock') }}" class="nav-link">
                                 <p>Tambah Stok</p>
                             </a>
                         </li>
@@ -91,13 +91,13 @@
                     <ul class="nav nav-treeview">
                         <!-- Tambah Menu -->
                         <li class="nav-item">
-                            <a href="{{ route('menu.create') }}" class="nav-link">
+                            <a href="{{ route('add-menu') }}" class="nav-link">
                                 <p>Tambah Menu</p>
                             </a>
                         </li>
                         <!-- Edit menu -->
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{ route('edit-menu') }}" class="nav-link">
                                 <p>Edit Menu</p>
                             </a>
                         </li>

@@ -19,29 +19,30 @@ class AttendanceController extends Controller
         $image_path = '';
         $user = Auth::user();
         $today = now()->format('Y-m-d');
-
-        // Check if the user has already made 2 entries for today
         $entriesToday = Attendance::where('name', $user->name)
             ->whereDate('created_at', $today)
             ->count();
-
-        if ($entriesToday > 1) {
+        if ($entriesToday == 0) {
+            $attendance = Attendance::create([  
+                'name' => $user->name,
+                'description' => $request->description,
+                'image' => $image_path,
+                'status' => $request->status,
+                'latitude' =>$request->latitude,
+                'longitude' =>$request->longitude,
+            ]);
+            if (!$attendance) {
+                return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan absensi.');
+            }
+            else{
+                return redirect()->back()->with('success', 'Absen sukses');
+            }
+        }
+        else {
             return redirect()->back()->with('error', 'Anda sudah absen hari ini.');
         }
-        $attendance = Attendance::create([  
-            'name' => $user->name,
-            'description' => $request->description,
-            'image' => $image_path,
-            'status' => $request->status,
-            'latitude' =>$request->latitude,
-            'longitude' =>$request->longitude,
-        ]);
-
-        if (!$attendance) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan absensi.');
-        }
-        else{
-            return redirect()->back()->with('success', 'Absen sukses');
+        if(!$request->latitude){
+            return redirect()->back()->with('error', 'Mohon tunggu sebentar dan ulangi absensi.');
         }
     }
 }

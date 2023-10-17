@@ -10,4 +10,7 @@ class HeadbarController extends Controller
     {
         return view('../layouts/contents/dashboard');
     }
+    public function addStock(){
+        return view('../layouts/contents/addStock');
+    }
 }

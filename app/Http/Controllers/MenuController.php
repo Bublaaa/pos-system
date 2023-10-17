@@ -10,12 +10,10 @@ use App\Models\Ingredient;
 class MenuController extends Controller
 {   
     public function index(){
-        $menus = new Menu();
-        $menus = $menus->latest()->paginate(10);
-        return view('../layouts/contents/dashboard')->with('menus', $menus);;
+       
     }
     public function create(){
-        return view('../layouts/contents/addmenu');
+        
     }
     public function store(Request $request){
         $image_path = '';
@@ -43,8 +41,8 @@ class MenuController extends Controller
         }
     }
 
-    public function edit(){
-        return view('../layouts/contents/editmenu');
+    public function update(){
+        
     }
     
 }
