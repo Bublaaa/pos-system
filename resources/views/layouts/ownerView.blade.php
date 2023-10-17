@@ -28,6 +28,8 @@
         <!-- Content -->
         <div class="content-wrapper">
             <section class="content p-3">
+                @include('layouts/partials/sucessAlert')
+                @include('layouts/partials/errorAlert')
                 @yield('content')
             </section>
         </div>

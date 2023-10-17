@@ -16,6 +16,13 @@ class AttendanceController extends Controller
     }
     public function store(Request $request)
     {
+        $request->validate([
+            'description' => 'string|max:255',
+            'status' => 'required|boolean',
+            'latitude' => 'required',
+            'longitude' => 'required',
+
+        ]);
         $image_path = '';
         $user = Auth::user();
         $today = now()->format('Y-m-d');
@@ -36,13 +43,14 @@ class AttendanceController extends Controller
             }
             else{
                 return redirect()->back()->with('success', 'Absen sukses');
+                if(!$request->latitude){
+                    return redirect()->back()->with('error', 'Mohon tunggu sebentar dan ulangi absensi.');
+                }
             }
         }
         else {
             return redirect()->back()->with('error', 'Anda sudah absen hari ini.');
         }
-        if(!$request->latitude){
-            return redirect()->back()->with('error', 'Mohon tunggu sebentar dan ulangi absensi.');
-        }
+        
     }
 }

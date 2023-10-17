@@ -20,8 +20,12 @@
                 </div>
             </div>
         </div>
-        @include('layouts/partials/attendanceDetailModal', ['userAttendances' => $userAttendances])
         @endforeach
+
+        @foreach($allUserAttendance as $userName => $allUserAttendance)
+        @include('layouts/partials/attendanceDetailModal', ['allUserAttendance' => $allUserAttendance])
+        @endforeach
+
     </div>
 </div>
 @endsection

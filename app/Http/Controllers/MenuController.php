@@ -16,6 +16,11 @@ class MenuController extends Controller
         
     }
     public function store(Request $request){
+        $request->validate([
+            'name' => 'string|max:255',
+            'status' => 'required|boolean',
+
+        ]);
         $image_path = '';
         $menu = Menu::create([  
             'name' => $request->name,

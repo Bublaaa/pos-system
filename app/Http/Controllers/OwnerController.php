@@ -19,17 +19,16 @@ class OwnerController extends Controller
         $currentMonth = Carbon::now();
         $totalDaysInMonth = $currentMonth->daysInMonth;
 
-        $employee = User::where('position', '!=', 'owner')->get();
-        $attendanceData = Attendance::whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])
-        ->where('status', 1)
-        ->get();
+        $attendanceData = Attendance::whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])->where('status', 1)->get();
+        $allAttendanceData = Attendance::whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])->get();
+        
         $userAttendance = $attendanceData->groupBy('name');
+        $allUserAttendance = $allAttendanceData->groupBy('name');
         
         return view('../layouts/contents/attendanceReport', [
-            'employees' => $employee,
-            'attendanceData' => $attendanceData,
             'userAttendance' => $userAttendance,
             'totalDaysInMonth' => $totalDaysInMonth,
+            'allUserAttendance' => $allUserAttendance,
         ]);
     }
     public function salaryReport(){

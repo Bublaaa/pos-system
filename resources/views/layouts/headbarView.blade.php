@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title')</title>
 
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -26,6 +25,8 @@
         <!-- Content -->
         <div class="content-wrapper">
             <section class="content">
+                @include('layouts/partials/sucessAlert')
+                @include('layouts/partials/errorAlert')
                 @yield('content')
             </section>
         </div>
