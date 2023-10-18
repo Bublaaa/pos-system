@@ -45,11 +45,6 @@ class OwnerController extends Controller
     public function addMenu(){
         return view('../layouts/contents/addmenu');
     }
-    // public function editMenu(){
-    //     $menus = Menu::get();
-    //     $ingredients = Ingredient::get();
-    //     return view('../layouts/contents/menuIndex')->with(['menus' => $menus, 'ingredients' => $ingredients]);
-    // }
     public function menuDetail($menu_id){
         $menus = Menu::get();
         $ingredients = Ingredient::get();

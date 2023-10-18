@@ -89,7 +89,7 @@
                                     <input type="text" name="ingredients[0][name]"
                                         class="form-control @error('ingredientName') is-invalid @enderror"
                                         id="ingredients[0][name]" placeholder="Nama Bahan"
-                                        value="{{ old('ingredientName') }}">
+                                        value="{{ old('ingredientName') }}" required=true>
                                     @error('ingredientName')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -102,7 +102,8 @@
                                     <input type="number" name="ingredients[0][quantity]"
                                         class="form-control @error('ingredientQuantity') is-invalid @enderror"
                                         id="ingredients[0][quantity]" placeholder="Jumlah Bahan"
-                                        value="{{ old('ingredientQuantity') }}" inputmode="numeric" min="1">
+                                        value="{{ old('ingredientQuantity') }}" inputmode="numeric" min="1"
+                                        required=true>
                                     @error('ingredientQuantity')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

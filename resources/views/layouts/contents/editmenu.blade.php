@@ -60,8 +60,9 @@
     </div>
     <!-- Ingredient Card -->
     <div class=" col-md-9">
-        <form action="" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('ingredient.update', $menu->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
             <div class="card">
                 <div class="card-header">
                     <div class="row">
@@ -90,15 +91,15 @@
                             <div class="col-3">
                             </div>
                         </div>
-                        @foreach($ingredients as $ingredient)
-                        <div class="row ingredient-row">
+                        @foreach($ingredients as $index => $ingredient)
+                        <div class="row">
                             <div class="col col-md">
                                 <div class="form-group">
-                                    <input type="text" name="ingredients[0][name]"
-                                        class="form-control @error('ingredientName') is-invalid @enderror"
-                                        id="ingredients[0][name]" placeholder="Nama Bahan"
+                                    <input type="text" name="ingredients[{{$index}}][name]"
+                                        class="form-control @error('ingredients[{{$index}}][name]') is-invalid @enderror"
+                                        id="ingredients[{{$index}}][name]" placeholder="Nama Bahan"
                                         value="{{ $ingredient->name }}">
-                                    @error('ingredientName')
+                                    @error('ingredients[{{$index}}][name]')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -107,11 +108,11 @@
                             </div>
                             <div class="col">
                                 <div class="form-group">
-                                    <input type="number" name="ingredients[0][quantity]"
-                                        class="form-control @error('ingredientQuantity') is-invalid @enderror"
-                                        id="ingredients[0][quantity]" placeholder="Jumlah Bahan"
+                                    <input type="number" name="ingredients[{{$index}}][quantity]"
+                                        class="form-control @error('ingredients[{{$index}}][quantity]') is-invalid @enderror"
+                                        id="ingredients[{{$index}}][quantity]" placeholder="Jumlah Bahan"
                                         value="{{ $ingredient->quantity }}" inputmode="numeric" min="1">
-                                    @error('ingredientQuantity')
+                                    @error('ingredients[{{$index}}][quantity]')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -120,15 +121,16 @@
                             </div>
                             <div class="col">
                                 <div class="form-group">
-                                    <select name="ingredients[0][unit]" class="form-control" id="ingredients[0][unit]">
+                                    <select name="ingredients[{{$index}}][unit]" class="form-control"
+                                        id="ingredients[{{$index}}][unit]">
                                         <option value="gram" {{ $ingredient->unit == "gram" ? 'selected' : '' }}>Gram
                                         </option>
                                         <option value="ml" {{ $ingredient->unit == "ml" ? 'selected' : '' }}>
                                             Mililiter
                                         </option>
                                     </select>
-                                    @error('unit')
-                                    <span class="ingredientUnit" role="alert">
+                                    @error('ingredients[{{$index}}][unit]')
+                                    <span class="ingredients[{{$index}}][unit]" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
@@ -163,8 +165,11 @@ function removeRow(button) {
 }
 
 // Add new row when button clicked
-var ingredientIndex = 0;
+var ingredientIndex = "{{$ingredients->count()-1}}";
+
 document.getElementById("addIngredient").onclick = function() {
+    console.log(ingredientIndex.type);
+
     ++ingredientIndex;
 
     var newRow = document.createElement("div");
@@ -172,32 +177,28 @@ document.getElementById("addIngredient").onclick = function() {
     newRow.innerHTML = `
             <div class="col">
                 <div class="form-group">
-                    <div class="form-group">
-                        <input type="text" name="ingredients[${ingredientIndex}][name]"
-                            class="form-control @error('ingredientName') is-invalid @enderror"
-                            id="ingredients[${ingredientIndex}][name]" placeholder="Nama Bahan"
-                            value="{{ old('ingredientName') }}">
-                        @error('ingredientName')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
+                    <input type="text" name="ingredients[${ingredientIndex}][name]"
+                        class="form-control @error('ingredients[${ingredientIndex}][name]') is-invalid @enderror"
+                        id="ingredients[${ingredientIndex}][name]" placeholder="Nama Bahan"
+                        value="{{ old('ingredients[${ingredientIndex}][name]') }}" required=true>
+                    @error('ingredients[${ingredientIndex}][name]')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
-                    <div class="form-group">
-                        <input type="text" name="ingredients[${ingredientIndex}][quantity]"
-                            class="form-control @error('ingredientQuantity') is-invalid @enderror"
-                            id="ingredients[${ingredientIndex}][quantity]" placeholder="Jumlah Bahan"
-                            value="{{ old('ingredientQuantity') }}">
-                        @error('ingredientQuantity')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
+                    <input type="number" name="ingredients[${ingredientIndex}][quantity]"
+                        class="form-control @error('ingredients[${ingredientIndex}][quantity]') is-invalid @enderror"
+                        id="ingredients[${ingredientIndex}][quantity]" placeholder="Jumlah Bahan"
+                        value="" inputmode="numeric" min="1" required=true>
+                    @error('ingredients[${ingredientIndex}][quantity]')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
                 </div>
             </div>
             <div class="col">
@@ -207,7 +208,7 @@ document.getElementById("addIngredient").onclick = function() {
                         <option value="ml"> Mililiter</option>
                     </select>
                     @error('unit')
-                    <span class="ingredientUnit" role="alert">
+                    <span class="ingredients[${ingredientIndex}][unit]" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
