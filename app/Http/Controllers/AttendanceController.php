@@ -17,7 +17,6 @@ class AttendanceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'description' => 'string|max:255',
             'status' => 'required|boolean',
             'latitude' => 'required',
             'longitude' => 'required',
