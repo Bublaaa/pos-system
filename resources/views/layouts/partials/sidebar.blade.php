@@ -97,7 +97,7 @@
                         </li>
                         <!-- Edit menu -->
                         <li class="nav-item">
-                            <a href="{{ route('edit-menu') }}" class="nav-link">
+                            <a href="{{ route('menu.index') }}" class="nav-link">
                                 <p>Edit Menu</p>
                             </a>
                         </li>

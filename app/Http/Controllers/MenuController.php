@@ -10,7 +10,9 @@ use App\Models\Ingredient;
 class MenuController extends Controller
 {   
     public function index(){
-       
+        $menus = Menu::get();
+        $ingredients = Ingredient::get();
+        return view('../layouts/contents/menuIndex')->with(['menus' => $menus, 'ingredients' => $ingredients]);
     }
     public function create(){
         
@@ -46,8 +48,36 @@ class MenuController extends Controller
         }
     }
 
-    public function update(){
-        
+    public function edit(Menu $menu){
+        $menu_id = $menu->id;
+        $ingredients = Ingredient::where('menu_id', $menu_id)->get();
+        return view('../layouts/contents/editMenu')->with(['menu' => $menu, 'ingredients' => $ingredients]);
+    }
+
+    public function update(Request $request, Menu $menu){
+        $request->validate([
+            'name' => 'string|max:255',
+            'status' => 'required|boolean',
+
+        ]);
+        $menu->name = $request->name;
+        $menu->status = $request->status;
+
+        // if ($request->hasFile('image')) {
+        //     // Delete old image
+        //     if ($product->image) {
+        //         Storage::delete($product->image);
+        //     }
+        //     // Store image
+        //     $image_path = $request->file('image')->store('products', 'public');
+        //     // Save to Database
+        //     $product->image = $image_path;
+        // }
+
+        if (!$menu->save()) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat update menu');
+        }
+        return redirect()->back()->with('success', 'Sukses update menu.');
     }
     
 }

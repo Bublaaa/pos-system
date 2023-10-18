@@ -14,8 +14,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $menus = new Menu();
-        $menus = $menus->latest()->paginate(10);
+        $menus = Menu::where('status',1)->get();
         return view('../layouts/contents/dashboard')->with('menus', $menus);
     }
 

@@ -22,4 +22,7 @@ class IngredientController extends Controller
         // dd($this->ingredients);
         dd($request->ingredientName);
     }
+    public function edit(){
+        
+    }
 }

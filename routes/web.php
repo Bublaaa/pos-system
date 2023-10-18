@@ -38,12 +38,6 @@ Route::prefix('owner')->middleware(['auth',OwnerMiddleware::class])->group(funct
     Route::get('/stock-report', [App\Http\Controllers\OwnerController::class, 'stockReport'])->name('stock-report');
     Route::get('/add-stock', [App\Http\Controllers\OwnerController::class, 'addStock'])->name('add-stock');
     Route::get('/add-menu', [App\Http\Controllers\OwnerController::class, 'addMenu'])->name('add-menu');
-    Route::get('/add-edit', [App\Http\Controllers\OwnerController::class, 'editMenu'])->name('edit-menu');
-
-    // Route::get('/employee-report', [App\Http\Controllers\EmployeeController::class, 'report'])->name('owner.employee.report');
-    // Route::get('/employee-salary', [App\Http\Controllers\EmployeeController::class, 'salary'])->name('owner.employee.salary');
-    // Route::get('/stock-report', [App\Http\Controllers\StockController::class, 'report'])->name('owner.stock.report');
-    // Route::get('/stock-add', [App\Http\Controllers\StockController::class, 'add'])->name('owner.add.stock');
 });
 
 

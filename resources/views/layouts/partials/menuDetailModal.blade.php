@@ -1,4 +1,4 @@
-<div class="modal fade" id="menuDetailModal{{ $menu['id'] }}" role="dialog" aria-labelledby="detailModalLabel"
+<div class="modal fade" id="menuDetailModal{{ $menu['id'] }}" role="dialog" aria-labelledby="menuDetailModalLabel"
     aria-hidden="false" tabindex="1">
     <div class="modal-dialog" role="document" style="max-width: 80vw;">
         <div class="modal-content">
@@ -46,9 +46,9 @@
                                         <label for="status">Status</label>
                                         <select name="status" class="form-control @error('status') is-invalid @enderror"
                                             id="status">
-                                            <option value="1" {{ $menu['status'] === 1 ? 'selected' : ''}}>Tersedia
+                                            <option value="1" {$menu['status']===1 : "selected" ? '' }>Tersedia
                                             </option>
-                                            <option value="0" {{ $menu['status'] === 0 ? 'selected' : ''}}>Tidak
+                                            <option value="0" {$menu['status']===1 : "selected" ? '' }>Tidak
                                                 Tersedia</option>
                                         </select>
                                         @error('status')
@@ -69,7 +69,7 @@
                                             <h5>Bahan baku</h5>
                                         </div>
                                         <div class="col-6 text-right">
-                                            <button name="addIngredient" id="addIngredient" type="button"
+                                            <button name="addIngredient" id="addIngredient{{$menu['id']}}" type="button"
                                                 class="btn btn-primary">
                                                 <i class="fas fa-plus"></i>
                                             </button>
@@ -77,7 +77,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="container" id="ingredientContainer">
+                                    <div class="container" id="ingredientContainer{{$menu['id']}}">
                                         <div class="row">
                                             <div class="col-3">
                                                 <p>Nama</p>
@@ -92,13 +92,14 @@
                                             </div>
                                         </div>
                                         @foreach($ingredients as $ingredient)
-                                        <div class="row ingredient-row">
-                                            <div class="col col-md">
+                                        @if($ingredient['menu_id'] == $menu['id'])
+                                        <div class="row">
+                                            <div class="col">
                                                 <div class="form-group">
-                                                    <input type="text" name="ingredients[0][name]"
+                                                    <input type="text" name="ingredient['name']"
                                                         class="form-control @error('ingredientName') is-invalid @enderror"
-                                                        id="ingredients[0][name]" placeholder="Nama Bahan"
-                                                        value="{{ old('ingredientName') }}">
+                                                        id="ingredient['name']" placeholder="Nama Bahan"
+                                                        value="{{ $ingredient['name'] }}">
                                                     @error('ingredientName')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -108,10 +109,10 @@
                                             </div>
                                             <div class="col">
                                                 <div class="form-group">
-                                                    <input type="number" name="ingredients[0][quantity]"
+                                                    <input type="number" name="$ingredients['quantity']"
                                                         class="form-control @error('ingredientQuantity') is-invalid @enderror"
-                                                        id="ingredients[0][quantity]" placeholder="Jumlah Bahan"
-                                                        value="{{ old('ingredientQuantity') }}" inputmode="numeric"
+                                                        id="$ingredients['quantity']" placeholder="Jumlah Bahan"
+                                                        value="{{ $ingredient['quantity'] }}" inputmode="numeric"
                                                         min="1">
                                                     @error('ingredientQuantity')
                                                     <span class="invalid-feedback" role="alert">
@@ -122,13 +123,14 @@
                                             </div>
                                             <div class="col">
                                                 <div class="form-group">
-                                                    <select name="ingredients[0][unit]" class="form-control"
-                                                        id="ingredients[0][unit]">
-                                                        <option value="gram">Gram</option>
-                                                        <option value="ml"> Mililiter</option>
+                                                    <select name="$ingredients['unit']" class="form-control"
+                                                        id="$ingredients['unit']">
+                                                        <option value="gram" {$ingredient['name']==="gram" : 'selected'
+                                                            ? '' }>Gram</option>
+                                                        <option value="ml" {$ingredient['name']==="ml" : 'selected' ? ''
+                                                            }> Mililiter</option>
                                                     </select>
-                                                    @error('unit')
-                                                    <span class="ingredientUnit" role="alert">
+                                                    @error(' unit') <span class="ingredientUnit" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
                                                     @enderror
@@ -141,11 +143,9 @@
                                                 </button>
                                             </div>
                                         </div>
+                                        @endif
                                         @endforeach
                                     </div>
-                                </div>
-                                <div class=" card-footer">
-                                    <button class="btn btn-primary" type="submit">Simpan Menu</button>
                                 </div>
                             </div>
                         </div>
@@ -165,6 +165,7 @@
         </div>
     </div>
 </div>
+
 <script>
 // Prevent the last remaining row from deleted & delete selected row
 function removeRow(button) {
@@ -178,8 +179,9 @@ function removeRow(button) {
 
 // Add new row when button clicked
 var ingredientIndex = 0;
-document.getElementById("addIngredient").onclick = function() {
+document.getElementById("addIngredient{{$menu['id']}}").onclick = function() {
     ++ingredientIndex;
+    console.log('tapped');
 
     var newRow = document.createElement("div");
     newRow.className = "row";
@@ -235,7 +237,7 @@ document.getElementById("addIngredient").onclick = function() {
         `;
 
     // Append the new row to the container
-    document.getElementById("ingredientContainer").appendChild(newRow);
+    document.getElementById("ingredientContainer{{$menu['id']}}").appendChild(newRow);
 
     // Attach the onclick event to the remove button in the new row
     newRow.querySelector(".remove-row").onclick = function() {
