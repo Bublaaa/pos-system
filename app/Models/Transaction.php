@@ -11,6 +11,7 @@ class Transaction extends Model
     protected $fillable=[
         'menu_id',
         'user_name',
-        'status',
+        'kind',
+        'image',
     ];
 }

@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('menu_id');
             $table->string('user_name');
+            $table->string('kind');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

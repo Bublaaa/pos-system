@@ -35,11 +35,18 @@ class TransactionController extends Controller
             'menu_id' => 'required|string',
             'quantity' => 'required|integer',
         ]);
+        $image_path = '';
         $user = Auth::user();
+
+        // if ($request->hasFile('image')) {
+        //     $image_path = $request->file('image')->store('products', 'public');
+        // }
         for($itemCount=1;$itemCount<=$request->quantity;$itemCount++){
             $transaction = Transaction::create([  
                 'menu_id' => $request->menu_id,
                 'user_name' => $user->name,
+                'kind' => $request->kind,
+                'image' => $image_path,
             ]);
         }
         if(!$transaction){

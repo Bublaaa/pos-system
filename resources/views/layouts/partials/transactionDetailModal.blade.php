@@ -13,6 +13,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <input type="hidden" name="kind" id="kind" value="penjualan">
                 <div class="modal-body">
                     <div class="col">
                         <div class="form-group">
