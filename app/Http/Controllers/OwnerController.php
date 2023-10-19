@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use App\Models\Menu;
 use App\Models\Ingredient;
+use App\Models\Stock;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class OwnerController extends Controller
 {
@@ -37,7 +39,15 @@ class OwnerController extends Controller
         return view('../layouts/contents/salaryReport');
     }
     public function stockReport(){
-        return view('../layouts/contents/stockReport');
+        $stockDataByKind = DB::table('stocks')
+            ->select('kind', 'name', DB::raw('SUM(quantity) as total'), 'unit')
+            ->groupBy('kind', 'name', 'unit')
+            ->get();
+        $overAllStockData = DB::table('stocks')
+            ->select('name', 'unit', DB::raw('SUM(CASE WHEN kind = "pembelian" THEN quantity ELSE -quantity END) AS Total'))
+            ->groupBy('name', 'unit')
+            ->get();
+        return view('../layouts/contents/stockReport') ->with(['overAllStockData' => $overAllStockData,'stockDataByKind' => $stockDataByKind]);
     }
     public function addStock(){
         return view('../layouts/contents/addStock');
