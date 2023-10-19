@@ -40,9 +40,12 @@ class OwnerController extends Controller
     }
     public function stockReport(){
         $stockDataByKind = DB::table('stocks')
-            ->select('kind', 'name', DB::raw('SUM(quantity) as total'), 'unit')
-            ->groupBy('kind', 'name', 'unit')
+            ->select('stocks.kind', 'stocks.name', DB::raw('SUM(stocks.quantity) as total'), 'stocks.unit', 'transactions.user_name', 'transactions.created_at')
+            ->join('transactions', 'stocks.transaction_id', '=', 'transactions.id')
+            ->groupBy('stocks.kind', 'stocks.name', 'stocks.unit', 'transactions.user_name', 'transactions.created_at')
             ->get();
+
+
         $overAllStockData = DB::table('stocks')
             ->select('name', 'unit', DB::raw('SUM(CASE WHEN kind = "pembelian" THEN quantity ELSE -quantity END) AS Total'))
             ->groupBy('name', 'unit')

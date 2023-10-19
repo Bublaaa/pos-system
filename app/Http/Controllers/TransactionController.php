@@ -8,6 +8,8 @@ use App\Models\Stock;
 use App\Models\Ingredient;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class TransactionController extends Controller
 {
@@ -38,31 +40,53 @@ class TransactionController extends Controller
             'quantity' => 'integer',
         ]);
         $image_path = '';
-        $user = Auth::user();
-        $ingredients = Ingredient::where('menu_id', $request->menu_id)->get();
         // if ($request->hasFile('image')) {
         //     $image_path = $request->file('image')->store('products', 'public');
         // }
-        $transaction = Transaction::create([  
-            'menu_id' => $request->menu_id,
-            'quantity' => $request->quantity,
-            'user_name' => $user->name,
-            'kind' => $request->kind,
-            'image' => $image_path,
-        ]);
-        $newestTransaction = Transaction::latest()->first();
 
-        for($itemCount=1;$itemCount<=$newestTransaction->quantity;$itemCount++){
+        $user = Auth::user();
+        $ingredients = Ingredient::where('menu_id', $request->menu_id)->get();
+        $availableStock = DB::table('stocks')
+            ->select('name', DB::raw('SUM(CASE WHEN kind = "pembelian" THEN quantity ELSE -quantity END) AS availableQuantity'))
+            ->groupBy('name')
+            ->get();
+        
+        // Check available stock before create transaction
+        foreach($availableStock as $stock){
             foreach($ingredients as $ingredient){
-                $stockSold = Stock::create([  
-                    'transaction_id' => $newestTransaction->id,
-                    'kind' => $request->kind,
-                    'name' => $ingredient['name'],
-                    'quantity' => $ingredient['quantity'],
-                    'unit' => $ingredient['unit'],
-                ]);
+                if($stock->name == $ingredient['name']){
+                    if($stock->availableQuantity < $ingredient['quantity']){
+                        return redirect()->back()->with('error', "Stok {$ingredient['name']} tidak cukup");
+                    }
+                    else {
+                        //Create new transction
+                        $transaction = Transaction::create([  
+                            'menu_id' => $request->menu_id,
+                            'quantity' => $request->quantity,
+                            'user_name' => $user->name,
+                            'kind' => $request->kind,
+                            'image' => $image_path,
+                        ]);
+                        // Get the latest transaction id after creating new one
+                        $newestTransaction = Transaction::latest()->first();
+
+                        // Add data to stock
+                        for($itemCount=1;$itemCount<=$newestTransaction->quantity;$itemCount++){
+                            foreach($ingredients as $ingredient){
+                                $stockSold = Stock::create([  
+                                    'transaction_id' => $newestTransaction->id,
+                                    'kind' => $request->kind,
+                                    'name' => $ingredient['name'],
+                                    'quantity' => $ingredient['quantity'],
+                                    'unit' => $ingredient['unit'],
+                                ]);
+                            }
+                        }
+                    }
+                }
             }
         }
+        
         if(!$transaction){
             return redirect()->back()->with('error', 'Terjadi kesalahan saat mencatat transaksi');
         }
