@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Transaction;
 use App\Models\Menu;
+use App\Models\Stock;
+use App\Models\Ingredient;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -37,17 +39,29 @@ class TransactionController extends Controller
         ]);
         $image_path = '';
         $user = Auth::user();
-
+        $ingredients = Ingredient::where('menu_id', $request->menu_id)->get();
         // if ($request->hasFile('image')) {
         //     $image_path = $request->file('image')->store('products', 'public');
         // }
-        for($itemCount=1;$itemCount<=$request->quantity;$itemCount++){
-            $transaction = Transaction::create([  
-                'menu_id' => $request->menu_id,
-                'user_name' => $user->name,
-                'kind' => $request->kind,
-                'image' => $image_path,
-            ]);
+        $transaction = Transaction::create([  
+            'menu_id' => $request->menu_id,
+            'quantity' => $request->quantity,
+            'user_name' => $user->name,
+            'kind' => $request->kind,
+            'image' => $image_path,
+        ]);
+        $newestTransaction = Transaction::latest()->first();
+
+        for($itemCount=1;$itemCount<=$newestTransaction->quantity;$itemCount++){
+            foreach($ingredients as $ingredient){
+                $stockSold = Stock::create([  
+                    'transaction_id' => $newestTransaction->id,
+                    'kind' => $request->kind,
+                    'name' => $ingredient['name'],
+                    'quantity' => $ingredient['quantity'],
+                    'unit' => $ingredient['unit'],
+                ]);
+            }
         }
         if(!$transaction){
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan transaksi');
