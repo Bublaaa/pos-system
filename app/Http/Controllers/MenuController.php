@@ -79,5 +79,11 @@ class MenuController extends Controller
         }
         return redirect()->back()->with('success', 'Sukses update menu.');
     }
-    
+    public function destroy(Menu $menu){
+        // if ($menu->image) {
+        //     Storage::delete($menu->image);
+        // }
+        $menu->delete();
+        return redirect()->back()->with('success', 'Sukses delete menu.');
+    }
 }
