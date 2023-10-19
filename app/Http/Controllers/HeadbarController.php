@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Ingredient;
+
 
 class HeadbarController extends Controller
 {
@@ -11,6 +13,7 @@ class HeadbarController extends Controller
         return view('../layouts/contents/dashboard');
     }
     public function addStock(){
-        return view('../layouts/contents/addStock');
+        $ingredientNames = Ingredient::distinct()->pluck('name')->sort();
+        return view('../layouts/contents/addStock') -> with(['ingredientNames' => $ingredientNames]);
     }
 }

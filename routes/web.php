@@ -8,6 +8,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\StockController;
 
 Auth::routes();
 
@@ -25,7 +26,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::resource('dashboard', TransactionController::class);
     Route::resource('attendance', AttendanceController::class);
-
+    Route::resource('stock', StockController::class);
 });
 
 // Routes for owner

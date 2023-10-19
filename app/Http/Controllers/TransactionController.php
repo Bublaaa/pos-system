@@ -34,8 +34,8 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'menu_id' => 'required|string',
-            'quantity' => 'required|integer',
+            'menu_id' => 'string',
+            'quantity' => 'integer',
         ]);
         $image_path = '';
         $user = Auth::user();
@@ -64,10 +64,10 @@ class TransactionController extends Controller
             }
         }
         if(!$transaction){
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan transaksi');
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mencatat transaksi');
         }
         else {
-            return redirect()->back()->with('success', 'Berhasil menambahkan transaksi');
+            return redirect()->back()->with('success', 'Berhasil mencatat transaksi');
         }
     }
 

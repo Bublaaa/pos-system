@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('menu_id');
-            $table->integer('quantity');
+            $table->string('menu_id')->nullable();
+            $table->integer('quantity')->nullable();
             $table->string('user_name');
             $table->string('kind');
             $table->string('image')->nullable();

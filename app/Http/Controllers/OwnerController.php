@@ -50,7 +50,8 @@ class OwnerController extends Controller
         return view('../layouts/contents/stockReport') ->with(['overAllStockData' => $overAllStockData,'stockDataByKind' => $stockDataByKind]);
     }
     public function addStock(){
-        return view('../layouts/contents/addStock');
+        $ingredientNames = Ingredient::distinct()->pluck('name')->sort();
+        return view('../layouts/contents/addStock') -> with(['ingredientNames' => $ingredientNames]);
     }
     public function addMenu(){
         return view('../layouts/contents/addmenu');
