@@ -49,7 +49,7 @@
                         </li>
                         <!-- Laporan Gaji -->
                         <li class="nav-item">
-                            <a href="{{ route('salary-report') }}" class="nav-link">
+                            <a href="{{ route('salary.index') }}" class="nav-link">
                                 <p>Laporan Penggajian</p>
                             </a>
                         </li>

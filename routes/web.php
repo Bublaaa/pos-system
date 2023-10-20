@@ -9,6 +9,7 @@ use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\SalaryController;
 
 Auth::routes();
 
@@ -33,9 +34,10 @@ Route::middleware(['auth'])->group(function () {
 Route::prefix('owner')->middleware(['auth',OwnerMiddleware::class])->group(function () {
     Route::resource('menu', MenuController::class);
     Route::resource('ingredient', IngredientController::class);
+    Route::resource('salary', SalaryController::class);
     Route::get('/register', [App\Http\Controllers\OwnerController::class, 'register'])->name('register-new-employee');
     Route::get('/attendance-report', [App\Http\Controllers\OwnerController::class, 'attendanceReport'])->name('attendance-report');
-    Route::get('/salary-report', [App\Http\Controllers\OwnerController::class, 'salaryReport'])->name('salary-report');
+    Route::get('/salary-payment/{userName}', [App\Http\Controllers\OwnerController::class, 'salaryPayment'])->name('salary-payment');
     Route::get('/stock-report', [App\Http\Controllers\OwnerController::class, 'stockReport'])->name('stock-report');
     Route::get('/add-stock', [App\Http\Controllers\OwnerController::class, 'addStock'])->name('add-stock');
     Route::get('/add-menu', [App\Http\Controllers\OwnerController::class, 'addMenu'])->name('add-menu');

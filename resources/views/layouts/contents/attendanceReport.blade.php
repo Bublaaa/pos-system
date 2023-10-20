@@ -18,6 +18,11 @@
                         </div>
                     </div>
                 </div>
+                <div class="card-footer">
+                    <a href="{{ route('salary-payment', ['userName' => $userName]) }}" type="button"
+                        class="btn btn-primary">Bayar
+                        Gaji</a>
+                </div>
             </div>
         </div>
         @endforeach

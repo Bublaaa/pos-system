@@ -21,6 +21,9 @@ class OwnerController extends Controller
         $firstDayOfMonth = Carbon::now()->startOfMonth();
         $lastDayOfMonth = Carbon::now()->endOfMonth();
         $currentMonth = Carbon::now();
+        $employees = User::where('position', 'headbar')
+                 ->orWhere('position', 'employee')
+                 ->get();
         $totalDaysInMonth = $currentMonth->daysInMonth;
 
         $attendanceData = Attendance::whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])->where('status', 1)->get();
@@ -30,6 +33,7 @@ class OwnerController extends Controller
         $allUserAttendance = $allAttendanceData->groupBy('name');
         
         return view('../layouts/contents/attendanceReport', [
+            'employees' => $employees,
             'userAttendance' => $userAttendance,
             'totalDaysInMonth' => $totalDaysInMonth,
             'allUserAttendance' => $allUserAttendance,
@@ -38,6 +42,30 @@ class OwnerController extends Controller
     public function salaryReport(){
         return view('../layouts/contents/salaryReport');
     }
+
+    public function salaryPayment($userName){
+        $firstDayOfMonth = Carbon::now()->startOfMonth();
+        $lastDayOfMonth = Carbon::now()->endOfMonth();
+        
+        $currentMonth = Carbon::now();
+        $totalDaysInMonth = $currentMonth->daysInMonth;
+        $currentMonthName = $currentMonth->format('F');
+
+        $presentAttendanceData = Attendance::whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])->where('status', 1)->get();
+        $userAttendanceData = $presentAttendanceData->where('name' , $userName);
+
+        
+        $ownerData = auth()->user();
+        $userData = User::where('name', $userName)->first();
+        return view('../layouts/contents/salaryPayment')->with([
+            'currentMonth' => $currentMonthName,
+            'userData' => $userData,
+            'ownerData' => $ownerData, 
+            'totalDaysInMonth' => $totalDaysInMonth, 
+            'userAttendanceData' => $userAttendanceData
+        ]);
+    }
+
     public function stockReport(){
         $stockDataByKind = DB::table('stocks')
             ->select('stocks.kind', 'stocks.name', DB::raw('SUM(stocks.quantity) as total'), 'stocks.unit', 'transactions.user_name', 'transactions.created_at')
