@@ -7,10 +7,12 @@ use App\Models\Menu;
 use App\Models\Ingredient;
 use App\Models\Stock;
 use App\Models\User;
+use App\Models\Salary;
+use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class OwnerController extends Controller
 {
@@ -41,6 +43,11 @@ class OwnerController extends Controller
     }
     public function printReceipt($id){
         $salary = Salary::find($id);
+        $user = User::where('position', 'owner')->first();
+        // $filename = $salary->name . '_' . date('F_Y', strtotime($salary->created_at)) . '_kwitansi.pdf';
+        // $pdf = PDF::loadView('pdf.receipt', compact('salary'));
+        // return $pdf->download($filename);
+        return view('pdf.receipt',compact('salary','user'));
     }
 
     public function salaryPayment($userName){

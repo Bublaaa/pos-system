@@ -25,7 +25,8 @@
                         <td>{{ ($salary->attendance_precentage) }}%</td>
                         <td>{{ $salary->salary }}</td>
                         <td>
-                            <form action="{{ route('print-receipt', $salary->id) }}" method="POST" target="_blank">
+                            <form action="{{ route('print-receipt', ['id' => $salary->id]) }}" method="POST"
+                                target="_blank">
                                 @csrf
                                 <button type="submit" class="btn btn-primary">Cetak Kwitansi</button>
                             </form>
