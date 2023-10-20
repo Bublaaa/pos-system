@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Salary;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class SalaryController extends Controller
 {
@@ -47,23 +49,34 @@ class SalaryController extends Controller
             'totalDaysInMonth' => 'required',
             'salary' => 'required',
         ]);
-        $attendanceCount = (int) $request->attendanceCount;
-        $totalDaysInMonth = (int) $request->totalDaysInMonth;
-        $attendancePercentage = round(($request->attendanceCount / $request->totalDaysInMonth) * 100);
-        $salary = Salary::create([  
-            'name' => $request->userName,
-            'basic_salary' => $request->basicSalary,
-            'attendance_precentage' => $attendancePercentage,
-            'salary' => $request->salary,
-        ]);
-        if (!$salary) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat mencatat pembayaran gaji.');
+
+        $existingSalary = DB::table('salaries')
+            ->where('name', $request->userName)
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->first();
+
+        if ($existingSalary) {
+            return redirect()->back()->with('error', 'Sudah membayar gaji untuk karyawan tersebut bulan ini.');
         }
-        else{
-            return redirect()->route('salary.index')->with('success', 'Sukses pencatat pembayaran gaji');
+        else {
+            $attendanceCount = (int) $request->attendanceCount;
+            $totalDaysInMonth = (int) $request->totalDaysInMonth;
+            $attendancePercentage = round(($request->attendanceCount / $request->totalDaysInMonth) * 100);
+            $salary = Salary::create([  
+                'name' => $request->userName,
+                'basic_salary' => $request->basicSalary,
+                'attendance_precentage' => $attendancePercentage,
+                'salary' => $request->salary,
+            ]);
+            if (!$salary) {
+                return redirect()->back()->with('error', 'Terjadi kesalahan saat mencatat pembayaran gaji.');
+            }
+            else{
+                return redirect()->route('salary.index')->with('success', 'Sukses pencatat pembayaran gaji');
+            }
         }
     }
-
     /**
      * Display the specified resource.
      */
