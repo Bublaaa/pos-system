@@ -57,7 +57,7 @@ class SalaryController extends Controller
             ->first();
 
         if ($existingSalary) {
-            return redirect()->back()->with('error', 'Sudah membayar gaji untuk karyawan tersebut bulan ini.');
+            return redirect()->back()->with('error', 'Sudah membayar gaji untuk karyawan tersebut pada bulan ini.');
         }
         else {
             $attendanceCount = (int) $request->attendanceCount;
@@ -106,6 +106,7 @@ class SalaryController extends Controller
      */
     public function destroy(Salary $salary)
     {
-        //
+        $salary->delete();
+        return redirect()->back()->with('success', 'Sukses hapus pembayaran gaji.');
     }
 }

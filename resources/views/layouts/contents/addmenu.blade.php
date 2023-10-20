@@ -87,10 +87,10 @@
                             <div class="col col-md">
                                 <div class="form-group">
                                     <input type="text" name="ingredients[0][name]"
-                                        class="form-control @error('ingredientName') is-invalid @enderror"
+                                        class="form-control @error('ingredients[0][name]') is-invalid @enderror"
                                         id="ingredients[0][name]" placeholder="Nama Bahan"
-                                        value="{{ old('ingredientName') }}" required=true>
-                                    @error('ingredientName')
+                                        value="{{ old('ingredients[0][name]') }}" required=true>
+                                    @error('ingredients[0][name]')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -100,11 +100,11 @@
                             <div class="col">
                                 <div class="form-group">
                                     <input type="number" name="ingredients[0][quantity]"
-                                        class="form-control @error('ingredientQuantity') is-invalid @enderror"
+                                        class="form-control @error('ingredients[0][quantity]') is-invalid @enderror"
                                         id="ingredients[0][quantity]" placeholder="Jumlah Bahan"
-                                        value="{{ old('ingredientQuantity') }}" inputmode="numeric" min="1"
+                                        value="{{ old('ingredients[0][quantity]') }}" inputmode="numeric" min="1"
                                         required=true>
-                                    @error('ingredientQuantity')
+                                    @error('ingredients[0][quantity]')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -118,7 +118,7 @@
                                         <option value="ml"> Mililiter</option>
                                     </select>
                                     @error('unit')
-                                    <span class="ingredientUnit" role="alert">
+                                    <span class="ingredients[0][unit]" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
@@ -163,10 +163,10 @@ document.getElementById("addIngredient").onclick = function() {
                 <div class="form-group">
                     <div class="form-group">
                         <input type="text" name="ingredients[${ingredientIndex}][name]"
-                            class="form-control @error('ingredientName') is-invalid @enderror"
+                            class="form-control @error('ingredients[${ingredientIndex}][name]') is-invalid @enderror"
                             id="ingredients[${ingredientIndex}][name]" placeholder="Nama Bahan"
-                            value="{{ old('ingredientName') }}">
-                        @error('ingredientName')
+                            value="{{ old('ingredients[${ingredientIndex}][name]') }}">
+                        @error('ingredients[${ingredientIndex}][name]')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -178,10 +178,10 @@ document.getElementById("addIngredient").onclick = function() {
                 <div class="form-group">
                     <div class="form-group">
                         <input type="text" name="ingredients[${ingredientIndex}][quantity]"
-                            class="form-control @error('ingredientQuantity') is-invalid @enderror"
+                            class="form-control @error('ingredients[${ingredientIndex}][quantity]') is-invalid @enderror"
                             id="ingredients[${ingredientIndex}][quantity]" placeholder="Jumlah Bahan"
-                            value="{{ old('ingredientQuantity') }}">
-                        @error('ingredientQuantity')
+                            value="{{ old('ingredients[${ingredientIndex}][quantity]') }}">
+                        @error('ingredients[${ingredientIndex}][quantity]')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
@@ -196,7 +196,7 @@ document.getElementById("addIngredient").onclick = function() {
                         <option value="ml"> Mililiter</option>
                     </select>
                     @error('unit')
-                    <span class="ingredientUnit" role="alert">
+                    <span class="ingredients[${ingredientIndex}][unit]" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
