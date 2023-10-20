@@ -12,7 +12,19 @@ class SalaryController extends Controller
      */
     public function index()
     {
-        return view('../layouts/contents/salaryReport');
+        $salariesByMonth = Salary::selectRaw('MONTH(created_at) as month, YEAR(created_at) as year')
+        ->groupByRaw('YEAR(created_at), MONTH(created_at)')
+        ->get();
+
+        // Retrieve detailed salary data for each month
+        foreach ($salariesByMonth as $month) {
+        $month->salaries = Salary::whereMonth('created_at', $month->month)
+            ->whereYear('created_at', $month->year)
+            ->select('id', 'name', 'basic_salary', 'attendance_precentage', 'salary', 'created_at')
+            ->get();
+        }
+
+        return view('../layouts/contents/salaryReport') -> with(['salariesByMonth' => $salariesByMonth]);
     }
 
     /**

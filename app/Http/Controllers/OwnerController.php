@@ -39,8 +39,8 @@ class OwnerController extends Controller
             'allUserAttendance' => $allUserAttendance,
         ]);
     }
-    public function salaryReport(){
-        return view('../layouts/contents/salaryReport');
+    public function printReceipt($id){
+        $salary = Salary::find($id);
     }
 
     public function salaryPayment($userName){

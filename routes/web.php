@@ -38,6 +38,7 @@ Route::prefix('owner')->middleware(['auth',OwnerMiddleware::class])->group(funct
     Route::get('/register', [App\Http\Controllers\OwnerController::class, 'register'])->name('register-new-employee');
     Route::get('/attendance-report', [App\Http\Controllers\OwnerController::class, 'attendanceReport'])->name('attendance-report');
     Route::get('/salary-payment/{userName}', [App\Http\Controllers\OwnerController::class, 'salaryPayment'])->name('salary-payment');
+    Route::get('/print-receipt', [App\Http\Controllers\OwnerController::class, 'printReceipt'])->name('print-receipt');
     Route::get('/stock-report', [App\Http\Controllers\OwnerController::class, 'stockReport'])->name('stock-report');
     Route::get('/add-stock', [App\Http\Controllers\OwnerController::class, 'addStock'])->name('add-stock');
     Route::get('/add-menu', [App\Http\Controllers\OwnerController::class, 'addMenu'])->name('add-menu');
