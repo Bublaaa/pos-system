@@ -44,10 +44,10 @@ class OwnerController extends Controller
     public function printReceipt($id){
         $salary = Salary::find($id);
         $user = User::where('position', 'owner')->first();
-        // $filename = $salary->name . '_' . date('F_Y', strtotime($salary->created_at)) . '_kwitansi.pdf';
-        // $pdf = PDF::loadView('pdf.receipt', compact('salary'));
-        // return $pdf->download($filename);
-        return view('pdf.receipt',compact('salary','user'));
+        $filename = $salary->name . '_' . date('F_Y', strtotime($salary->created_at)) . '_kwitansi.pdf';
+        $pdf = PDF::loadView('pdf.receipt', compact('salary','user'));
+        $pdf->setPaper('A6', 'landscape');
+        return $pdf->download($filename);
     }
 
     public function salaryPayment($userName){
