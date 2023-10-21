@@ -67,13 +67,13 @@
                     <ul class="nav nav-treeview">
                         <!-- Laporan Stok -->
                         <li class="nav-item">
-                            <a href="{{ route('stock-report') }}" class="nav-link">
+                            <a href="{{ route('stock.index') }}" class="nav-link">
                                 <p>Laporan Stok</p>
                             </a>
                         </li>
                         <!-- Tambah Stok -->
                         <li class="nav-item">
-                            <a href="{{ route('add-stock') }}" class="nav-link">
+                            <a href="{{ route('stock.create') }}" class="nav-link">
                                 <p>Tambah Stok</p>
                             </a>
                         </li>
@@ -91,7 +91,7 @@
                     <ul class="nav nav-treeview">
                         <!-- Tambah Menu -->
                         <li class="nav-item">
-                            <a href="{{ route('add-menu') }}" class="nav-link">
+                            <a href="{{ route('menu.create') }}" class="nav-link">
                                 <p>Tambah Menu</p>
                             </a>
                         </li>
@@ -115,7 +115,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('headbar.add.stock') }}" class="nav-link">
+                    <a href="{{ route('stock.create') }}" class="nav-link">
                         <i class="nav-icon fa fa-plus"></i>
                         <p>Tambah Stok</p>
                     </a>

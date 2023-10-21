@@ -51,39 +51,4 @@ class OwnerController extends Controller
             'userAttendanceData' => $userAttendanceData
         ]);
     }
-
-    public function stockReport(){
-        $stockDataByKind = DB::table('stocks')
-            ->select('stocks.kind', 'stocks.name', DB::raw('SUM(stocks.quantity) as total'), 'stocks.unit', 'transactions.user_name', 'transactions.created_at')
-            ->join('transactions', 'stocks.transaction_id', '=', 'transactions.id')
-            ->groupBy('stocks.kind', 'stocks.name', 'stocks.unit', 'transactions.user_name', 'transactions.created_at')
-            ->get();
-
-        $buyTransaction = Transaction::where('kind','pembelian')
-            ->orderBy('created_at', 'desc')
-            ->get();
-        $boughtStocks = Stock::get();
-        $overAllStockData = DB::table('stocks')
-            ->select('name', 'unit', DB::raw('SUM(CASE WHEN kind = "pembelian" THEN quantity ELSE -quantity END) AS Total'))
-            ->groupBy('name', 'unit')
-            ->get();
-        return view('../layouts/contents/stockReport') ->with([
-            'overAllStockData' => $overAllStockData,
-            'stockDataByKind' => $stockDataByKind,
-             'buyTransaction' => $buyTransaction,
-             'boughtStocks' => $boughtStocks,
-        ]);
-    }
-    public function addStock(){
-        $ingredientNames = Ingredient::distinct()->pluck('name')->sort();
-        return view('../layouts/contents/addStock') -> with(['ingredientNames' => $ingredientNames]);
-    }
-    public function addMenu(){
-        return view('../layouts/contents/addmenu');
-    }
-    public function menuDetail($menu_id){
-        $menus = Menu::get();
-        $ingredients = Ingredient::get();
-        return view('../layouts/partials/menuDetailModal')->with(['menus' => $menus, 'ingredients' => $ingredients]);
-    }
 }

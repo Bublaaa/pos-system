@@ -17,7 +17,7 @@ class MenuController extends Controller
         return view('../layouts/contents/menuIndex')->with(['menus' => $menus, 'ingredients' => $ingredients]);
     }
     public function create(){
-        
+        return view('../layouts/contents/addmenu');
     }
     public function store(Request $request){
         // Validate request
