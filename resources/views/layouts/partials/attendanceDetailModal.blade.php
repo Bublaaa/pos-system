@@ -21,9 +21,10 @@
                     <tbody>
                         @foreach($allUserAttendance as $attendance)
                         <tr>
-                            <td>{{ \Carbon\Carbon::parse($attendance->created_at)->format('d-M-y \P\u\k\u\l H:i') }}
+                            <td>{{ \Carbon\Carbon::parse($attendance->created_at)->format('d-M-y  H:i') }}
                             </td>
-                            <td>{{ $attendance->status == 1 ? 'Hadir' : 'Absen' }}</td>
+                            <td style="{{ $attendance->status === 1 ? 'color:green;' : 'color:red;' }}">
+                                {{ $attendance->status == 1 ? 'Hadir' : 'Absen' }}</td>
                             <td>
                                 @if($attendance->image)
                                 <img class="product-img" src="{{ Storage::url($attendance->image) }}"

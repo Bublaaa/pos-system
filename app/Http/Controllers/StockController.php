@@ -34,9 +34,9 @@ class StockController extends Controller
     {
         $image_path = '';
         $user = Auth::user();
-        // if ($request->hasFile('image')) {
-        //     $image_path = $request->file('image')->store('products', 'public');
-        // }
+        if ($request->hasFile('image')) {
+            $image_path = $request->file('image')->store('stock', 'public');
+        }
         $transaction = Transaction::create([  
             'user_name' => $user->name,
             'kind' => $request->kind,

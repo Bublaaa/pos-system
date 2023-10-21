@@ -11,7 +11,7 @@ class MenuController extends Controller
 {   
     public function index(){
         // Get all the menu data
-        $menus = Menu::get();
+        $menus = Menu::orderBy('name', 'asc')->get();
         // Get all the ingredients data
         $ingredients = Ingredient::get();
         return view('../layouts/contents/menuIndex')->with(['menus' => $menus, 'ingredients' => $ingredients]);

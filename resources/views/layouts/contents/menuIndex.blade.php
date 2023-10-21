@@ -8,7 +8,7 @@
             <div class="col-md-2 col-6 mb-2">
                 <div class="card bg-white" style="overflow: hidden;">
                     <img class="product-img" src="{{ Storage::url($menu->image) }}"
-                        style="max-width: 300px; max-height: 150px; width: auto; height: auto; object-fit: cover;">
+                        style="max-width: 300px; max-height: 150px; width: 100%; height: auto; object-fit: cover;">
                     <div class="card-body">
                         <p class="card-title">{{ $menu['name'] }}</p>
                     </div>

@@ -9,7 +9,7 @@
                 <div class="card bg-white w-100" data-toggle="modal" data-target="#menuDetailModal{{ $menu['id'] }}"
                     tabindex="1" style="overflow: hidden;">
                     <img class="product-img" src="{{ Storage::url($menu->image) }}"
-                        style="max-width: 200px; max-height: 150px; width: 100%; height: 100%; object-fit: cover;">
+                        style="max-width: 200px; max-height: 150px; width: 100%; height: auto; object-fit: cover;">
                     <div class="card-body">
                         <p class="card-title">{{ $menu['name'] }}</p>
                     </div>

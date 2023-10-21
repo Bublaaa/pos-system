@@ -19,6 +19,7 @@
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" name="image" id="image" required=true>
                                 <label class="custom-file-label" for="image">Choose file</label>
+                                <p style="color:red;">Rekomendasi rasio foto : 200x150</p>
                             </div>
                             @error('image')
                             <span class="invalid-feedback" role="alert">
