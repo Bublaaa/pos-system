@@ -20,33 +20,6 @@ class OwnerController extends Controller
     public function register(){
         return view('../auth.register'); 
     }
-    public function attendanceReport(){
-        $firstDayOfMonth = Carbon::now()->startOfMonth();
-        $lastDayOfMonth = Carbon::now()->endOfMonth();
-        $currentMonth = Carbon::now();
-        $employees = User::where('position', 'headbar')
-                 ->orWhere('position', 'employee')
-                 ->get();
-        $totalDaysInMonth = $currentMonth->daysInMonth;
-
-        $attendanceData = Attendance::whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])
-            ->where('status', 1)
-            ->orderBy('created_at', 'desc')
-            ->get();
-        $allAttendanceData = Attendance::whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])
-            ->orderBy('created_at', 'desc')
-            ->get();
-        
-        $userAttendance = $attendanceData->groupBy('name');
-        $allUserAttendance = $allAttendanceData->groupBy('name');
-        
-        return view('../layouts/contents/attendanceReport', [
-            'employees' => $employees,
-            'userAttendance' => $userAttendance,
-            'totalDaysInMonth' => $totalDaysInMonth,
-            'allUserAttendance' => $allUserAttendance,
-        ]);
-    }
     public function printReceipt($id){
         $salary = Salary::find($id);
         $user = User::where('position', 'owner')->first();

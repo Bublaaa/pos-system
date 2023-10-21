@@ -43,7 +43,7 @@
                         </li>
                         <!-- Laporan Absensi -->
                         <li class="nav-item">
-                            <a href="{{ route('attendance-report') }}" class="nav-link">
+                            <a href="{{ route('attendance.index') }}" class="nav-link">
                                 <p>Laporan Absensi</p>
                             </a>
                         </li>
@@ -107,7 +107,7 @@
                 @elseif(Auth::user()->position == 'headbar')
 
                 <li class="nav-item">
-                    <a href="{{ route('attendance.index') }}" class="nav-link">
+                    <a href="{{ route('attendance.create') }}" class="nav-link">
                         <i class="nav-icon fas fa-copy"></i>
                         <p>
                             Absensi
@@ -124,7 +124,7 @@
                 @else
 
                 <li class="nav-item">
-                    <a href="{{ route('attendance.index') }}" class="nav-link">
+                    <a href="{{ route('attendance.create') }}" class="nav-link">
                         <i class="nav-icon fas fa-copy"></i>
                         <p>
                             Absensi

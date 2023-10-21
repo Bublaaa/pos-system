@@ -35,8 +35,8 @@ Route::prefix('owner')->middleware(['auth',OwnerMiddleware::class])->group(funct
     Route::resource('menu', MenuController::class);
     Route::resource('ingredient', IngredientController::class);
     Route::resource('salary', SalaryController::class);
+    Route::resource('salary', AttendanceController::class);
     Route::get('/register', [App\Http\Controllers\OwnerController::class, 'register'])->name('register-new-employee');
-    Route::get('/attendance-report', [App\Http\Controllers\OwnerController::class, 'attendanceReport'])->name('attendance-report');
     Route::get('/salary-payment/{userName}', [App\Http\Controllers\OwnerController::class, 'salaryPayment'])->name('salary-payment');
     Route::post('/print-receipt/{id}', [App\Http\Controllers\OwnerController::class, 'printReceipt'])->name('print-receipt');
     Route::get('/stock-report', [App\Http\Controllers\OwnerController::class, 'stockReport'])->name('stock-report');
