@@ -24,11 +24,19 @@
                             <td>{{ \Carbon\Carbon::parse($attendance->created_at)->format('d-M-y \P\u\k\u\l H:i') }}
                             </td>
                             <td>{{ $attendance->status == 1 ? 'Hadir' : 'Absen' }}</td>
-                            <td>{{ $attendance->image }}</td>
+                            <td>
+                                @if($attendance->image)
+                                <img class="product-img" src="{{ Storage::url($attendance->image) }}"
+                                    style="max-width: 200px; max-height: 150px; width: 100%; height: 100%; object-fit: cover;">
+                                @else
+                                Bukti Absen tidak tersedia
+                                @endif
+                            </td>
                             <td>
                                 <a href="https://www.google.com/maps/search/?api=1&query={{ $attendance->latitude }},{{ $attendance->longitude }}"
-                                    target="_blank" type="button">
+                                    target="_blank" type="button" class="btn btn-primary">
                                     <i class="fas fa-map-marker-alt"></i>
+                                    Open maps
                                 </a>
                             </td>
                         </tr>

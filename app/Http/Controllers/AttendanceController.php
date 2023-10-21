@@ -23,6 +23,10 @@ class AttendanceController extends Controller
 
         ]);
         $image_path = '';
+        // Check if request has a image upload
+        if ($request->hasFile('image')) {
+            $image_path = $request->file('image')->store('attendance', 'public');
+        }
         $user = Auth::user();
         $today = now()->format('Y-m-d');
         $entriesToday = Attendance::where('name', $user->name)

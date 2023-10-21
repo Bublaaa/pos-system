@@ -35,7 +35,7 @@
             <div class="form-group">
                 <label for="image">Bukti absen</label>
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="image" id="image">
+                    <input type="file" class="custom-file-input" name="image" id="image" required=true>
                     <label class="custom-file-label" for="image">Choose file</label>
                 </div>
                 @error('image')

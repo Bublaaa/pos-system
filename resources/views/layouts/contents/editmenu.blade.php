@@ -11,12 +11,18 @@
             @method('PUT')
             <div class="card">
                 <div class="card-header">
-                    <h5>Detil menu</h5>
+                    <h5>Edit menu</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
+                        @if($menu->image)
+                        <img class="product-img" src="{{ Storage::url($menu->image) }}"
+                            style="width: 100%; height: 100%; object-fit: fill;">
+                        @else
+                        <p>Foto menu tidak tersedia</p>
+                        @endif
                         <div class="form-group">
-                            <label for="image">Foto menu</label>
+                            <label for="image">Ganti foto menu</label>
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" name="image" id="image">
                                 <label class="custom-file-label" for="image">Choose file</label>
@@ -67,7 +73,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-6">
-                            <h5>Bahan baku</h5>
+                            <h5>Edit bahan</h5>
                         </div>
                         <div class="col-6 text-right">
                             <button name="addIngredient" id="addIngredient" type="button" class="btn btn-primary">

@@ -5,15 +5,16 @@
     <section class="content">
         <div class="row">
             @foreach ($menus as $menu)
-            <div class="col-md-3 col-12 mb-2">
-                <div class="card bg-white">
-                    <img class="card-img-top" src="https://placehold.co/150x100" alt="Card image cap">
+            <div class="col-md-2 col-6 mb-2">
+                <div class="card bg-white" style="overflow: hidden;">
+                    <img class="product-img" src="{{ Storage::url($menu->image) }}"
+                        style="max-width: 300px; max-height: 150px; width: auto; height: auto; object-fit: cover;">
                     <div class="card-body">
-                        <h5 class="card-title">{{ $menu['name'] }}</h5>
+                        <p class="card-title">{{ $menu['name'] }}</p>
                     </div>
                     <div class="card-footer">
                         <a href="{{ route('menu.edit', $menu) }}" class="btn btn-primary mr-2">
-                            <i class="fas fa-edit"></i> Menu
+                            <i class="fas fa-edit"></i>
                         </a>
                         <button type="button" class="btn btn-danger remove-row" data-toggle="modal"
                             data-target="#deleteModal{{ $menu['id'] }}">
