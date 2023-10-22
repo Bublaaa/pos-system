@@ -41,6 +41,11 @@
                                 <p>Tambah Akun Karyawan</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('user.index')}}" class="nav-link">
+                                <p>Edit Akun Karyawan</p>
+                            </a>
+                        </li>
                         <!-- Laporan Absensi -->
                         <li class="nav-item">
                             <a href="{{ route('attendance.index') }}" class="nav-link">

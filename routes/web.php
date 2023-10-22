@@ -10,6 +10,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SalaryController;
+use App\Http\Controllers\UserController;
 
 Auth::routes();
 
@@ -35,6 +36,7 @@ Route::prefix('owner')->middleware(['auth',OwnerMiddleware::class])->group(funct
     Route::resource('menu', MenuController::class);
     Route::resource('ingredient', IngredientController::class);
     Route::resource('salary', SalaryController::class);
+    Route::resource('user', UserController::class);
     Route::get('/register', [App\Http\Controllers\OwnerController::class, 'register'])->name('register-new-employee');
     Route::get('/salary-payment/{userName}', [App\Http\Controllers\OwnerController::class, 'salaryPayment'])->name('salary-payment');
     Route::post('/print-receipt/{id}', [App\Http\Controllers\OwnerController::class, 'printReceipt'])->name('print-receipt');
@@ -46,5 +48,5 @@ Route::prefix('headbar')->middleware(['auth',HeadbarMiddleware::class])->group(f
 });
 
 // Routes for employee
-Route::prefix('employee')->middleware(['auth',EmployeeMiddleware::class])->group(function () {
+Route::prefix('employee')->middleware(['auth'])->group(function () {
 });
