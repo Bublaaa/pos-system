@@ -26,6 +26,7 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
+                            <p id=formattedBasicSalary></p>
                         </div>
                     </div>
                     <div class="col-4">
@@ -47,6 +48,7 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
+                            <p id=formattedSalary></p>
                         </div>
                     </div>
                 </div>
@@ -63,11 +65,23 @@ $('#basicSalary').on('input', function() {
 });
 
 function updateSalary() {
+    const basicSalaryText = document.getElementById('formattedBasicSalary');
+    const salaryText = document.getElementById('formattedSalary');
+
     var basicSalary = parseFloat($('#basicSalary').val()) || 0;
     var attendancePercentage = parseFloat('{{ round(($userAttendanceData->count() / $totalDaysInMonth) * 100) }}');
     var calculatedSalary = basicSalary * (attendancePercentage / 100);
 
+    // Update the content of basicSalaryText and salaryText dynamically
+    basicSalaryText.textContent = `${formatCurrency(basicSalary)}`;
+    salaryText.textContent = `${formatCurrency(calculatedSalary)}`;
+
     $('#salary').val(calculatedSalary);
+}
+
+function formatCurrency(amount) {
+    // Implement your currency formatting logic here
+    return 'Rp. ' + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 }
 
 updateSalary();
