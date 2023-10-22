@@ -8,7 +8,12 @@
             <div class="card" data-toggle="modal" data-target="#detailModal{{ str_replace(' ', '', $userName) }}"
                 tabindex="1">
                 <div class="col p-3">
-                    <h5>{{ $userName }}</h5>
+                    <h4>{{ $userName }}</h4>
+                    @foreach($employees as $index => $employee)
+                    @if($employee['name'] == "$userName")
+                    <h5>{{ $employee['position'] }}</h5>
+                    @endif
+                    @endforeach
                     <h6>{{ round(($userAttendances->count() / $totalDaysInMonth) * 100) }}%</h6>
                     <div class="progress">
                         <div class="progress-bar" role="progressbar"
