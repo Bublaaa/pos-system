@@ -1,6 +1,7 @@
 @extends('layouts.ownerview')
 @section('content')
 <div class="container">
+    <h2>Laporan Penggajian</h2>
     @foreach($salariesByMonth as $month)
     <div class="card">
         <div class="card-header">

@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+    <h2>Laporan Absensi</h2>
     <div class="row">
         @foreach($userAttendance as $userName => $userAttendances)
         <div class="col-6 col-md-3">

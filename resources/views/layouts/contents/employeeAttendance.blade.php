@@ -1,53 +1,57 @@
 @extends('layouts.ownerview')
 
 @section('content')
-<div class="card">
-    <div class="card-body">
-        <form action="{{ route('attendance.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="form-group">
-                <label for="status">Status</label>
-                <select name="status" class="form-control @error('status') is-invalid @enderror" id="status"
-                    onchange="toggleDescription()">
-                    <option value="1" {{ old('status') === 1 ? 'selected' : ''}}>Hadir</option>
-                    <option value="0" {{ old('status') === 0 ? 'selected' : ''}}>Ijin</option>
-                </select>
-                @error('status')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
-            <div class="form-group" id="descriptionField" style="display:none;">
-                <label for="description">Keterangan</label>
-                <textarea name="description" class="form-control @error('description') is-invalid @enderror"
-                    id="description" placeholder="Keterangan ijin">{{ old('description') }}</textarea>
-                @error('description')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
-
-            <input type="hidden" name="latitude" id="latitude">
-            <input type="hidden" name="longitude" id="longitude">
-
-            <div class="form-group">
-                <label for="image">Bukti absen</label>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="image" id="image" required=true>
-                    <label class="custom-file-label" for="image">Choose file</label>
+<div class="container">
+    <h2>Absensi</h2>
+    <div class="card">
+        <div class="card-body">
+            <form action="{{ route('attendance.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select name="status" class="form-control @error('status') is-invalid @enderror" id="status"
+                        onchange="toggleDescription()">
+                        <option value="1" {{ old('status') === 1 ? 'selected' : ''}}>Hadir</option>
+                        <option value="0" {{ old('status') === 0 ? 'selected' : ''}}>Ijin</option>
+                    </select>
+                    @error('status')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
                 </div>
-                @error('image')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
-            <button class="btn btn-primary" type="submit">Create</button>
-        </form>
+                <div class="form-group" id="descriptionField" style="display:none;">
+                    <label for="description">Keterangan</label>
+                    <textarea name="description" class="form-control @error('description') is-invalid @enderror"
+                        id="description" placeholder="Keterangan ijin">{{ old('description') }}</textarea>
+                    @error('description')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+
+                <input type="hidden" name="latitude" id="latitude">
+                <input type="hidden" name="longitude" id="longitude">
+
+                <div class="form-group">
+                    <label for="image">Bukti absen</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="image" id="image" required=true>
+                        <label class="custom-file-label" for="image">Choose file</label>
+                    </div>
+                    @error('image')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+                <button class="btn btn-primary" type="submit">Create</button>
+            </form>
+        </div>
     </div>
 </div>
+
 <script>
 function toggleDescription() {
     var status = document.getElementById('status');

@@ -3,6 +3,7 @@
 @section('content')
 <div class="wrapper">
     <section class="content">
+        <h2>Edit Menu</h2>
         <div class="row">
             @foreach ($menus as $menu)
             <div class="col-md-2 col-6 mb-2">
@@ -10,7 +11,15 @@
                     <img class="product-img" src="{{ Storage::url($menu->image) }}"
                         style="max-width: 300px; max-height: 150px; width: 100%; height: auto; object-fit: cover;">
                     <div class="card-body">
-                        <p class="card-title">{{ $menu['name'] }}</p>
+                        <div class="row">
+                            <p class="card-title">{{ $menu['name'] }}</p>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p>Dibuat : {{ \Carbon\Carbon::parse($menu['created_at'])->format('d-m-y') }}</p>
+                                <p>Diupdate : {{ \Carbon\Carbon::parse($menu['updated_at'])->format('d-m-y') }}</p>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-footer">
                         <a href="{{ route('menu.edit', $menu) }}" class="btn btn-primary mr-2">
