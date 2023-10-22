@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
@@ -36,7 +37,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = ('dashboard');
+    protected $redirectTo = '/dashboard';
 
     /**
      * Create a new controller instance.
@@ -55,20 +56,26 @@ class RegisterController extends Controller
      * @return \Illuminate\Contracts\Validation\Validator
      */
 
+    protected function registered(Request $request, $user)
+    {
+        event(new Registered($user)); // Fire the Registered event
+        return redirect()->intended($this->redirectPath())->with('success', 'User registered successfully.');
+    }
+
     public function store(Request $request)
     {
         $this->validator($request->all())->validate();
         $user = $this->create($request->all());
 
-        return redirect('dashboard')->with('success', 'User registered successfully.');
+        return redirect()->intended($this->redirectPath())->with('success', 'User registered successfully.');
     }
 
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255' ,'unique:users'],
             'position' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'username' => ['required', 'string', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -84,7 +91,7 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'position' => $data['position'],
-            'email' => $data['email'],
+            'username' => $data['username'],
             'password' => Hash::make($data['password']),
         ]);
     }

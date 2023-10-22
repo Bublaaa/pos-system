@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Attendance;
 use App\Models\Transaction;
+use App\Models\Salary;
 
 class UserController extends Controller
 {
@@ -24,6 +25,12 @@ class UserController extends Controller
             $data->save();
         }
 
+        $salaryData = Salary::where('name', $user->name)->get();
+        foreach($salaryData as $data){
+            $data->name = $request->name;
+            $data->save();
+        }
+
         $attendanceData = Attendance::where('name', $user->name)->get();
         foreach($attendanceData as $data){
             $data->name = $request->name;
@@ -38,7 +45,7 @@ class UserController extends Controller
         
         
         // Update table with value of request
-        $user->email = $request->userName;
+        $user->username = $request->userName;
         $user->name = $request->name;
         $user->position = $request->position;
         

@@ -9,7 +9,7 @@
             <div class="form-group" id="userName" name="userName">
                 <label for="userName">Username :</label>
                 <input name="userName" class="form-control @error('userName') is-invalid @enderror" id="userName"
-                    placeholder="Nama karyawan" value="{{ $user[0]['email'] }}"></input>
+                    placeholder="Nama karyawan" value="{{ $user[0]['username'] }}"></input>
                 @error('userName')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>

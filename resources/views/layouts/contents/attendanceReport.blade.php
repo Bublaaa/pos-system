@@ -11,7 +11,7 @@
                     <h4>{{ $userName }}</h4>
                     @foreach($employees as $index => $employee)
                     @if($employee['name'] == "$userName")
-                    <h5>{{ $employee['position'] }}</h5>
+                    <h5>{{ $employee['position'] === 'headbar' ? "Head Bar" : "Karyawan"}}</h5>
                     @endif
                     @endforeach
                     <h6>{{ round(($userAttendances->count() / $totalDaysInMonth) * 100) }}%</h6>
