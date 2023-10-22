@@ -37,7 +37,7 @@
                     <ul class="nav nav-treeview">
                         <!-- Tambah karyawan -->
                         <li class="nav-item">
-                            <a href="{{ route('register-new-employee') }}" class="nav-link">
+                            <a href="{{ route('register')}}" class="nav-link">
                                 <p>Tambah Akun Karyawan</p>
                             </a>
                         </li>

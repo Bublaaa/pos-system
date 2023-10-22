@@ -36,7 +36,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/owner';
+    protected $redirectTo = ('dashboard');
 
     /**
      * Create a new controller instance.
@@ -45,7 +45,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        // $this->middleware('guest');
     }
 
     /**
@@ -58,10 +58,9 @@ class RegisterController extends Controller
     public function store(Request $request)
     {
         $this->validator($request->all())->validate();
-
         $user = $this->create($request->all());
 
-        return redirect('/')->with('success', 'User registered successfully.');
+        return redirect('dashboard')->with('success', 'User registered successfully.');
     }
 
     protected function validator(array $data)
