@@ -125,6 +125,14 @@
                         <p>Tambah Stok</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('user.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-cog"></i>
+                        <p>
+                            Pengaturan Akun
+                        </p>
+                    </a>
+                </li>
                 <!-- Employee Sidebar -->
                 @else
 
@@ -133,6 +141,14 @@
                         <i class="nav-icon fas fa-copy"></i>
                         <p>
                             Absensi
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('user.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-cog"></i>
+                        <p>
+                            Pengaturan Akun
                         </p>
                     </a>
                 </li>

@@ -43,8 +43,7 @@ class AttendanceController extends Controller
     public function create(){
         return view('../layouts/contents/employeeAttendance');
     }
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         $request->validate([
             'status' => 'required|boolean',
             'latitude' => 'required',
@@ -52,7 +51,6 @@ class AttendanceController extends Controller
 
         ]);
         $image_path = '';
-        // Check if request has a image upload
         if ($request->hasFile('image')) {
             $image_path = $request->file('image')->store('attendance', 'public');
         }
@@ -75,14 +73,10 @@ class AttendanceController extends Controller
             }
             else{
                 return redirect()->back()->with('success', 'Absen sukses');
-                if(!$request->latitude){
-                    return redirect()->back()->with('error', 'Mohon tunggu sebentar dan ulangi absensi.');
-                }
             }
         }
         else {
             return redirect()->back()->with('error', 'Anda sudah absen hari ini.');
         }
-        
     }
 }
