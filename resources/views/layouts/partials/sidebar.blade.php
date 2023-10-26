@@ -53,6 +53,17 @@
                                 </p>
                             </a>
                         </li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-copy"></i>
+                        <p>
+                            Laporan
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
                         <!-- Laporan Absensi -->
                         <li class="nav-item">
                             <a href="{{ route('attendance.index') }}" class="nav-link">
@@ -134,8 +145,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-copy"></i>
+                    <a href="{{ route('shift.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-clock"></i>
                         <p>
                             Edit Shift
                         </p>

@@ -40,10 +40,10 @@ class ShiftController extends Controller
             'userName' => 'string|max:255',
             'shift' => 'required',
         ]);
-        $start_time = ($request->input('shiftperday') == 'siang') ? '10:00:00' : '15:00:00';
         $shiftData = Shift::where('employee_name', $request->userName)->get();
         if($shiftData->count()==0){
             foreach($request->shift as $day => $shiftPerDay){
+                $start_time = $shiftPerDay == 'siang' ? '10:00:00' : '15:00:00';
                 switch ($day) {
                 case 0:
                     $day_name = 'Senin';
@@ -85,10 +85,12 @@ class ShiftController extends Controller
             }
         }
         else {
-            foreach($shiftData as $day => $shift){
-                $shift->name = $request->shift[$day];
-                // dd($request->shift[$day]);
-                $shift->save();
+            foreach($request->shift as $day => $shiftPerDay)
+            {
+                $start_time = $shiftPerDay == 'siang' ? '10:00:00' : '15:00:00';
+                $shiftData[$day]['name'] = $shiftPerDay;
+                $shiftData[$day]['start_time'] = $start_time;
+                $shiftData[$day]->save();
             }
             return redirect()->back()->with('success', 'Sukses update shift');
         }

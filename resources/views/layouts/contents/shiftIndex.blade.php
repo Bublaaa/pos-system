@@ -12,20 +12,25 @@
                     <!-- @method('PUT') -->
                     <input type="hidden" name="userName" id="userName" value="{{$employee->name}}">
                     <div class="row">
-                        @foreach($shifts as $index => $shift)
-                        @if($shift->employee_name == $employee->name)
+                        @foreach($daysInWeek as $index => $dayName)
                         <div class="col-12 col-md">
                             <div class="form-group">
-                                <label for="shift[{{$index}}]">{{$shift->day_name}}</label>
+                                @php
+                                $shiftForDay = $shifts->where('employee_name', $employee->name)
+                                ->where('day_name', $dayName)->first();
+                                @endphp
+                                @if($shiftForDay)
+                                <label for="shift[{{$index}}]">{{$dayName}}</label>
                                 <select name="shift[{{$index}}]"
                                     class="form-control @error('shift[{{$index}}]') is-invalid @enderror"
                                     id="shift[{{$index}}]">
-                                    <option value="siang" {{ $shift->name === 'siang' ? 'selected' : ''}}>
+                                    <option value="siang" {{ $shiftForDay->name === 'siang' ? 'selected' : ''}}>
                                         Siang
                                     </option>
-                                    <option value="sore" {{ $shift->name === 'sore' ? 'selected' : ''}}>Sore
+                                    <option value="sore" {{ $shiftForDay->name === 'sore' ? 'selected' : ''}}>Sore
                                     </option>
                                 </select>
+                                @endif
                                 @error('shift[{{$index}}]')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -33,7 +38,6 @@
                                 @enderror
                             </div>
                         </div>
-                        @endif
                         @endforeach
                     </div>
 
