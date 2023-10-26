@@ -11,6 +11,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ShiftController;
 
 Auth::routes();
 
@@ -30,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('attendance', AttendanceController::class);
     Route::resource('stock', StockController::class);
     Route::resource('user', UserController::class);
+    Route::resource('shift', ShiftController::class);
 });
 
 // Routes for owner

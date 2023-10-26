@@ -1,12 +1,13 @@
 @extends('layouts.ownerview')
 
 @section('content')
+<!-- <h2>Edit akun {{$user[0]->name}}</h2> -->
 <div class="card">
     <div class="card-body">
         <form action="{{ route('user.update' ,$user[0]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            <div class="form-group" id="userName" name="userName">
+            <div class="form-group">
                 <label for="userName">Username :</label>
                 <input name="userName" class="form-control @error('userName') is-invalid @enderror" id="userName"
                     placeholder="Nama karyawan" value="{{ $user[0]['username'] }}"></input>
@@ -16,7 +17,7 @@
                 </span>
                 @enderror
             </div>
-            <div class="form-group" id="name" name="name">
+            <div class="form-group">
                 <label for="name">Nama Karyawan :</label>
                 <input name="name" class="form-control @error('name') is-invalid @enderror" id="name"
                     placeholder="Nama karyawan" value="{{ $user[0]['name'] }}">{{ old('name') }}</input>
@@ -28,8 +29,7 @@
             </div>
             <div class="form-group">
                 <label for="position">Posisi : </label>
-                <select name="position" class="form-control @error('position') is-invalid @enderror" id="position"
-                    onchange="toggleDescription()">
+                <select name="position" class="form-control @error('position') is-invalid @enderror" id="position">
                     <option value="headbar" {{ $user[0]['position'] === 'headbar' ? 'selected' : ''}}>Head Bar</option>
                     <option value="employee" {{ $user[0]['position'] === 'employee' ? 'selected' : ''}}>Employee
                     </option>

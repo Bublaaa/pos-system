@@ -46,6 +46,13 @@
                                 <p>Edit Akun Karyawan</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ route('shift.index') }}" class="nav-link">
+                                <p>
+                                    Edit Shift
+                                </p>
+                            </a>
+                        </li>
                         <!-- Laporan Absensi -->
                         <li class="nav-item">
                             <a href="{{ route('attendance.index') }}" class="nav-link">
@@ -110,12 +117,27 @@
                 </li>
                 <!-- Headbar Sidebar -->
                 @elseif(Auth::user()->position == 'headbar')
-
                 <li class="nav-item">
                     <a href="{{ route('attendance.create') }}" class="nav-link">
                         <i class="nav-icon fas fa-copy"></i>
                         <p>
                             Absensi
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-copy"></i>
+                        <p>
+                            Laporan Absensi Harian
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-copy"></i>
+                        <p>
+                            Edit Shift
                         </p>
                     </a>
                 </li>
