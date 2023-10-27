@@ -14,5 +14,6 @@ class Attendance extends Model
         'description',
         'latitude',
         'longitude',
+        'created_at',
     ];
 }
