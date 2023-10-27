@@ -17,7 +17,9 @@
                         <div class="row">
                             <div class="col">
                                 <p>Dibuat : {{ \Carbon\Carbon::parse($menu['created_at'])->format('d-m-y') }}</p>
-                                <p>Diupdate : {{ \Carbon\Carbon::parse($menu['updated_at'])->format('d-m-y') }}</p>
+                                <p>Diupdate :
+                                    {{ \Carbon\Carbon::parse(($ingredients->where('menu_id',$menu->id)->first())['updated_at'])->format('d-m-y') }}
+                                </p>
                             </div>
                         </div>
                     </div>

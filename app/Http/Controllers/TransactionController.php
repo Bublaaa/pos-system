@@ -54,47 +54,82 @@ class TransactionController extends Controller
             ->get();
         
         // Check available stock before create transaction
-        foreach($availableStock as $stock){
-            foreach($ingredients as $ingredient){
-                if($stock->name == $ingredient['name']){
-                    if($stock->availableQuantity < $ingredient['quantity']){
-                        return redirect()->back()->with('error', "Stok {$ingredient['name']} tidak cukup");
-                    }
-                    else {
-                        //Create new transction
-                        $transaction = Transaction::create([  
-                            'menu_id' => $request->menu_id,
-                            'quantity' => $request->quantity,
-                            'user_name' => $user->name,
-                            'kind' => $request->kind,
-                            'image' => $image_path,
-                        ]);
-                        // Get the latest transaction id after creating new one
-                        $newestTransaction = Transaction::latest()->first();
+        $isTransactionPossible = false;
 
-                        // Add data to stock
-                        for($itemCount=1;$itemCount<=$newestTransaction->quantity;$itemCount++){
-                            foreach($ingredients as $ingredient){
-                                $stockSold = Stock::create([  
-                                    'transaction_id' => $newestTransaction->id,
-                                    'kind' => $request->kind,
-                                    'name' => $ingredient['name'],
-                                    'quantity' => $ingredient['quantity'],
-                                    'unit' => $ingredient['unit'],
-                                ]);
-                            }
-                        }
+        for ($i = 0; $i < count($ingredients); $i++) {
+            $stockFound = false;
+
+            for ($j = 0; $j < count($availableStock); $j++) {
+                if ($availableStock[$j]->name == $ingredients[$i]->name) {
+                    $stockFound = true;
+
+                    if ($availableStock[$j]->availableQuantity < ($ingredients[$i]->quantity * $request->quantity)) {
+                        return redirect()->back()->with('error', "Stok {$ingredients[$i]->name} tidak cukup");
+                    } else {
+                        $isTransactionPossible = true;
                     }
                 }
             }
+
+            if (!$stockFound) {
+                return redirect()->back()->with('error', "Stok {$ingredients[$i]->name} kosong");
+            }
         }
-        
-        if(!$transaction){
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat mencatat transaksi');
+
+
+        // foreach($availableStock as $stock){
+        //     foreach($ingredients as $ingredient){
+        //         if($stock->name == $ingredient->name){
+        //             if($stock->availableQuantity < ($ingredient->quantity * $request->quantity)){
+        //                 return redirect()->back()->with('error', "Stok {$ingredient['name']} tidak cukup");
+        //             }
+        //             else {
+        //                $isTransactionPossible = true;
+        //             }
+        //         }
+        //         else {
+        //             return redirect()->back()->with('error', "Stok {$ingredient['name']} kosong");
+        //         }
+        //     }
+        // }
+        // dd($isTransactionPossible);
+        if($isTransactionPossible == true){
+            //Create new transction 
+            $transaction = Transaction::create([  
+                'menu_id' => $request->menu_id,
+                'quantity' => $request->quantity,
+                'user_name' => $user->name,
+                'kind' => $request->kind,
+                'image' => $image_path,
+            ]);
+            // Get the latest transaction id after creating new one
+            $newestTransaction = Transaction::latest()->first();
+
+            // Add data to stock
+            for($itemCount=1;$itemCount<=$newestTransaction->quantity;$itemCount++){
+                foreach($ingredients as $ingredient){
+                    $stockSold = Stock::create([  
+                        'transaction_id' => $newestTransaction->id,
+                        'kind' => $request->kind,
+                        'name' => $ingredient['name'],
+                        'quantity' => $ingredient['quantity'],
+                        'unit' => $ingredient['unit'],
+                    ]);
+                }
+            }
+            if(!$transaction){
+                return redirect()->back()->with('error', 'Terjadi kesalahan saat mencatat transaksi');
+            }
+            else {
+                return redirect()->back()->with('success', 'Berhasil mencatat transaksi');
+            }
         }
         else {
-            return redirect()->back()->with('success', 'Berhasil mencatat transaksi');
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mencatat transaksi');
         }
+        
+        
+       
     }
 
     /**

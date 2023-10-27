@@ -19,13 +19,21 @@ class IngredientController extends Controller
     
     public function update(Request $request, $menu_id){
         $ingredients = Ingredient::where('menu_id', $menu_id)->get();
+        $ingredientArray=[];
         $ingredientsCount = $ingredients->count();
-        
         if(count($request->ingredients)==$ingredientsCount){
-            for($index=0;$index<count($request->ingredients);$index++){
-                $ingredients[$index]->name = $request->ingredients[$index]['name'];
-                $ingredients[$index]->quantity = $request->ingredients[$index]['quantity'];
-                $ingredients[$index]->unit = $request->ingredients[$index]['unit'];
+            // Rearrange index form input request into new oarray
+            foreach($request->ingredients as $index => $ingredient){
+                $ingredientArray[] = [
+                    'name' => $ingredient['name'],
+                    'quantity' => $ingredient['quantity'],
+                    'unit' => $ingredient['unit'],
+                ];
+            }
+            for($index=0;$index<count($ingredientArray);$index++){
+                $ingredients[$index]->name = $ingredientArray[$index]['name'];
+                $ingredients[$index]->quantity = $ingredientArray[$index]['quantity'];
+                $ingredients[$index]->unit = $ingredientArray[$index]['unit'];
                 $ingredients[$index]->save();
             }
         }

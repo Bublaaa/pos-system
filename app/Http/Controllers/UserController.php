@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Attendance;
 use App\Models\Transaction;
+use App\Models\Salary;
+use App\Models\Shift;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Salary;
 
 class UserController extends Controller
 {
@@ -46,6 +47,12 @@ class UserController extends Controller
             $attendanceData = Attendance::where('name', $user->name)->get();
             foreach($attendanceData as $data){
                 $data->name = $request->name;
+                $data->save();
+            }
+            //Update shift data
+            $attendanceData = Shift::where('employee_name', $user->name)->get();
+            foreach($attendanceData as $data){
+                $data->employee_name = $request->name;
                 $data->save();
             }
             // Validate request

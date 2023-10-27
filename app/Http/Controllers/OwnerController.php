@@ -9,12 +9,12 @@ use App\Models\Transaction;
 use App\Models\Stock;
 use App\Models\User;
 use App\Models\Salary;
-use Illuminate\Support\Facades\View;
-use PDF;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use Carbon\Carbon;
+use PDF;
 
 class OwnerController extends Controller
 {

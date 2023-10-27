@@ -3,6 +3,7 @@
 @section('content')
 <div class="wrapper">
     <section class="content">
+        <h2>Edit shift</h2>
         @foreach($employees as $employee)
         <div class="card">
             <div class="card-body">

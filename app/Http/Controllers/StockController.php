@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Transaction;
+use App\Models\Ingredient;
 use App\Models\Menu;
 use App\Models\Stock;
-use App\Models\Ingredient;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -21,6 +21,7 @@ class StockController extends Controller
             ->select('stocks.kind', 'stocks.name', DB::raw('SUM(stocks.quantity) as total'), 'stocks.unit', 'transactions.user_name', 'transactions.created_at')
             ->join('transactions', 'stocks.transaction_id', '=', 'transactions.id')
             ->groupBy('stocks.kind', 'stocks.name', 'stocks.unit', 'transactions.user_name', 'transactions.created_at')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         $buyTransaction = Transaction::where('kind','pembelian')
