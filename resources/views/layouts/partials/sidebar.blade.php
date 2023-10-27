@@ -7,7 +7,6 @@
     </a>
 
     <div class="sidebar">
-
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="info ">
                 <a href="/" class="d-block">{{ Auth::user()->name }}</a>
@@ -137,7 +136,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{ route('attendance.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-copy"></i>
                         <p>
                             Laporan Absensi Harian

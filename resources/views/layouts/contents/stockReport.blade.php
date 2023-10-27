@@ -15,13 +15,14 @@
     <!-- Tabs link -->
     <ul class="nav nav-tabs" id="myTabs">
         <li class="nav-item">
-            <a class="nav-link active" id="availableTab" data-toggle="tab" href="#availableStock">Stok tersisa</a>
+            <a class="nav-link active" id="availableTab" data-toggle="tab" href="#availableStock"
+                style="color: black;">Stok tersisa</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link " id="kindTab" data-toggle="tab" href="#kindContent">Transaksi</a>
+            <a class="nav-link " id="kindTab" data-toggle="tab" href="#kindContent" style="color: black;">Transaksi</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link " id="buyTab" data-toggle="tab" href="#buyContent">Pembelian</a>
+            <a class="nav-link " id="buyTab" data-toggle="tab" href="#buyContent" style="color: black;">Pembelian</a>
         </li>
     </ul>
     <!-- Tabs content -->

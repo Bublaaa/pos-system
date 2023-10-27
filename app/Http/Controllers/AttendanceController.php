@@ -14,16 +14,58 @@ class AttendanceController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
         $firstDayOfMonth = Carbon::now()->startOfMonth();
         $lastDayOfMonth = Carbon::now()->endOfMonth();
         $currentMonth = Carbon::now();
         $totalDaysInMonth = $currentMonth->daysInMonth;
+        
+        $today = now();
+        $todayDayName = $today->format('l');
+        // Translate day from table into indonesian
+        switch ($todayDayName) {
+        case 'Monday':
+            $day_name = 'Senin';
+            break;
+        case 'Tuesday':
+            $day_name = 'Selasa';
+            break;
+        case 'Wednesday':
+            $day_name = 'Rabu';
+            break;
+        case 'Thursday':
+            $day_name = 'Kamis';
+            break;
+        case 'Friday':
+            $day_name = 'Jumat';
+            break;
+        case 'Saturday':
+            $day_name = 'Sabtu';
+            break;
+        case 'Sunday':
+            $day_name = 'Minggu';
+            break;
+        default:
+            $day_name = 'Invalid day';
+            break;
+        }
+
+        $todayAttendanceData = Attendance::whereDate('created_at', now()->toDateString())
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $todayShiftData = Shift::where('day_name',$day_name)
+            ->get();
 
         $allAttendanceData = Attendance::whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])
             ->orderBy('created_at', 'desc')
             ->get();
         
-        $allUserAttendance = $allAttendanceData->groupBy('name');
+        $allAttendance = Attendance::orderBy('created_at', 'desc')
+            ->get()
+            ->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('m'); // grouping by month
+            });
+        $allUserAttendanceThisMonth = $allAttendanceData->groupBy('name');
 
         $attendances = DB::table('attendances')
             ->select(
@@ -48,8 +90,12 @@ class AttendanceController extends Controller
         
         return view('../layouts/contents/attendanceReport', [
             'totalDaysInMonth' => $totalDaysInMonth,
-            'allUserAttendance' => $allUserAttendance,
+            'allUserAttendanceThisMonth' => $allUserAttendanceThisMonth,
             'groupedData' => $groupedData,
+            'todayAttendanceData' => $todayAttendanceData,
+            'todayShiftData' => $todayShiftData,
+            'user' => $user,
+            'allAttendance' =>$allAttendance,
         ]);
     }
     public function create(){
@@ -155,5 +201,14 @@ class AttendanceController extends Controller
                 return redirect()->back()->with('error', 'Anda sudah absen hari ini.');
             }
         }
+    }
+    public function destroy(Attendance $attendance){
+        // Delete saved menu image
+        if ($attendance->image) {
+            Storage::delete($attendance->image);
+        }
+        // Delete menu row
+        $attendance->delete();
+        return redirect()->back()->with('success', 'Sukses delete menu.');
     }
 }

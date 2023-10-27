@@ -1,6 +1,6 @@
 <div class="modal fade" id="detailModal{{str_replace(' ', '', $userName)}}" role="dialog"
-    aria-labelledby="detailModalLabel" aria-hidden="false" tabindex="1">
-    <div class="modal-dialog w-auto" role="document">
+    aria-labelledby="detailModalLabel" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog w-auto" role="document" style="max-width:80vw;">
         <div class="modal-content">
             <div class="modal-header">
                 <h3>Absensi {{$userName}}</h3>

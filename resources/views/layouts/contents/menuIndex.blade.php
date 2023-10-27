@@ -44,7 +44,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            Are you sure you want to delete this menu?
+                            Apakah anda yakin ingin menghapus menu ini?
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
