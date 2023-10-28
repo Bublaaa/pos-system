@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Menu;
 use App\Models\Ingredient;
 
@@ -33,7 +34,7 @@ class MenuController extends Controller
         }
         // Insert new menu
         $menu = Menu::create([  
-            'name' => $request->name,
+            'name' => ucwords($request->name),
             'status' => $request->status,
             'image' => $image_path
         ]);
@@ -43,7 +44,7 @@ class MenuController extends Controller
         foreach($request->ingredients as $ingredient){
             $ingredients = Ingredient::create([  
                 'menu_id' => $newestMenu->id,
-                'name' => $ingredient['name'],
+                'name' => ucwords($ingredient['name']),
                 'quantity' => $ingredient['quantity'],
                 'unit' => $ingredient['unit'],
             ]);
@@ -74,7 +75,7 @@ class MenuController extends Controller
 
         ]);
         // Update table with value of request
-        $menu->name = $request->name;
+        $menu->name = ucwords($request->name);
         $menu->status = $request->status;
 
         // Check requiest image and update existing image

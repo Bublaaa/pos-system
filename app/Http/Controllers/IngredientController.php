@@ -21,15 +21,15 @@ class IngredientController extends Controller
         $ingredients = Ingredient::where('menu_id', $menu_id)->get();
         $ingredientArray=[];
         $ingredientsCount = $ingredients->count();
-        if(count($request->ingredients)==$ingredientsCount){
-            // Rearrange index form input request into new oarray
-            foreach($request->ingredients as $index => $ingredient){
-                $ingredientArray[] = [
-                    'name' => $ingredient['name'],
-                    'quantity' => $ingredient['quantity'],
-                    'unit' => $ingredient['unit'],
-                ];
-            }
+        // Rearrange index form input request into new oarray
+        foreach($request->ingredients as $index => $ingredient){
+            $ingredientArray[] = [
+                'name' => ucwords($ingredient['name']),
+                'quantity' => $ingredient['quantity'],
+                'unit' => $ingredient['unit'],
+            ];
+        }
+        if(count($ingredientArray)==$ingredientsCount){
             for($index=0;$index<count($ingredientArray);$index++){
                 $ingredients[$index]->name = $ingredientArray[$index]['name'];
                 $ingredients[$index]->quantity = $ingredientArray[$index]['quantity'];
@@ -37,30 +37,30 @@ class IngredientController extends Controller
                 $ingredients[$index]->save();
             }
         }
-        elseif(count($request->ingredients)>$ingredientsCount) {
+        elseif(count($ingredientArray)>$ingredientsCount) {
             for($index=0;$index<$ingredientsCount;$index++){
-                $ingredients[$index]->name = $request->ingredients[$index]['name'];
-                $ingredients[$index]->quantity = $request->ingredients[$index]['quantity'];
-                $ingredients[$index]->unit = $request->ingredients[$index]['unit'];
+                $ingredients[$index]->name = $ingredientArray[$index]['name'];
+                $ingredients[$index]->quantity = $ingredientArray[$index]['quantity'];
+                $ingredients[$index]->unit = $ingredientArray[$index]['unit'];
                 $ingredients[$index]->save();
             }
-            for($index=$ingredientsCount;$index<count($request->ingredients);$index++){
+            for($index=$ingredientsCount;$index<count($ingredientArray);$index++){
                 $newIngredient = Ingredient::create([  
                 'menu_id' => $menu_id,
-                'name' => $request->ingredients[$index]['name'],
-                'quantity' => $request->ingredients[$index]['quantity'],
-                'unit' => $request->ingredients[$index]['unit'],
+                'name' => $ingredientArray[$index]['name'],
+                'quantity' => $ingredientArray[$index]['quantity'],
+                'unit' => $ingredientArray[$index]['unit'],
             ]);
             }
         }
         else {
-            for($index=0;$index<count($request->ingredients);$index++){
-                $ingredients[$index]->name = $request->ingredients[$index]['name'];
-                $ingredients[$index]->quantity = $request->ingredients[$index]['quantity'];
-                $ingredients[$index]->unit = $request->ingredients[$index]['unit'];
+            for($index=0;$index<count($ingredientArray);$index++){
+                $ingredients[$index]->name = $ingredientArray[$index]['name'];
+                $ingredients[$index]->quantity = $ingredientArray[$index]['quantity'];
+                $ingredients[$index]->unit = $ingredientArray[$index]['unit'];
                 $ingredients[$index]->save();
             }
-            for($index=count($request->ingredients);$index<$ingredientsCount;$index++){
+            for($index=count($ingredientArray);$index<$ingredientsCount;$index++){
                 $ingredients[$index]->delete();
             }
         }
