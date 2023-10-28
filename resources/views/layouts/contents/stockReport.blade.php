@@ -1,15 +1,6 @@
 @extends('layouts.ownerview')
 
 @section('content')
-<style>
-.green-text {
-    color: green;
-}
-
-.red-text {
-    color: red;
-}
-</style>
 <div class="container">
     <h2>Laporan Stok</h2>
     <!-- Tabs link -->
@@ -31,24 +22,22 @@
             <!-- Available Ingredients -->
             <div class="tab-pane fade show active" id="availableStock">
                 <h3>Estimasi Stok Tersisa</h3>
-                <table class="table" style="overflow-x:scroll;">
-                    <thead class="thead">
-                        <tr>
-                            <td>Nama</td>
-                            <td>Jumlah</td>
-                            <td>Satuan</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($overAllStockData as $stock)
-                        <tr>
-                            <td>{{ $stock->name }}</td>
-                            <td>{{ number_format($stock->Total, 0, ',', '.') }}</td>
-                            <td>{{ $stock->unit }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                <div class="row">
+                    @foreach ($overAllStockData as $stock)
+                    <div class="col-12 col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6 col-md-6">
+                                        <p>{{ $stock->name }}</p>
+                                        <h5>{{ number_format($stock->Total, 0, ',', '.') }} {{ $stock->unit }}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             </div>
             <!-- All transaction -->
             <div class="tab-pane fade" id="kindContent">
@@ -58,22 +47,21 @@
                         <tr>
                             <td>Jenis Transaksi</td>
                             <td>Oleh</td>
-                            <td>Tanggal</td>
                             <td>Nama Bahan</td>
                             <td>Jumlah</td>
-                            <td>Satuan</td>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($stockDataByKind as $stock)
                         <tr>
-                            <td style="{{ $stock->kind === 'pembelian' ? 'color:green;' : 'color:red;' }}">
-                                {{ $stock->kind === "pembelian" ? "Beli" : "Jual"}}</td>
+                            <td>
+                                <p style="{{ $stock->kind === 'pembelian' ? 'color:green;' : 'color:red;' }}">
+                                    {{ $stock->kind === 'pembelian' ? 'Beli' : 'Jual' }}</p>
+                                <p>{{ \Carbon\Carbon::parse($stock->created_at)->format('d-M-y \P\u\k\u\l H:i') }}</p>
+                            </td>
                             <td>{{ $stock->user_name }}</td>
-                            <td>{{ \Carbon\Carbon::parse($stock->created_at)->format('d-M-y \P\u\k\u\l H:i') }}</td>
                             <td>{{ $stock->name }}</td>
-                            <td>{{ number_format($stock->total, 0, ',', '.') }}</td>
-                            <td>{{ $stock->unit }}</td>
+                            <td>{{ number_format($stock->total, 0, ',', '.') }} {{ $stock->unit }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -84,7 +72,6 @@
                 <h3>Laporan pembelian</h3>
                 <div class="row">
                     @foreach($buyTransaction as $transaction)
-
                     <div class="col-12 col-md-6">
                         <div class="card">
                             <div class="card-body">
@@ -95,7 +82,7 @@
                                         </p>
                                         @if($transaction->image)
                                         <img class="product-img" src="{{ Storage::url($transaction->image) }}"
-                                            style="max-width: 200px; max-height: 150px; width: 100%; height: auto; object-fit: cover;">
+                                            style=" width: 100%; height: auto; object-fit: cover;">
                                         @else
                                         <p>Bukti Transaksi tidak tersedia</p>
                                         @endif

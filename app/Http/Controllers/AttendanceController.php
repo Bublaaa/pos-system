@@ -64,8 +64,9 @@ class AttendanceController extends Controller
         $allAttendance = Attendance::orderBy('created_at', 'desc')
             ->get()
             ->groupBy(function($date) {
-                return Carbon::parse($date->created_at)->format('m'); // grouping by month
+                return Carbon::parse($date->created_at)->format('m'); // grouping by month and day
             });
+
         $allUserAttendanceThisMonth = $allAttendanceData->groupBy('name');
 
         $attendances = DB::table('attendances')

@@ -26,7 +26,7 @@
             <!-- Daily Attendance -->
             <div class="tab-pane fade show active" id="dailyAttendance">
                 <div class="row">
-                    <div class="col-6 col-md-6">
+                    <div class="col-12 col-md-6">
                         <h4 class="text-center">Shift Siang</h4>
                         @foreach($todayAttendanceData as $index => $todayAttendance)
                         @php
@@ -49,7 +49,7 @@
                         @endif
                         @endforeach
                     </div>
-                    <div class="col-6 col-md-6">
+                    <div class="col-12 col-md-6">
                         <h4 class="text-center">Shift Sore</h4>
                         @foreach($todayAttendanceData as $index => $todayAttendance)
                         @php
@@ -81,7 +81,7 @@
                     <h4 class="text-center py-2">{{ $month }}</h4>
                     <div class="row">
                         @foreach($employeeData as $employeeName => $totalAttendances)
-                        <div class="col-6 col-md-3">
+                        <div class="col-12 col-md-3">
                             <div class="card" data-toggle="modal"
                                 data-target="#detailModal{{ str_replace(' ', '', $employeeName) }}" tabindex="1">
                                 <div class="col p-3">
@@ -115,6 +115,56 @@
 
             <!-- All attendance tab -->
             <div class="tab-pane fade" id="allAttendance">
+                @foreach ($allAttendance as $month => $data)
+                <h4 class="text-center">{{ \Carbon\Carbon::create()->month($month)->format('F') }}</h4>
+
+                @foreach ($data->groupBy(function($date) {
+                return \Carbon\Carbon::parse($date->created_at)->format('d'); // grouping by day
+                }) as $day => $attendances)
+
+                <h5>Tanggal: {{ \Carbon\Carbon::create()->month($month)->day($day)->format('d') }}</h5>
+                <div class="row">
+                    @foreach ($attendances as $attendance)
+                    <div class="col-12 col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        @if($attendance->image)
+                                        <img class="product-img" src="{{ Storage::url($attendance->image) }}"
+                                            style="max-width: 200px; max-height: 150px; width: 100%; height: 100%; object-fit: cover;">
+                                        <p>{{ $attendance->description }}</p>
+                                        @else
+                                        Bukti Absen tidak tersedia
+                                        @endif
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <h5>{{ $attendance->name }}</h5>
+                                        <p style="{{ $attendance->status === 1 ? 'color:green;' : 'color:red;' }}">
+                                            {{ $attendance->status == 1 ? 'Hadir' : 'Absen' }}</p>
+                                        <p>Pukul: {{ \Carbon\Carbon::parse($attendance->created_at)->format('H:i') }}
+                                        </p>
+                                        <a href="https://www.google.com/maps/search/?api=1&query={{ $attendance->latitude }},{{ $attendance->longitude }}"
+                                            target="_blank" type="button" class="btn btn-primary">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Open maps
+                                        </a>
+                                        <button type="button" class="btn btn-danger remove-row" data-toggle="modal"
+                                            data-target="#deleteModal{{ $attendance['id'] }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+
+                @endforeach
+                @endforeach
+
                 <table class="table">
                     @foreach($allAttendance as $month => $data)
                     <thead>

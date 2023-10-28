@@ -21,9 +21,8 @@ class StockController extends Controller
             ->select('stocks.kind', 'stocks.name', DB::raw('SUM(stocks.quantity) as total'), 'stocks.unit', 'transactions.user_name', 'transactions.created_at')
             ->join('transactions', 'stocks.transaction_id', '=', 'transactions.id')
             ->groupBy('stocks.kind', 'stocks.name', 'stocks.unit', 'transactions.user_name', 'transactions.created_at')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('transactions.created_at', 'desc') // Use 'transactions.created_at' here
             ->get();
-
         $buyTransaction = Transaction::where('kind','pembelian')
             ->orderBy('created_at', 'desc')
             ->get();
