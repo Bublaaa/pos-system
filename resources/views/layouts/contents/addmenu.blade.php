@@ -51,32 +51,64 @@
                                 </span>
                                 @enderror
                             </div>
+                            <!-- Size -->
                             <div class="form-group">
-                                <p>Ukuran</p>
+                                <label for="size">Ukuran</label>
+                                <div class="row" id="size">
+                                    <div class="col-6 col-md-6">
+                                        <label for="regular">
+                                            <input type="checkbox" id="regular" name="regularSize" value="regular"
+                                                checked>
+                                            Reguler
+                                        </label>
+                                        @error('regularSize')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-6 col-md-6">
+                                        <label for="large">
+                                            <input type="checkbox" id="large" value="large" name="largeSize">
+                                            Besar
+                                        </label>
 
-                                <label for="regular">
-                                    <input type="checkbox" id="regular" name="regularSize" value="1" checked>
-                                    Regular
-                                </label>
-
-                                <label for="large">
-                                    <input type="checkbox" id="large" name="largeSize">
-                                    Large
-                                </label>
-
-                                @error('regularSize')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-
-                                @error('largeSize')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                                        @error('largeSize')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
                             </div>
-
+                            <!-- Variant -->
+                            <div class="form-group">
+                                <label for="variant">Varian</label>
+                                <div class="row" id="variant">
+                                    <div class="col-6 col-md-6">
+                                        <label for="hot">
+                                            <input type="checkbox" id="hot" name="hot" value="hot">
+                                            Panas
+                                        </label>
+                                        @error('hot')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                    <div class="col-6 col-md-6">
+                                        <label for="iced">
+                                            <input type="checkbox" id="iced" value="iced" name="iced" required>
+                                            Dingin
+                                        </label>
+                                        @error('iced')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class=" card-footer">
@@ -90,7 +122,7 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-6">
-                                <h5>Bahan baku ukuran regular </h5>
+                                <h5>Bahan baku ukuran regular</h5>
                             </div>
                             <div class="col-6 text-right">
                                 <button name="addIngredient" id="addIngredient" type="button" class="btn btn-primary">
@@ -160,6 +192,39 @@
                                     <button type="button" class="btn btn-danger remove-row" onclick="removeRow(this)">
                                         <i class="fas fa-trash"></i>
                                     </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer" id="regularIceLevel" style="display:none;">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="regularNormalIce">Normal Ice</label>
+                                    <input type="number" name="regularNormalIce"
+                                        class="form-control @error('regularNormalIce') is-invalid @enderror"
+                                        id="regularNormalIce" placeholder="Jumlah Es"
+                                        value="{{ old('regularNormalIce') }}" inputmode="numeric" min="1" max="100"
+                                        required=true>
+                                    @error('regularNormalIce')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="regularLessIce">Less Ice</label>
+                                    <input type="number" name="regularLessIce"
+                                        class="form-control @error('regularLessIce') is-invalid @enderror"
+                                        id="regularLessIce" placeholder="Jumlah Es" value="{{ old('regularLessIce') }}"
+                                        inputmode="numeric" min="1" max="100" required=true>
+                                    @error('regularLessIce')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -247,6 +312,34 @@
                             </div>
                         </div>
                     </div>
+                    <div class="card-footer" id="largeIceLevel" style="display:none;">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <label for="largeNormalIce">Normal Ice</label>
+                                <input type="number" name="largeNormalIce"
+                                    class="form-control @error('largeNormalIce') is-invalid @enderror"
+                                    id="largeNormalIce" placeholder="Jumlah Es" value="{{ old('largeNormalIce') }}"
+                                    inputmode="numeric" min="1" max="1000" required=true>
+                                @error('largeNormalIce')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="largeLessIce">Less Ice</label>
+                                <input type="number" name="largeLessIce"
+                                    class="form-control @error('largeLessIce') is-invalid @enderror" id="largeLessIce"
+                                    placeholder="Jumlah Es" value="{{ old('largeLessIce') }}" inputmode="numeric"
+                                    min="1" max="100" required=true>
+                                @error('largeLessIce')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -255,11 +348,58 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
 $(document).ready(function() {
+
+    // Attach an event listener to the "Less Ice" input
+    $('#regularLessIce').on('input', function() {
+        // Get the values of "Normal Ice" and "Less Ice"
+        var normalIceValue = parseInt($('#regularNormalIce').val()) || 0;
+        var lessIceValue = parseInt($(this).val()) || 0;
+
+        // Check if "Less Ice" is greater than "Normal Ice"
+        if (lessIceValue > normalIceValue) {
+            // Display an alert
+            alert('Less Ice cannot be more than Normal Ice.');
+
+            // Clear the input value
+            $(this).val('');
+
+            // Optionally, you can remove the 'is-invalid' class and clear the error message
+            $(this).removeClass('is-invalid');
+            $(this).next('.invalid-feedback').html('');
+        }
+    });
+
+    // You may also want to add similar validation on the "Normal Ice" input
+    $('#regularNormalIce').on('input', function() {
+        var normalIceValue = parseInt($(this).val()) || 0;
+        var lessIceValue = parseInt($('#regularLessIce').val()) || 0;
+
+        if (lessIceValue > normalIceValue) {
+            // Display an alert
+            alert('Less Ice cannot be more than Normal Ice.');
+
+            // Clear the input value
+            $('#regularLessIce').val('');
+
+            // Optionally, you can remove the 'is-invalid' class and clear the error message
+            $('#regularLessIce').removeClass('is-invalid');
+            $('#regularLessIce').next('.invalid-feedback').html('');
+        }
+    });
+
     // Large checkbox toggle
     $('#largeIngredientsCard').css('display', $('#large').prop('checked') ? 'block' : 'none');
 
     $('#large').on('change', function() {
         $('#largeIngredientsCard').css('display', $(this).prop('checked') ? 'block' : 'none');
+    });
+
+    $('#regularIceLevel').css('display', $('#iced').prop('checked') ? 'block' : 'none');
+    $('#largeIceLevel').css('display', $('#iced').prop('checked') ? 'block' : 'none');
+
+    $('#iced').on('change', function() {
+        $('#regularIceLevel').css('display', $(this).prop('checked') ? 'block' : 'none');
+        $('#largeIceLevel').css('display', $(this).prop('checked') ? 'block' : 'none');
     });
 
     // Prevent regular option to be unchecked
@@ -297,7 +437,7 @@ document.getElementById("addIngredient").onclick = function() {
             <input type="text" name="ingredients[${ingredientIndex}][name]"
                 class="form-control @error('ingredients[${ingredientIndex}][name]') is-invalid @enderror"
                 id="ingredients[${ingredientIndex}][name]" placeholder="Nama Bahan"
-                value="{{ old('ingredients[${ingredientIndex}][name]') }}">
+                value="{{ old('ingredients[${ingredientIndex}][name]') }}" required=true>
             @error('ingredients[${ingredientIndex}][name]')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
@@ -312,7 +452,7 @@ document.getElementById("addIngredient").onclick = function() {
             <input type="text" name="ingredients[${ingredientIndex}][quantity]"
                 class="form-control @error('ingredients[${ingredientIndex}][quantity]') is-invalid @enderror"
                 id="ingredients[${ingredientIndex}][quantity]" placeholder="Jumlah Bahan"
-                value="{{ old('ingredients[${ingredientIndex}][quantity]') }}">
+                value="{{ old('ingredients[${ingredientIndex}][quantity]') }}" required=true>
             @error('ingredients[${ingredientIndex}][quantity]')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
@@ -365,7 +505,7 @@ document.getElementById("addIngredientLarge").onclick = function() {
             <input type="text" name="largeIngredients[${ingredientLargeIndex}][name]"
                 class="form-control @error('largeIngredients[${ingredientLargeIndex}][name]') is-invalid @enderror"
                 id="largeIngredients[${ingredientLargeIndex}][name]" placeholder="Nama Bahan"
-                value="{{ old('largeIngredients[${ingredientLargeIndex}][name]') }}">
+                value="{{ old('largeIngredients[${ingredientLargeIndex}][name]') }}" required=true>
             @error('largeIngredients[${ingredientLargeIndex}][name]')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>
@@ -380,7 +520,7 @@ document.getElementById("addIngredientLarge").onclick = function() {
             <input type="text" name="largeIngredients[${ingredientLargeIndex}][quantity]"
                 class="form-control @error('largeIngredients[${ingredientLargeIndex}][quantity]') is-invalid @enderror"
                 id="largeIngredients[${ingredientLargeIndex}][quantity]" placeholder="Jumlah Bahan"
-                value="{{ old('largeIngredients[${ingredientLargeIndex}][quantity]') }}">
+                value="{{ old('largeIngredients[${ingredientLargeIndex}][quantity]') }}" required=true>
             @error('largeIngredients[${ingredientLargeIndex}][quantity]')
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $message }}</strong>

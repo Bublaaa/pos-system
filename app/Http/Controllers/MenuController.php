@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Menu;
 use App\Models\Ingredient;
+use App\Models\Topping;
 
 
 class MenuController extends Controller
@@ -21,6 +22,7 @@ class MenuController extends Controller
         return view('../layouts/contents/addmenu');
     }
     public function store(Request $request){
+
         // Validate request
         $request->validate([
             'name' => 'string|max:255',
@@ -45,10 +47,82 @@ class MenuController extends Controller
             $ingredients = Ingredient::create([  
                 'menu_id' => $newestMenu->id,
                 'name' => ucwords($ingredient['name']),
+                'size' => ucwords($request->regularSize),
                 'quantity' => $ingredient['quantity'],
                 'unit' => $ingredient['unit'],
             ]);
         }
+        if($request->largeSize){
+            foreach($request->largeIngredients as $ingredient){
+                $ingredients = Ingredient::create([  
+                    'menu_id' => $newestMenu->id,
+                    'name' => ucwords($ingredient['name']),
+                    'size' => ucwords($request->largeSize),
+                    'quantity' => $ingredient['quantity'],
+                    'unit' => $ingredient['unit'],
+                ]);
+            }
+        }
+        if($request->iced){
+            if($request->largeSize){
+                $toppings = Topping::create([
+                    'menu_id' => $newestMenu->id,
+                    'name' => 'normal_ice',
+                    'ingredient_name' => 'Es',
+                    'size' => 'Large',
+                    'quantity' => $request->largeNormalIce,
+                    'unit' => 'gram',
+                ]);
+                $toppings = Topping::create([
+                    'menu_id' => $newestMenu->id,
+                    'name' => 'less_ice',
+                    'ingredient_name' => 'Es',
+                    'size' => 'Large',
+                    'quantity' => $request->largeLessIce,
+                    'unit' => 'gram',
+                ]);
+            }
+            if($request->regularSize) {
+                $toppings = Topping::create([
+                    'menu_id' => $newestMenu->id,
+                    'name' => 'normal_ice',
+                    'ingredient_name' => 'Es',
+                    'size' => ucwords($request->regularSize),
+                    'quantity' => $request->regularNormalIce,
+                    'unit' => 'gram',
+                ]);
+                $toppings = Topping::create([
+                    'menu_id' => $newestMenu->id,
+                    'name' => 'less_ice',
+                    'ingredient_name' => 'Es',
+                    'size' => 'Regular',
+                    'quantity' => $request->regularLessIce,
+                    'unit' => 'gram',
+                ]);
+            }
+        }
+        if($request->hot){
+            if($request->regularSize)
+            $toppings = Topping::create([
+                'menu_id' => $newestMenu->id,
+                'name' => $request->hot,
+                'ingredient_name' => '',
+                'size' => 'Regular',
+                'quantity' => 0,
+                'unit' => 'gram',
+            ]);
+            if($request->largeSize) {
+                $toppings = Topping::create([
+                'menu_id' => $newestMenu->id,
+                'name' => $request->hot,
+                'ingredient_name' => '',
+                'size' => 'Large',
+                'quantity' => 0,
+                'unit' => 'gram',
+            ]);
+            }
+        }
+       
         // Check for inserted ingredeint 
         if (!$ingredients) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan menu.');
@@ -59,12 +133,57 @@ class MenuController extends Controller
     }
 
     public function edit(Menu $menu){
+        $isHotAvailable = false;
+        $isIcedAvailable = false;
+        $regularIceQuantity = [];
+        $largeIceQuantity = [];
         // Get menu id form parameter
         $menu_id = $menu->id;
         // Get all ingredient data with menu id
-        $ingredients = Ingredient::where('menu_id', $menu_id)->get();
-        
-        return view('../layouts/contents/editMenu')->with(['menu' => $menu, 'ingredients' => $ingredients]);
+        $ingredients = Ingredient::where('menu_id', $menu_id)->where('size','Regular')->get();
+        $largeIngredients = Ingredient::where('menu_id',$menu_id)->where('size','Large')->get();
+        $toppings = Topping::where('menu_id',$menu_id)->get();
+        foreach($toppings as $topping){
+            if($topping->name == "normal_ice"){
+                $isIcedAvailable = true;
+            }
+            if($topping->name == "hot"){
+                $isHotAvailable = true;
+            }
+        }
+        foreach($toppings as $topping){
+            if($topping->name == 'normal_ice' || $topping->name == 'less_ice'){
+                if($topping->size == "Regular") {
+                    $regularIceQuantity[] = [
+                        "menu_id" => $topping->menu_id,
+                        "name" => $topping->name,
+                        "ingredient_name" => $topping->ingredient_name,
+                        "size" => $topping->size,
+                        "quantity" => $topping->quantity,
+                        "unit" => $topping->unit,      
+                    ];
+                }
+                if($topping->size == "Large") {
+                    $largeIceQuantity[] = [
+                        "menu_id" => $topping->menu_id,
+                        "name" => $topping->name,
+                        "ingredient_name" => $topping->ingredient_name,
+                        "size" => $topping->size,
+                        "quantity" => $topping->quantity,
+                        "unit" => $topping->unit,      
+                    ];
+                }
+            }
+        }
+        return view('../layouts/contents/editMenu')->with([
+            'menu' => $menu, 
+            'ingredients' => $ingredients, 
+            'largeIngredients' => $largeIngredients, 
+            'isHotAvailable' => $isHotAvailable,
+            'isIcedAvailable' => $isIcedAvailable,
+            'regularIceQuantity' => $regularIceQuantity,
+            'largeIceQuantity' => $largeIceQuantity,
+        ]);
     }
 
     public function update(Request $request, Menu $menu){
@@ -77,6 +196,12 @@ class MenuController extends Controller
         // Update table with value of request
         $menu->name = ucwords($request->name);
         $menu->status = $request->status;
+        $largeIngredients = Ingredient::where('menu_id', $menu->id)->where('size','Large')->get();
+        $regularIngredients = Ingredient::where('menu_id', $menu->id)->where('size','Regular')->get();
+        $hotTemprature = Topping::where('menu_id',$menu->id)->where('name','hot')->get();
+        $icedTemprature = Topping::where('menu_id',$menu->id)->whereIn('name', ['less_ice', 'normal_ice'])->get();
+        $sizeAvailabe = ['Regular'];
+        $iceLevel = ['normal_ice' , 'less_ice'];
 
         // Check requiest image and update existing image
         if ($request->hasFile('image')) {
@@ -89,6 +214,77 @@ class MenuController extends Controller
             // Save to Database
             $menu->image = $image_path;
         }
+        // check for large size check box
+        if($request->largeSize){
+            $sizeAvailabe = ['Regular', 'Large'];
+            // check ingredient is ingredient is available
+            if($largeIngredients->count()<1){
+                // insert default ingredient form regular
+                foreach($regularIngredients as $ingredient){
+                    $ingredients = Ingredient::create([  
+                        'menu_id' => $menu->id,
+                        'name' => $ingredient->name,
+                        'size' => 'Large',
+                        'quantity' => $ingredient->quantity * 1.2,
+                        'unit' => $ingredient->unit,
+                    ]);
+                };
+            }
+        }
+        else {
+            foreach($largeIngredients as $ingredient){
+                $ingredient->delete();
+            }
+        }
+        // check for hotcheckbox
+        if($request->hot){
+            if($hotTemprature->count() < 1){
+                foreach($sizeAvailabe as $size){
+                    $topping = Topping::create([
+                        'menu_id' => $menu->id,
+                        'name' => 'hot',
+                        'ingredient_name' => 'N/A',
+                        'size' => $size,
+                        'quantity' => 0,
+                        'unit' => 'N/A',
+                    ]);
+                }
+            }
+        }
+        else {
+            foreach($hotTemprature as $temprature){
+                $temprature->delete();
+            }
+        }
+        // check for ice checkbox
+        if($request->iced){
+            if($icedTemprature->count() < 1){
+                foreach($sizeAvailabe as $index => $size){
+                    $toping = Topping::create([
+                        'menu_id' => $menu->id,
+                        'name' => 'normal_ice',
+                        'ingredient_name' => 'Es',
+                        'size' => $size,
+                        'quantity' => 50,
+                        'unit' => 'gram',
+                    ]);
+                    $toping = Topping::create([
+                        'menu_id' => $menu->id,
+                        'name' => 'less_ice',
+                        'ingredient_name' => 'Es',
+                        'size' => $size,
+                        'quantity' => 40,
+                        'unit' => 'gram',
+                    ]);
+                }
+            }
+        }
+        else {
+            foreach($icedTemprature as $temprature){
+                $temprature->delete();
+            }
+        }
+
         // Check updated menu
         if (!$menu->save()) {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat update menu');
@@ -99,6 +295,14 @@ class MenuController extends Controller
         // Delete saved menu image
         if ($menu->image) {
             Storage::delete($menu->image);
+        }
+        $ingredients = Ingredient::where('menu_id', $menu->id)->get();
+        foreach($ingredients as $ingredient){
+            $ingredient->delete();
+        }
+        $toppings = Topping::where('menu_id', $menu->id)->get();
+        foreach($toppings as $topping){
+            $topping->delete();
         }
         // Delete menu row
         $menu->delete();

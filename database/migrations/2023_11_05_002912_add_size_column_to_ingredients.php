@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ingredients', function (Blueprint $table) {
-            $table->id();
-            $table->string('menu_id');
-            $table->string('name');
-            $table->string('size');
-            $table->integer('quantity');
-            $table->string('unit');
-            $table->timestamps();
+        Schema::table('ingredients', function (Blueprint $table) {
+            $table->string('size')->nullable()->change();
+            // $table->dropColumn('size');
+            // $table->string('size')->nullable();
         });
     }
 
@@ -27,6 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ingredients');
+        Schema::table('ingredients', function (Blueprint $table) {
+            $table->string('size')->change();
+        });
     }
 };
