@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Ingredient;
 use App\Models\Menu;
+use App\Models\Topping;
 
 
 class IngredientController extends Controller
@@ -20,10 +21,82 @@ class IngredientController extends Controller
     public function update(Request $request, $menu_id){
         $regularIngredients = Ingredient::where('menu_id', $menu_id)->where('size','Regular')->get();
         $largeIngredients = Ingredient::where('menu_id', $menu_id)->where('size','Large')->get();
+        $regularIceLevel = Topping::where('menu_id', $menu_id)->where('size','Regular')->get();
+        $largeIceLevel = Topping::where('menu_id', $menu_id)->where('size','Large')->get();
+        $iceLevelAvailable = ['normal_ice','less_ice'];
         $ingredientArray=[];
         $largeIngredientArray=[];
         $ingredientsCount = $regularIngredients->count();
         $largeIngredientsCount = $largeIngredients->count();
+        
+        if($request->regularNormalIce && $request->regularLessIce){
+            if($regularIceLevel->count() < 2){
+                $ice = Topping::create([
+                    'menu_id' => $menu_id, 
+                    'name' => 'normal_ice',
+                    'ingredient_name' => 'Es',
+                    'size' =>  'Regular',
+                    'quantity' => $request->regularNormalIce,
+                    'unit' => 'gram',
+                ]);
+                $ice = Topping::create([
+                    'menu_id' => $menu_id, 
+                    'name' => 'less_ice',
+                    'ingredient_name' => 'Es',
+                    'size' =>  'Regular',
+                    'quantity' => $request->regularLessIce,
+                    'unit' => 'gram',
+                ]);
+            }
+            else{
+                $regularNormalIceLevel = Topping::where('menu_id', $menu_id)->where('size', 'Regular')->where('name', 'normal_ice')->first();
+                $regularLessIceLevel = Topping::where('menu_id', $menu_id)->where('size', 'Regular')->where('name', 'less_ice')->first();
+
+                if ($regularNormalIceLevel) {
+                    $regularNormalIceLevel->quantity = $request->regularNormalIce;
+                    $regularNormalIceLevel->save();
+                }
+
+                if ($regularLessIceLevel) {
+                    $regularLessIceLevel->quantity = $request->regularLessIce;
+                    $regularLessIceLevel->save();
+                }
+            }
+        }
+        if($request->largeNormalIce && $request->largeLessIce){
+            if($largeIceLevel->count() < 2){
+                $ice = Topping::create([
+                    'menu_id' => $menu_id, 
+                    'name' => 'normal_ice',
+                    'ingredient_name' => 'Es',
+                    'size' =>  'Large',
+                    'quantity' => $request->largeNormalIce,
+                    'unit' => 'gram',
+                ]);
+                $ice = Topping::create([
+                    'menu_id' => $menu_id, 
+                    'name' => 'less_ice',
+                    'ingredient_name' => 'Es',
+                    'size' =>  'Large',
+                    'quantity' => $request->largeLessIce,
+                    'unit' => 'gram',
+                ]);
+            }
+            else{
+                $largeNormalIceLevel = Topping::where('menu_id', $menu_id)->where('size', 'Large')->where('name', 'normal_ice')->first();
+                $largeLessIceLevel = Topping::where('menu_id', $menu_id)->where('size', 'Large')->where('name', 'less_ice')->first();
+                
+                if ($largeNormalIceLevel) {
+                    $largeNormalIceLevel->quantity = $request->largeNormalIce;
+                    $largeNormalIceLevel->save();
+                }
+
+                if ($largeLessIceLevel) {
+                    $largeLessIceLevel->quantity = $request->largeLessIce;
+                    $largeLessIceLevel->save();
+                }
+            }
+        }
         
         // REGULAR
         if($request->ingredients){

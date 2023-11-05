@@ -228,7 +228,7 @@
                                     <input type="number" name="regularNormalIce"
                                         class="form-control @error('regularNormalIce') is-invalid @enderror"
                                         id="regularNormalIce" placeholder="Jumlah Es"
-                                        value="{{ count($regularIceQuantity) < 2 ? old('regularIceQuantity') : $regularIceQuantity[0]['quantity']}}"
+                                        value="{{ $regularIceLevel->count() < 2 ? old('lessIceQuantity') : $regularIceLevel->where('name','normal_ice')[0]->quantity}}"
                                         inputmode="numeric" min="1" max="100" required=true>
                                     @error('regularNormalIce')
                                     <span class="invalid-feedback" role="alert">
@@ -244,7 +244,7 @@
                                     <input type="number" name="regularLessIce"
                                         class="form-control @error('regularLessIce') is-invalid @enderror"
                                         id="regularLessIce" placeholder="Jumlah Es"
-                                        value="{{ count($regularIceQuantity) < 2 ? old('regularIceQuantity') : $regularIceQuantity[1]['quantity']}}"
+                                        value="{{ $regularIceLevel->count() < 2 ? old('lessIceQuantity') : $regularIceLevel->where('name','less_ice')[1]->quantity}}"
                                         inputmode="numeric" min="1" max="100" required=true>
                                     @error('regularLessIce')
                                     <span class="invalid-feedback" role="alert">
@@ -404,13 +404,13 @@
                         <div class="row" id="largeIceLevel" style="display:none;">
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label for="regularNormalIce">Normal Ice</label>
-                                    <input type="number" name="regularNormalIce"
-                                        class="form-control @error('regularNormalIce') is-invalid @enderror"
-                                        id="regularNormalIce" placeholder="Jumlah Es"
-                                        value="{{ count($largeIceQuantity) < 2 ? old('largeIceQuantity') : $largeIceQuantity[0]['quantity']}}"
+                                    <label for="largeNormalIce">Normal Ice</label>
+                                    <input type="number" name="largeNormalIce"
+                                        class="form-control @error('largeNormalIce') is-invalid @enderror"
+                                        id="largeNormalIce" placeholder="Jumlah Es"
+                                        value="{{ $largeIceLevel->count() < 2 ? old('lessIceQuantity') : $largeIceLevel->where('name','normal_ice')[0]->quantity}}"
                                         inputmode="numeric" min="1" max="100" required=true>
-                                    @error('regularNormalIce')
+                                    @error('largeNormalIce')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
@@ -419,13 +419,13 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label for="regularLessIce">Less Ice</label>
-                                    <input type="number" name="regularLessIce"
-                                        class="form-control @error('regularLessIce') is-invalid @enderror"
-                                        id="regularLessIce" placeholder="Jumlah Es"
-                                        value="{{ count($largeIceQuantity) < 2 ? old('largeIceQuantity') : $largeIceQuantity[1]['quantity']}}"
+                                    <label for="largeLessIce">Less Ice</label>
+                                    <input type="number" name="largeLessIce"
+                                        class="form-control @error('largeLessIce') is-invalid @enderror"
+                                        id="largeLessIce" placeholder="Jumlah Es"
+                                        value="{{ $largeIceLevel->count() < 2 ? old('lessIceQuantity') : $largeIceLevel->where('name','less_ice')[1]->quantity}}"
                                         inputmode="numeric" min="1" max="100" required=true>
-                                    @error('regularLessIce')
+                                    @error('largeLessIce')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
