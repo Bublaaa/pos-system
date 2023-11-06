@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -100,8 +101,12 @@ class AttendanceController extends Controller
             'allAttendance' =>$allAttendance,
         ]);
     }
-    public function create(){
-        return view('../layouts/contents/employeeAttendance');
+    public function create(Request $request){
+        // dd($request->ip());
+        $userIP = '	182.1.237.36';
+        // $userIP = $request->ip();
+        $location = Location::get($userIP);
+        return view('../layouts/contents/employeeAttendance',compact('location'));
     }
     public function store(Request $request){
         // Validate form

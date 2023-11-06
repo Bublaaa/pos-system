@@ -30,9 +30,12 @@
                     </span>
                     @enderror
                 </div>
-
-                <input type="hidden" name="latitude" id="latitude">
-                <input type="hidden" name="longitude" id="longitude">
+                @if($location)
+                <input type="hidden" name="latitude" id="latitude" value="{{ $location->latitude }}">
+                <input type="hidden" name="longitude" id="longitude" value="{{ $location->longitude }}">
+                @else
+                <p>Location Not Found</p>
+                @endif
 
                 <div class="form-group">
                     <label for="image">Bukti absen</label>
@@ -46,13 +49,13 @@
                     </span>
                     @enderror
                 </div>
-                <button class="btn btn-primary" type="submit">Create</button>
+                <button class=" btn btn-primary" type="submit">Create</button>
             </form>
         </div>
     </div>
 </div>
 
-<script>
+<!-- <script>
 function toggleDescription() {
     var status = document.getElementById('status');
     var descriptionGroup = document.getElementById('descriptionField');
@@ -105,5 +108,5 @@ function showError(error) {
 }
 
 getLocation();
-</script>
+</script> -->
 @endsection
