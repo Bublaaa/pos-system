@@ -12,9 +12,6 @@ use Illuminate\Http\Request;
 
 class StockController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $stockDataByKind = DB::table('stocks')
@@ -34,23 +31,16 @@ class StockController extends Controller
         return view('../layouts/contents/stockReport') ->with([
             'overAllStockData' => $overAllStockData,
             'stockDataByKind' => $stockDataByKind,
-             'buyTransaction' => $buyTransaction,
-             'boughtStocks' => $boughtStocks,
+            'buyTransaction' => $buyTransaction,
+            'boughtStocks' => $boughtStocks,
         ]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-         $ingredientNames = Ingredient::distinct()->pluck('name')->sort();
+        $ingredientNames = Ingredient::distinct()->pluck('name')->sort();
         return view('../layouts/contents/addStock') -> with(['ingredientNames' => $ingredientNames]);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request){
         $image_path = '';
         $user = Auth::user();
@@ -80,36 +70,8 @@ class StockController extends Controller
             return redirect()->back()->with('success', 'Berhasil mencatat transaksi');
         }
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Stock $stock)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Stock $stock)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Stock $stock)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Stock $stock)
-    {
-        //
-    }
+    public function show(Stock $stock){}
+    public function edit(Stock $stock){}
+    public function update(Request $request, Stock $stock){}
+    public function destroy(Stock $stock){}
 }

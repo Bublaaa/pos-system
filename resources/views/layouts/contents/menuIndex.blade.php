@@ -6,10 +6,10 @@
         <h2>Edit Menu</h2>
         <div class="row">
             @foreach ($menus as $menu)
-            <div class="col-md-2 col-6 mb-2">
+            <div class="col-md-3 col-6 ">
                 <div class="card bg-white" style="overflow: hidden;">
                     <img class="product-img" src="{{ Storage::url($menu->image) }}"
-                        style="max-width: 300px; max-height: 150px; width: 100%; height: auto; object-fit: cover;">
+                        style="max-width: 300px; max-height: 175px; width: 100%; height: auto; object-fit: cover;">
                     <div class="card-body">
                         <div class="row">
                             <p class="card-title">{{ $menu['name'] }}</p>

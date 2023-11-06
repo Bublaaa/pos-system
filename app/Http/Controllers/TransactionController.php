@@ -6,65 +6,94 @@ use App\Models\Transaction;
 use App\Models\Menu;
 use App\Models\Stock;
 use App\Models\Ingredient;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Topping;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 
 class TransactionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $menus = Menu::where('status',1)
             ->orderBy('name', 'asc')
             ->get();
-        return view('../layouts/contents/dashboard')->with('menus', $menus);
+        $sizeAvailable = Topping::select('size', 'menu_id')
+            ->groupBy(['size', 'menu_id'])
+            ->get();
+        $tempratureAvailable =  Topping::select('name', 'menu_id')
+            ->groupBy(['name', 'menu_id'])
+            ->get();
+        return view('../layouts/contents/dashboard')->with([
+            'menus' => $menus,
+            'sizeAvailable' => $sizeAvailable,
+            'tempratureAvailable' => $tempratureAvailable,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+    public function create(){}
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
-    {
+    {   
         $request->validate([
             'menu_id' => 'string',
             'quantity' => 'integer',
         ]);
-        $image_path = '';
-        // if ($request->hasFile('image')) {
-        //     $image_path = $request->file('image')->store('products', 'public');
-        // }
-
+        $ingredientsArray = [];
         $user = Auth::user();
-        $ingredients = Ingredient::where('menu_id', $request->menu_id)->get();
+        if(!$request->size){
+            $sizeSelected = "Regular";
+        }
+        else {
+            $sizeSelected = $request->size;
+        }
+        $ingredients = Ingredient::where('menu_id', $request->menu_id)
+            ->where('size', $sizeSelected)
+            ->get();
+
         $availableStock = DB::table('stocks')
             ->select('name', DB::raw('SUM(CASE WHEN kind = "pembelian" THEN quantity ELSE -quantity END) AS availableQuantity'))
             ->groupBy('name')
             ->get();
-        
+        foreach($ingredients as $index => $ingredient){
+            $ingredientsArray[] = [
+                'name' => ucwords($ingredient['name']),
+                'quantity' => $ingredient['quantity'],
+                'unit' => $ingredient['unit'],
+            ];
+        }
+        if($request->iceLevel == 'normal_ice' || $request->iceLevel == 'less_ice' ){
+            $iceQuantity = Topping::where('menu_id', $request->menu_id)
+                ->where('name',$request->iceLevel)
+                ->where('size', $sizeSelected)
+                ->get();
+                if($iceQuantity->count()>0){
+                    $ingredientsArray[] = [
+                        'name' => ucwords($iceQuantity[0]->ingredient_name),
+                        'quantity' => $iceQuantity[0]->quantity,
+                        'unit' => $iceQuantity[0]->unit,
+                    ];
+                }
+                $selectedIceLevel = ucwords(str_replace("_", " ", $request->iceLevel));
+        }
+        else if ($request->iceLevel == 'no_ice'){
+            $selectedIceLevel = 'No Ice';
+        }
+        else {
+            $selectedIceLevel = 'Hot';
+        }
+
         // Check available stock before create transaction
         $isTransactionPossible = false;
-
-        for ($i = 0; $i < count($ingredients); $i++) {
+        for ($i = 0; $i < count($ingredientsArray); $i++) {
             $stockFound = false;
-
             for ($j = 0; $j < count($availableStock); $j++) {
-                if ($availableStock[$j]->name == $ingredients[$i]->name) {
+                if ($availableStock[$j]->name == $ingredientsArray[$i]['name']) {
                     $stockFound = true;
 
-                    if ($availableStock[$j]->availableQuantity < ($ingredients[$i]->quantity * $request->quantity)) {
-                        return redirect()->back()->with('error', "Stok {$ingredients[$i]->name} tidak cukup");
+                    if ($availableStock[$j]->availableQuantity < ($ingredientsArray[$i]['quantity'] * $request->quantity)) {
+                        return redirect()->back()->with('error', "Stok {$ingredientsArray[$i]['name']} tidak cukup");
                     } else {
                         $isTransactionPossible = true;
                     }
@@ -72,27 +101,9 @@ class TransactionController extends Controller
             }
 
             if (!$stockFound) {
-                return redirect()->back()->with('error', "Stok {$ingredients[$i]->name} kosong");
+                return redirect()->back()->with('error', "Stok {$ingredientsArray[$i]->name} kosong");
             }
         }
-
-
-        // foreach($availableStock as $stock){
-        //     foreach($ingredients as $ingredient){
-        //         if($stock->name == $ingredient->name){
-        //             if($stock->availableQuantity < ($ingredient->quantity * $request->quantity)){
-        //                 return redirect()->back()->with('error', "Stok {$ingredient['name']} tidak cukup");
-        //             }
-        //             else {
-        //                $isTransactionPossible = true;
-        //             }
-        //         }
-        //         else {
-        //             return redirect()->back()->with('error', "Stok {$ingredient['name']} kosong");
-        //         }
-        //     }
-        // }
-        // dd($isTransactionPossible);
         if($isTransactionPossible == true){
             //Create new transction 
             $transaction = Transaction::create([  
@@ -100,14 +111,15 @@ class TransactionController extends Controller
                 'quantity' => $request->quantity,
                 'user_name' => $user->name,
                 'kind' => $request->kind,
-                'image' => $image_path,
+                'size' => $sizeSelected,
+                'temprature' => $selectedIceLevel,
             ]);
             // Get the latest transaction id after creating new one
             $newestTransaction = Transaction::latest()->first();
 
             // Add data to stock
             for($itemCount=1;$itemCount<=$newestTransaction->quantity;$itemCount++){
-                foreach($ingredients as $ingredient){
+                foreach($ingredientsArray as $ingredient){
                     $stockSold = Stock::create([  
                         'transaction_id' => $newestTransaction->id,
                         'kind' => $request->kind,
@@ -127,40 +139,9 @@ class TransactionController extends Controller
         else {
             return redirect()->back()->with('error', 'Terjadi kesalahan saat mencatat transaksi');
         }
-        
-        
-       
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Transaction $transaction)
-    {
-        //
-    }
+    public function show(Transaction $transaction){}
+    public function edit(Transaction $transaction){}
+    public function update(Request $request, Transaction $transaction){}
+    public function destroy(Transaction $transaction){}
 }

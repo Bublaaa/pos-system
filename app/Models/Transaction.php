@@ -14,5 +14,7 @@ class Transaction extends Model
         'user_name',
         'kind',
         'image',
+        'size',
+        'temprature'
     ];
 }
