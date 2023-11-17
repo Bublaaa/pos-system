@@ -37,10 +37,10 @@ RUN php artisan migrate
 # RUN php artisan db:seed
 
 # Install npm
-RUN apk add --update npm
+# RUN apk add --update npm
 
 # Install npm package
-RUN npm install
+# RUN npm install
 
 # Build assets
-RUN npm run build
+# RUN npm run build
