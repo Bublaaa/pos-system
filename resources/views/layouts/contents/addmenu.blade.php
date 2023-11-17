@@ -18,8 +18,7 @@
                             <div class="form-group">
                                 <label for="image">Foto menu</label>
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="image" id="image" required=true>
-                                    <label class="custom-file-label" for="image">Choose file</label>
+                                    <input type="file" class="form-control" name="image" id="image" required=true>
                                     <p style="color:red;">Rekomendasi rasio foto : 200x150</p>
                                 </div>
                                 @error('image')
@@ -40,7 +39,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="status">Status</label>
-                                <select name="status" class="form-control @error('status') is-invalid @enderror"
+                                <select name="status" class="custom-select @error('status') is-invalid @enderror"
                                     id="status">
                                     <option value="1" {{ old('status') === 1 ? 'selected' : ''}}>Tersedia</option>
                                     <option value="0" {{ old('status') === 0 ? 'selected' : ''}}>Tidak Tersedia</option>
@@ -176,7 +175,7 @@
                                 </div>
                                 <div class="col-4 col-md-3">
                                     <div class="form-group">
-                                        <select name="ingredients[0][unit]" class="form-control"
+                                        <select name="ingredients[0][unit]" class="custom-select"
                                             id="ingredients[0][unit]">
                                             <option value="gram">Gram</option>
                                             <option value="ml"> Mililiter</option>
@@ -290,7 +289,7 @@
                                 </div>
                                 <div class="col-4 col-md-3">
                                     <div class="form-group">
-                                        <select name="largeIngredients[0][unit]" class="form-control"
+                                        <select name="largeIngredients[0][unit]" class="custom-select"
                                             id="largeIngredients[0][unit]">
                                             <option value="gram">Gram</option>
                                             <option value="ml"> Mililiter</option>
@@ -518,7 +517,7 @@ document.getElementById("addIngredient").onclick = function() {
         </div>
         <div class="col-4 col-md-3">
             <div class="form-group">
-                <select name="ingredients[${ingredientIndex}][unit]" class="form-control"
+                <select name="ingredients[${ingredientIndex}][unit]" class="custom-select"
                     id="ingredients[${ingredientIndex}][unit]">
                     <option value="gram">Gram</option>
                     <option value="ml"> Mililiter</option>
@@ -586,7 +585,7 @@ document.getElementById("addIngredientLarge").onclick = function() {
         </div>
         <div class="col-4 col-md-3">
             <div class="form-group">
-                <select name="largeIngredients[${ingredientLargeIndex}][unit]" class="form-control"
+                <select name="largeIngredients[${ingredientLargeIndex}][unit]" class="custom-select"
                     id="largeIngredients[${ingredientLargeIndex}][unit]">
                     <option value="gram">Gram</option>
                     <option value="ml"> Mililiter</option>

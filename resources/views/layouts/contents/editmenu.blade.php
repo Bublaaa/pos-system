@@ -24,8 +24,7 @@
                         <div class="form-group">
                             <label for="image">Ganti foto menu</label>
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" name="image" id="image">
-                                <label class="custom-file-label" for="image">Choose file</label>
+                                <input type="file" class="form-control" name="image" id="image">
                             </div>
                             @error('image')
                             <span class="invalid-feedback" role="alert">
@@ -47,7 +46,7 @@
                         <!-- Menu Status -->
                         <div class="form-group">
                             <label for="status">Status</label>
-                            <select name="status" class="form-control @error('status') is-invalid @enderror"
+                            <select name="status" class="custom-select @error('status') is-invalid @enderror"
                                 id="status">
                                 <option value="1" {{ $menu->status === 1 ? 'selected' : ''}}>Tersedia</option>
                                 <option value="0" {{ $menu->status === 0 ? 'selected' : ''}}>Tidak Tersedia</option>
@@ -194,7 +193,7 @@
                             <div class="col-4 col-md-3">
                                 <!-- Regular Ingredient Unit -->
                                 <div class="form-group">
-                                    <select name="ingredients[{{$index}}][unit]" class="form-control"
+                                    <select name="ingredients[{{$index}}][unit]" class="custom-select"
                                         id="ingredients[{{$index}}][unit]">
                                         <option value="gram" {{ $ingredient->unit == "gram" ? 'selected' : '' }}>Gram
                                         </option>
@@ -325,7 +324,7 @@
                             </div>
                             <div class="col-4 col-md-3">
                                 <div class="form-group">
-                                    <select name="largeIngredients[0[unit]" class="form-control"
+                                    <select name="largeIngredients[0[unit]" class="custom-select"
                                         id="largeIngredients[0][unit]">
                                         <option value="gram" {{ $ingredient->unit == "gram" ? 'selected' : '' }}>Gram
                                         </option>
@@ -377,7 +376,7 @@
                             </div>
                             <div class="col-4 col-md-3">
                                 <div class="form-group">
-                                    <select name="largeIngredients[{{$index}}][unit]" class="form-control"
+                                    <select name="largeIngredients[{{$index}}][unit]" class="custom-select"
                                         id="largeIngredients[{{$index}}][unit]">
                                         <option value="gram" {{ $ingredient->unit == "gram" ? 'selected' : '' }}>Gram
                                         </option>
@@ -557,7 +556,7 @@ document.getElementById("addIngredient").onclick = function() {
                 </div>
                 <div class="col-4 col-md-3">
                     <div class="form-group">
-                        <select name="ingredients[${ingredientIndex}][unit]" class="form-control" id="ingredients[${ingredientIndex}][unit]">
+                        <select name="ingredients[${ingredientIndex}][unit]" class="custom-select" id="ingredients[${ingredientIndex}][unit]">
                             <option value="gram">Gram</option>
                             <option value="ml"> Mililiter</option>
                         </select>
@@ -617,7 +616,7 @@ document.getElementById("addIngredientLarge").onclick = function() {
         </div>
         <div class="col-4 col-md-3">
             <div class="form-group">
-                <select name="largeIngredients[${ingredientLargeIndex}][unit]" class="form-control"
+                <select name="largeIngredients[${ingredientLargeIndex}][unit]" class="custom-select"
                     id="largeIngredients[${ingredientLargeIndex}][unit]">
                     <option value="gram">Gram</option>
                     <option value="ml"> Mililiter</option>

@@ -15,8 +15,7 @@
                             <div class="form-group">
                                 <label for="image">Bukti pembelian</label>
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" name="image" id="image" required=true>
-                                    <label class="custom-file-label" for="image">Choose file</label>
+                                    <input type="file" class="form-control" name="image" id="image" required=true>
                                 </div>
                                 @error('image')
                                 <span class="invalid-feedback" role="alert">
@@ -62,7 +61,7 @@
                             <div class="row">
                                 <div class="col col-md">
                                     <div class="form-group">
-                                        <select name="ingredients[0][name]" class="form-control"
+                                        <select name="ingredients[0][name]" class="custom-select"
                                             id="ingredients[0][name]">
                                             @foreach($ingredientNames as $name)
                                             <option value="{{ $name }}">{{$name}}</option>
@@ -90,7 +89,7 @@
                                 </div>
                                 <div class="col">
                                     <div class="form-group">
-                                        <select name="ingredients[0][unit]" class="form-control"
+                                        <select name="ingredients[0][unit]" class="custom-select"
                                             id="ingredients[0][unit]">
                                             <option value="gram">Gram</option>
                                             <option value="ml"> Mililiter</option>
@@ -140,7 +139,7 @@ document.getElementById("addIngredient").onclick = function() {
     newRow.innerHTML = `
             <div class="col">
                 <div class="form-group">
-                    <select name="ingredients[${ingredientIndex}][name]" class="form-control" id="ingredients[${ingredientIndex}][name]">
+                    <select name="ingredients[${ingredientIndex}][name]" class="custom-select" id="ingredients[${ingredientIndex}][name]">
                         @foreach($ingredientNames as $name)
                         <option value="{{ $name }}">{{ $name }}</option>
                         @endforeach
@@ -167,7 +166,7 @@ document.getElementById("addIngredient").onclick = function() {
             </div>
             <div class="col">
                 <div class="form-group">
-                    <select name="ingredients[${ingredientIndex}][unit]" class="form-control" id="ingredients[${ingredientIndex}][unit]">
+                    <select name="ingredients[${ingredientIndex}][unit]" class="custom-select" id="ingredients[${ingredientIndex}][unit]">
                         <option value="gram">Gram</option>
                         <option value="ml"> Mililiter</option>
                     </select>

@@ -15,10 +15,10 @@ class StockController extends Controller
     public function index()
     {
         $stockDataByKind = DB::table('stocks')
-            ->select('stocks.kind', 'stocks.name', DB::raw('SUM(stocks.quantity) as total'), 'stocks.unit', 'transactions.user_name', 'transactions.created_at')
-            ->join('transactions', 'stocks.transaction_id', '=', 'transactions.id')
+            ->select('stocks.kind', 'stocks.name', DB::raw('SUM(CAST(stocks.quantity AS DECIMAL)) as total'), 'stocks.unit', 'transactions.user_name', 'transactions.created_at')
+            ->join('transactions', 'stocks.transaction_id', '=', DB::raw('CONVERT(transactions.id, CHAR)'))
             ->groupBy('stocks.kind', 'stocks.name', 'stocks.unit', 'transactions.user_name', 'transactions.created_at')
-            ->orderBy('transactions.created_at', 'desc') // Use 'transactions.created_at' here
+            ->orderBy('transactions.created_at', 'desc')
             ->get();
         $buyTransaction = Transaction::where('kind','pembelian')
             ->orderBy('created_at', 'desc')

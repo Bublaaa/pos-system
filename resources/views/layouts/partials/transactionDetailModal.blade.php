@@ -100,10 +100,10 @@
                 <div class="modal-footer">
                     <div class="row">
                         <div class="col">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                         </div>
                         <div class="col">
-                            <button class="btn btn-primary" type="submit">Yes</button>
+                            <button class="btn btn-primary" type="submit">Tambah</button>
                         </div>
                     </div>
                 </div>
