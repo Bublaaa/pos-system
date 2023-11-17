@@ -1,0 +1,11 @@
+version: '3'
+services:
+  main:
+    container_name: pos_app
+    restart: always
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - 3006:80
+      - 3007:443
