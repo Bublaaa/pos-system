@@ -1,4 +1,4 @@
-@extends('layouts.ownerview')
+@extends('layouts.ownerView')
 
 @section('content')
 <div class="container">

@@ -1,4 +1,4 @@
-@extends('layouts.ownerview')
+@extends('layouts.ownerView')
 
 @section('content')
 <!-- <h2>Edit akun {{$user[0]->name}}</h2> -->
