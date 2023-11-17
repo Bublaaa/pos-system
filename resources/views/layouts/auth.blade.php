@@ -15,7 +15,7 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <p>{{ config('app.name') }}</p>
+            <p>Point of Sales</p>
         </div>
         <div class="card">
             <div class="card-body login-card-body">
