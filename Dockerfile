@@ -33,6 +33,12 @@ RUN php artisan storage:link
 # Menjalankan perintah Laravel untuk menjalankan migrasi
 RUN php artisan migrate
 
+# Menjalankan perintah Laravel untuk menjalankan seeder
+# RUN php artisan db:seed
+
+# Install npm
+RUN apk add --update npm
+
 # Install npm package
 RUN npm install
 
