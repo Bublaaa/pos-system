@@ -152,7 +152,7 @@ class MenuController extends Controller
             }
         }
     
-        return view('../layouts/contents/editMenu')->with([
+        return view('../layouts/contents/editmenu')->with([
             'menu' => $menu, 
             'ingredients' => $ingredients, 
             'largeIngredients' => $largeIngredients, 

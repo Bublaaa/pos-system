@@ -2,6 +2,7 @@
 @section('content')
 <div class="container">
     <h2>Laporan Penggajian</h2>
+    @if($salariesByMonth->count()>0)
     @foreach($salariesByMonth as $month)
     <div class="row">
         <h5>
@@ -38,5 +39,10 @@
         @endforeach
     </div>
     @endforeach
+    @else
+    <div id="alertContainer" class="alert alert-primary">
+        Belum ada catatan pembayaran yang terdaftar.
+    </div>
+    @endif
 </div>
 @endsection

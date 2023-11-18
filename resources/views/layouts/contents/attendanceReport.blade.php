@@ -84,6 +84,7 @@
             </div>
             <!-- Monthly attendance tab -->
             <div class="tab-pane fade" id="monthlyAttendance">
+                @if(count($groupedData) > 0)
                 @foreach($groupedData as $month => $employeeData)
                 <div class="row">
                     <h4 class="text-center py-2">{{ $month }}</h4>
@@ -119,10 +120,16 @@
                 @include('layouts/partials/attendanceDetailModal', ['allUserAttendanceThisMonth' =>
                 $allUserAttendanceThisMonth])
                 @endforeach
+                @else
+                <div id="alertContainer" class="alert alert-primary">
+                    Belum ada presensi yang terdaftar.
+                </div>
+                @endif
             </div>
 
             <!-- All attendance tab -->
             <div class="tab-pane fade" id="allAttendance">
+                @if($allAttendance->count() > 0)
                 @foreach ($allAttendance as $month => $data)
                 <h4 class="text-center">{{ \Carbon\Carbon::create()->month($month)->format('F') }}</h4>
 
@@ -171,6 +178,11 @@
                 </div>
                 @endforeach
                 @endforeach
+                @else
+                <div id="alertContainer" class="alert alert-primary">
+                    Belum ada presensi yang terdaftar.
+                </div>
+                @endif
             </div>
         </div>
     </div>

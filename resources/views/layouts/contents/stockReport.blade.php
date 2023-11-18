@@ -23,6 +23,7 @@
             <div class="tab-pane fade show active" id="availableStock">
                 <h3>Estimasi Stok Tersisa</h3>
                 <div class="row">
+                    @if($overAllStockData->count()>0)
                     @foreach ($overAllStockData as $stock)
                     <div class="col-12 col-md-4">
                         <div class="card">
@@ -37,11 +38,20 @@
                         </div>
                     </div>
                     @endforeach
+                    @else
+                    <div id="alertContainer" class="alert alert-primary">
+                        Belum ada stock yang tercatat.
+                        <br>
+                        <button onclick="window.location.href='{{ route('stock.create') }}'" class="btn btn-primary">
+                            Tambah Stok
+                    </div>
+                    @endif
                 </div>
             </div>
             <!-- All transaction -->
             <div class="tab-pane fade" id="kindContent">
                 <h3>Laporan stok tiap transaksi</h3>
+                @if($stockDataByKind->count() > 0)
                 <table class="table">
                     <thead>
                         <tr>
@@ -66,10 +76,16 @@
                         @endforeach
                     </tbody>
                 </table>
+                @else
+                <div id="alertContainer" class="alert alert-primary">
+                    Belum ada transaksi yang tercatat.
+                </div>
+                @endif
             </div>
             <!-- Buy transaction -->
             <div class="tab-pane fade" id="buyContent">
                 <h3>Laporan pembelian</h3>
+                @if($buyTransaction->count()>0)
                 <div class="row">
                     @foreach($buyTransaction as $transaction)
                     <div class="col-12 col-md-6">
@@ -104,10 +120,16 @@
                     </div>
                     @endforeach
                 </div>
+                @else
+                <div id="alertContainer" class="alert alert-primary">
+                    Belum ada pembelian stok yang tercatat.
+                    <br>
+                    <button onclick="window.location.href='{{ route('stock.create') }}'" class="btn btn-primary">
+                        Tambah Stok
+                </div>
+                @endif
             </div>
         </div>
     </div>
-
 </div>
-
 @endsection

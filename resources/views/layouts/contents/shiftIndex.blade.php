@@ -4,6 +4,7 @@
 <div class="wrapper">
     <section class="content">
         <h2>Edit shift</h2>
+        @if($employees->count() > 0)
         @foreach($employees as $employee)
         <div class="card">
             <div class="card-body">
@@ -99,6 +100,16 @@
             </div>
         </div>
         @endforeach
+        @else
+        <div class="container">
+            <div id="alertContainer" class="alert alert-primary">
+                Belum ada akun karyawan yang terdaftar.
+                <br>
+                <button onclick="window.location.href='{{ route('register') }}'" class="btn btn-primary">
+                    Tambah Akun
+            </div>
+        </div>
+        @endif
     </section>
 </div>
 @endsection

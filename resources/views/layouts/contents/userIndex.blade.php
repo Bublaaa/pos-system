@@ -4,6 +4,7 @@
 <div class="container">
     <h2>Edit Akun Karyawan</h2>
     <div class="row">
+        @if($users->count()>0)
         @foreach($users as $user)
         <div class="col-12 col-md-6">
             <div class="card">
@@ -51,6 +52,16 @@
             </div>
         </div>
         @endforeach
+        @else
+        <div class="container">
+            <div id="alertContainer" class="alert alert-primary">
+                Belum ada akun karyawan yang terdaftar.
+                <br>
+                <button onclick="window.location.href='{{ route('register') }}'" class="btn btn-primary">
+                    Tambah Akun
+            </div>
+        </div>
+        @endif
     </div>
 </div>
 @endsection
