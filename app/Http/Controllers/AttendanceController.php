@@ -104,9 +104,9 @@ class AttendanceController extends Controller
     public function create(Request $request){
         // dd($request->ip());
         // $userIP = '	182.1.237.36';
-        $userIP = $request->ip();
-        $location = Location::get($userIP);
-        return view('../layouts/contents/employeeAttendance',compact('location'));
+        // $userIP = $request->ip();
+        // $location = Location::get($userIP);
+        return view('../layouts/contents/employeeAttendance');
     }
     public function store(Request $request){
         // Validate form

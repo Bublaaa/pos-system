@@ -9,7 +9,7 @@
                 @csrf
                 <div class="form-group">
                     <label for="status">Status</label>
-                    <select name="status" class="form-control @error('status') is-invalid @enderror" id="status"
+                    <select name="status" class="custom-select @error('status') is-invalid @enderror" id="status"
                         onchange="toggleDescription()">
                         <option value="1" {{ old('status') === 1 ? 'selected' : ''}}>Hadir</option>
                         <option value="0" {{ old('status') === 0 ? 'selected' : ''}}>Ijin</option>
@@ -30,18 +30,13 @@
                     </span>
                     @enderror
                 </div>
-                @if($location)
-                <input type="hidden" name="latitude" id="latitude" value="{{ $location->latitude }}">
-                <input type="hidden" name="longitude" id="longitude" value="{{ $location->longitude }}">
-                @else
-                <p>Location Not Found</p>
-                @endif
+                <input type="hidden" name="latitude" id="latitude" value="">
+                <input type="hidden" name="longitude" id="longitude" value="">
 
                 <div class="form-group">
                     <label for="image">Bukti absen</label>
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="image" id="image" required=true>
-                        <label class="custom-file-label" for="image">Choose file</label>
+                        <input type="file" class="form-control" name="image" id="image" required=true>
                     </div>
                     @error('image')
                     <span class="invalid-feedback" role="alert">
@@ -55,7 +50,7 @@
     </div>
 </div>
 
-<!-- <script>
+<script>
 function toggleDescription() {
     var status = document.getElementById('status');
     var descriptionGroup = document.getElementById('descriptionField');
@@ -108,5 +103,5 @@ function showError(error) {
 }
 
 getLocation();
-</script> -->
+</script>
 @endsection
