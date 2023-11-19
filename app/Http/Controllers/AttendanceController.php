@@ -128,12 +128,13 @@ class AttendanceController extends Controller
                 
             //     $size = strlen($compressedImage->__toString());
             // } while ($size > $maxSize);
-            // $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+            $filename = uniqid() . '.' . $image->getClientOriginalExtension();
             // Storage::disk('public')->put('attendance/' . $filename, $compressedImage->__toString());
 
             // Get the path to the stored image
-            $imagePath = $compressedImage
-                ->store('attendance', 'public');
+            Storage::disk('public/storage')->put('attendance/' . $filename, $compressedImage->__toString());
+
+            $imagePath = 'attendance/' . $filename;
         }
         // Get the logged in user
         $user = Auth::user();
