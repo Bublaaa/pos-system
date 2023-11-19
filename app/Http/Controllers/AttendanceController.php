@@ -121,7 +121,7 @@ class AttendanceController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $compressedImage = Image::make($image)
-                ->resize(800, null, function ($constraint) {$constraint->aspectRatio();})
+                ->resize(400, null, function ($constraint) {$constraint->aspectRatio();})
                 ->encode('webp', 40); 
             // $maxSize = 1.5 * 1024 * 1024;
             // do {
