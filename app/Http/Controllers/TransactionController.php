@@ -101,7 +101,7 @@ class TransactionController extends Controller
             }
 
             if (!$stockFound) {
-                return redirect()->back()->with('error', "Stok {$ingredientsArray[$i]->name} kosong");
+                return redirect()->back()->with('error', "Stok kosong");
             }
         }
         if($isTransactionPossible == true){
@@ -137,7 +137,7 @@ class TransactionController extends Controller
             }
         }
         else {
-            return redirect()->back()->with('error', 'Terjadi kesalahan saat mencatat transaksi');
+            return redirect()->back()->with('error', "Stok {$ingredientsArray[$i]->name} kosong");
         }
     }
     public function show(Transaction $transaction){}

@@ -29,7 +29,7 @@
             </div>
             <div class="form-group">
                 <label for="position">Posisi : </label>
-                <select name="position" class="form-control @error('position') is-invalid @enderror" id="position">
+                <select name="position" class="custom-select @error('position') is-invalid @enderror" id="position">
                     <option value="headbar" {{ $user[0]['position'] === 'headbar' ? 'selected' : ''}}>Head Bar</option>
                     <option value="employee" {{ $user[0]['position'] === 'employee' ? 'selected' : ''}}>Employee
                     </option>

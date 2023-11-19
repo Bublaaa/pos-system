@@ -37,16 +37,36 @@
                         </div>
                         @endif
                         <!-- Temprature -->
-                        @if($tempratureAvailable->where('menu_id', $menu['id'])->count() > 2)
+                        @if($tempratureAvailable->where('menu_id', $menu['id'])->count() > 0)
+                        @php
+                        $isHotAvailable = false;
+                        $isIceAvailable = false;
+                        @endphp
+
+                        @foreach($tempratureAvailable->where('menu_id', $menu['id']) as $temperature)
+                        @if($temperature->name == "hot")
+                        @php
+                        $isHotAvailable = true;
+                        @endphp
+                        @elseif($temperature->name == "normal_ice")
+                        @php
+                        $isIceAvailable = true;
+                        @endphp
+                        @endif
+                        @endforeach
                         <label for="tempratureAvailable">Suhu</label>
                         <div class="row" id="tempratureAvailable">
+                            @if($isHotAvailable)
                             <div class="col-12 col-md-6">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="temprature" id="hot" value="hot"
                                         checked>
                                     <label class="form-check-label" for="hot">Panas</label>
+
                                 </div>
                             </div>
+                            @endif
+                            @if($isIceAvailable)
                             <div class="col-12 col-md-6">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="temprature" id="iced"
@@ -54,6 +74,7 @@
                                     <label class="form-check-label" for="iced">Dingin</label>
                                 </div>
                             </div>
+                            @endif
                         </div>
                         @endif
 
