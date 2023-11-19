@@ -127,6 +127,7 @@ class AttendanceController extends Controller
                     ->encode('jpg', 80); // Adjust the quality as needed
                 $size = strlen($compressedImage->__toString());
             } while ($size > $maxSize);
+            $filename = uniqid() . '.' . $image->getClientOriginalExtension();
             // Save the image to the storage directory
             Storage::disk('public')->put('attendance/' . $filename, $compressedImage->__toString());
 
