@@ -121,7 +121,8 @@ class AttendanceController extends Controller
         if ($request->hasFile('image')) {
 
         $image = $request->file('image');
-        $compressedImage = Image::make($image)->resize(800, 400)->encode('jpg', 80);
+        $compressedImage = Image::make($image)->resize(800, null, function ($constraint) {$constraint->aspectRatio();})
+        ->encode('jpg', 80);
         $filename = uniqid() . '.' . $image->getClientOriginalExtension();
         Storage::put('attendance/' . $filename, $compressedImage->stream());
         // $image_path = $compressedImage
