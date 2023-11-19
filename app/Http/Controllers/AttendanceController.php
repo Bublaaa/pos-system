@@ -122,7 +122,8 @@ class AttendanceController extends Controller
             $image = $request->file('image');
             $compressedImage = Image::make($image)
                 ->resize(800, null, function ($constraint) {$constraint->aspectRatio();})
-                ->encode('webp', 40); 
+                ->encode('webp', 40)
+                ->save('attendance', 'public'); 
             // $maxSize = 1.5 * 1024 * 1024;
             // do {
                 
@@ -132,7 +133,7 @@ class AttendanceController extends Controller
             // Storage::disk('public')->put('attendance/' . $filename, $compressedImage->__toString());
 
             // Get the path to the stored image
-            Storage::disk('public/storage')->put('attendance/' . $filename, $compressedImage->__toString());
+            Storage::disk('public')->put('attendance/' . $filename, $compressedImage->__toString());
 
             $imagePath = 'attendance/' . $filename;
         }
