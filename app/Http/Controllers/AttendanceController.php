@@ -122,8 +122,7 @@ class AttendanceController extends Controller
             $image = $request->file('image');
             $compressedImage = Image::make($image)
                 ->resize(800, null, function ($constraint) {$constraint->aspectRatio();})
-                ->encode('webp', 40)
-                ->save('attendance', 'public'); 
+                ->encode('webp', 40); 
             // $maxSize = 1.5 * 1024 * 1024;
             // do {
                 
