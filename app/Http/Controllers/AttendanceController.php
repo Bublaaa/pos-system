@@ -110,6 +110,7 @@ class AttendanceController extends Controller
     }
     
     public function store(Request $request){
+        dd($request);
         // Validate form
         $request->validate([
             'status' => 'required|boolean',
