@@ -6,6 +6,7 @@ use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Intervention\Image\Facades\Image;
 use Illuminate\Http\Request;
 use App\Models\Attendance;
 use App\Models\User;
@@ -67,18 +68,15 @@ class AttendanceController extends Controller
             ->groupBy(function($date) {
                 return Carbon::parse($date->created_at)->format('m'); // grouping by month and day
             });
-
+            
         $allUserAttendanceThisMonth = $allAttendanceData->groupBy('name');
 
         $attendances = DB::table('attendances')
-            ->select(
-                DB::raw('MONTH(created_at) as month'),
-                'name',
-                DB::raw('COUNT(*) as total_attendances')
-            )
-            ->where('status',1)
-            ->groupBy(DB::raw('MONTH(created_at)'), 'name')
+            ->select(DB::raw('EXTRACT(MONTH FROM created_at) as month'), 'name', DB::raw('COUNT(*) as total_attendances'))
+            ->where('status', 1)
+            ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'), 'name')
             ->get();
+
 
         // Organize data into a nested array
         $groupedData = [];
@@ -102,12 +100,15 @@ class AttendanceController extends Controller
         ]);
     }
     public function create(Request $request){
-        // dd($request->ip());
-        // $userIP = '	182.1.237.36';
+        // $userIP = '10.1.63.70';
         // $userIP = $request->ip();
+
         // $location = Location::get($userIP);
+        // dd($location);
+
         return view('../layouts/contents/employeeAttendance');
     }
+    
     public function store(Request $request){
         // Validate form
         $request->validate([
@@ -118,7 +119,13 @@ class AttendanceController extends Controller
         ]);
         $image_path = '';
         if ($request->hasFile('image')) {
-            $image_path = $request->file('image')->store('attendance', 'public');
+
+        $image = $request->file('image');
+        $compressedImage = Image::make($image)->resize(800, 400)->encode('jpg', 80);
+        $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+        Storage::put('attendance/' . $filename, $compressedImage->stream());
+        // $image_path = $compressedImage
+        //     ->store('attendance', 'public');
         }
         // Get the logged in user
         $user = Auth::user();
@@ -210,12 +217,10 @@ class AttendanceController extends Controller
         }
     }
     public function destroy(Attendance $attendance){
-        // Delete saved menu image
         if ($attendance->image) {
             Storage::delete($attendance->image);
         }
-        // Delete menu row
         $attendance->delete();
-        return redirect()->back()->with('success', 'Sukses delete menu.');
+        return redirect()->back()->with('success', 'Sukses delete presensi.');
     }
 }
