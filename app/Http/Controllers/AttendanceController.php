@@ -119,15 +119,19 @@ class AttendanceController extends Controller
         ]);
         $image_path = '';
         if ($request->hasFile('image')) {
-        $image = $request->file('image');
-        $maxSize = 1.5 * 1024 * 1024;
-        do {
-            $compressedImage = Image::make($image)
-                ->resize(800, null, function ($constraint) {$constraint->aspectRatio();})
-                ->encode('jpg', 80); // Adjust the quality as needed
-            $size = strlen($compressedImage->__toString());
-        } while ($size > $maxSize);
-        $imagePath = $compressedImage->store('attendance', 'public');
+            $image = $request->file('image');
+            $maxSize = 1.5 * 1024 * 1024;
+            do {
+                $compressedImage = Image::make($image)
+                    ->resize(800, null, function ($constraint) {$constraint->aspectRatio();})
+                    ->encode('jpg', 80); // Adjust the quality as needed
+                $size = strlen($compressedImage->__toString());
+            } while ($size > $maxSize);
+            // Save the image to the storage directory
+            Storage::disk('public')->put('attendance/' . $filename, $compressedImage->__toString());
+
+            // Get the path to the stored image
+            $imagePath = 'attendance/' . $filename;
         }
         // Get the logged in user
         $user = Auth::user();
