@@ -134,7 +134,7 @@ class AttendanceController extends Controller
             // Get the path to the stored image
             Storage::disk('public')->put('attendance/' . $filename, $compressedImage->__toString());
 
-            $imagePath = 'attendance/' . $filename;
+            $image_path = 'attendance/' . $filename;
         }
         // Get the logged in user
         $user = Auth::user();
