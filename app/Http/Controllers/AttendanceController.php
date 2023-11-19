@@ -123,10 +123,9 @@ class AttendanceController extends Controller
         $image = $request->file('image');
         $compressedImage = Image::make($image)->resize(800, null, function ($constraint) {$constraint->aspectRatio();})
         ->encode('jpg', 40);
-        // $filename = uniqid() . '.' . $image->getClientOriginalExtension();
-        // Storage::put('attendance/' . $filename, $compressedImage->stream());
-        $image_path = $compressedImage
-            ->store('attendance', 'public');
+        $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+        Storage::put('attendance/' . $filename, $compressedImage->stream());
+        $image_path = $filename;
         }
         // Get the logged in user
         $user = Auth::user();
