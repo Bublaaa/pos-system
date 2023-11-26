@@ -2,15 +2,22 @@
 
 @section('content')
 <div class="container">
-    <h2>Edit Akun Karyawan</h2>
+    <h2>Akun Karyawan</h2>
     <div class="row">
         @if($users->count()>0)
         @foreach($users as $user)
         <div class="col-12 col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-9">
+                    <div class="row justify-content-center">
+                        @if($user->profile_image)
+                        <div class="col-md-3">
+                            <img id="profileImagePreview" src="{{ asset('storage/'. $user->profile_image) }}"
+                                class="rounded-circle mb-3 "
+                                style="min-width: 75px;max-width: 76px; max-height: 75px; object-fit: cover;object-position: center center;" />
+                        </div>
+                        @endif
+                        <div class="col-md-6">
                             <h5>{{$user->name}} - {{ucwords($user->position)}}</h5>
                             <p>{{$user->username}}</p>
                         </div>

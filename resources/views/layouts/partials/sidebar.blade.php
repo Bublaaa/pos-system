@@ -1,4 +1,4 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-secondary elevation-4">
     <!-- Icon & App Name -->
     <a href="" class="brand-link">
         <img src="{{ asset('images/logo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
@@ -19,7 +19,7 @@
                     <a href="{{ route('dashboard.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                            Dashboard
+                            Transaksi
                         </p>
                     </a>
                 </li>
@@ -35,15 +35,20 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{{ route('position.index')}}" class="nav-link">
+                                <p>Edit Posisi</p>
+                            </a>
+                        </li>
                         <!-- Tambah karyawan -->
                         <li class="nav-item">
-                            <a href="{{ route('register')}}" class="nav-link">
+                            <a href="{{ route('register-new-employee')}}" class="nav-link">
                                 <p>Tambah Akun Karyawan</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('user.index')}}" class="nav-link">
-                                <p>Edit Akun Karyawan</p>
+                                <p>Akun Karyawan</p>
                             </a>
                         </li>
                         <li class="nav-item">

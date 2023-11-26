@@ -19,12 +19,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($allUserAttendance as $attendance)
+                        @foreach($attendancesByMonth as $attendance)
                         <tr>
                             <td>{{ \Carbon\Carbon::parse($attendance->created_at)->format('d-M-y  H:i') }}
                             </td>
-                            <td style="{{ $attendance->status === 1 ? 'color:green;' : 'color:red;' }}">
-                                {{ $attendance->status == 1 ? 'Hadir' : 'Absen' }}</td>
+                            <td
+                                style="{{ $attendance->status === "hadir" ? 'color:green;' : ($attendance->status === "terlambat" ? 'color: #FFA500;' : 'color:red;') }}">
+                                {{ ucwords($attendance->status) }}</td>
                             <td>
                                 @if($attendance->image)
                                 <img class="product-img" src="{{ Storage::url($attendance->image) }}"

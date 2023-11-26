@@ -12,6 +12,7 @@ use App\Http\Controllers\StockController;
 use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ShiftController;
+use App\Http\Controllers\PositionController;
 
 Auth::routes();
 
@@ -26,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
         }
     });
 });
+
 Route::middleware(['auth'])->group(function () {
     Route::resource('dashboard', TransactionController::class);
     Route::resource('attendance', AttendanceController::class);
@@ -37,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
 // Routes for owner
 Route::prefix('owner')->middleware(['auth',OwnerMiddleware::class])->group(function () {
     Route::resource('menu', MenuController::class);
+    Route::resource('position', PositionController::class);
     Route::resource('ingredient', IngredientController::class);
     Route::resource('salary', SalaryController::class);
     Route::get('/register', [App\Http\Controllers\OwnerController::class, 'register'])->name('register-new-employee');

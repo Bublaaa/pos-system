@@ -6,10 +6,11 @@
 <form action="{{ route('salary.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <h2>Pembayaran Gaji : {{ $userData->name }}</h2>
+    <h4>Rekening : {{ $userData->bank_name }} - {{ $userData->account_number }}</h4>
     <input type="hidden" name="userName" id="userName" value="{{ $userData->name }}">
     <input type="hidden" name="attendanceCount" id="attendanceCount" value="{{ $userAttendanceData->count() }}">
     <input type="hidden" name="totalDaysInMonth" id="totalDaysInMonth" value="{{ $totalDaysInMonth }}">
-    <div class="container p-3">
+    <div class="container">
         <div class="card">
             <div class="card-body">
                 <h2>{{ $currentMonth }}</h2>
@@ -19,8 +20,9 @@
                             <label for="basicSalary">Gaji Pokok</label>
                             <input type="number" name="basicSalary"
                                 class="form-control @error('basicSalary') is-invalid @enderror" id="basicSalary"
-                                placeholder="Jumlah gaji pokok" value="{{ old('basicSalary') }}" inputmode="numeric"
-                                max="10000000" min="1" required=true>
+                                placeholder="Jumlah gaji pokok"
+                                value="{{ $userData->basic_salary !== null ? $userData->basic_salary : old('basicSalary') }}"
+                                inputmode="numeric" max="10000000" min="1" required=true>
                             @error('basicSalary')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

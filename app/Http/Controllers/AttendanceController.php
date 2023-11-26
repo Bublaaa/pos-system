@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 use Illuminate\Http\Request;
+use App\Http\Controllers\DateTime;
 use App\Models\Attendance;
 use App\Models\User;
 use App\Models\Shift;
@@ -15,8 +16,7 @@ use Carbon\Carbon;
 
 class AttendanceController extends Controller
 {
-    public function index()
-    {
+    public function index(){
         $user = Auth::user();
         $firstDayOfMonth = Carbon::now()->startOfMonth();
         $lastDayOfMonth = Carbon::now()->endOfMonth();
@@ -59,7 +59,7 @@ class AttendanceController extends Controller
         $todayShiftData = Shift::where('day_name',$day_name)
             ->get();
 
-        $allAttendanceData = Attendance::whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])
+        $allUserAttendanceThisMonth = Attendance::whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])
             ->orderBy('created_at', 'desc')
             ->get();
         
@@ -69,14 +69,37 @@ class AttendanceController extends Controller
                 return Carbon::parse($date->created_at)->format('m'); // grouping by month and day
             });
             
-        $allUserAttendanceThisMonth = $allAttendanceData->groupBy('name');
-
         $attendances = DB::table('attendances')
             ->select(DB::raw('EXTRACT(MONTH FROM created_at) as month'), 'name', DB::raw('COUNT(*) as total_attendances'))
-            ->where('status', 1)
+            ->where(function ($query) {
+                $query->where('status', 'hadir')
+                        ->orWhere('status', 'terlambat');
+            })
             ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'), 'name')
             ->get();
-
+        $attendancesByMonth = DB::table('attendances')
+            ->select(
+                DB::raw('DATE_FORMAT(created_at, "%M") as month'), // Format the month name
+                'name',
+                'status',
+                'image', 
+                'description', 
+                'latitude',
+                'longitude', 
+                'created_at'  
+            )
+            ->groupBy(
+                DB::raw('DATE_FORMAT(created_at, "%M")'), // Group by the formatted month name
+                'name',
+                'status',
+                'image', 
+                'description', 
+                'latitude',
+                'longitude', 
+                'created_at'
+            )
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         // Organize data into a nested array
         $groupedData = [];
@@ -88,10 +111,10 @@ class AttendanceController extends Controller
             // Group by month
             $groupedData[$month][$employeeName] = $totalAttendances;
         }
-        
+        // dd($attendancesByMonth);
         return view('../layouts/contents/attendanceReport', [
             'totalDaysInMonth' => $totalDaysInMonth,
-            'allUserAttendanceThisMonth' => $allUserAttendanceThisMonth,
+            'attendancesByMonth' => $attendancesByMonth,
             'groupedData' => $groupedData,
             'todayAttendanceData' => $todayAttendanceData,
             'todayShiftData' => $todayShiftData,
@@ -110,119 +133,140 @@ class AttendanceController extends Controller
     }
     
     public function store(Request $request){
-        dd($request);
-        // Validate form
-        $request->validate([
-            'status' => 'required|boolean',
-            'latitude' => 'required',
-            'longitude' => 'required',
-
-        ]);
-        $image_path = '';
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $compressedImage = Image::make($image)
-                ->resize(400, null, function ($constraint) {$constraint->aspectRatio();})
-                ->encode('webp', 40); 
-            // $maxSize = 1.5 * 1024 * 1024;
-            // do {
-                
-            //     $size = strlen($compressedImage->__toString());
-            // } while ($size > $maxSize);
-            $filename = uniqid() . '.' . $image->getClientOriginalExtension();
-            // Storage::disk('public')->put('attendance/' . $filename, $compressedImage->__toString());
-
-            // Get the path to the stored image
-            Storage::disk('public')->put('attendance/' . $filename, $compressedImage->__toString());
-
-            $image_path = 'attendance/' . $filename;
-        }
         // Get the logged in user
         $user = Auth::user();
         // Get today date
         $today = now();
         $todayDayName = $today->format('l');
-        // Translate day from table into indonesian
         switch ($todayDayName) {
-        case 'Monday':
-            $day_name = 'Senin';
-            break;
-        case 'Tuesday':
-            $day_name = 'Selasa';
-            break;
-        case 'Wednesday':
-            $day_name = 'Rabu';
-            break;
-        case 'Thursday':
-            $day_name = 'Kamis';
-            break;
-        case 'Friday':
-            $day_name = 'Jumat';
-            break;
-        case 'Saturday':
-            $day_name = 'Sabtu';
-            break;
-        case 'Sunday':
-            $day_name = 'Minggu';
-            break;
-        default:
-            $day_name = 'Invalid day';
-            break;
+            case 'Monday':
+                $day_name = 'Senin';
+                break;
+            case 'Tuesday':
+                $day_name = 'Selasa';
+                break;
+            case 'Wednesday':
+                $day_name = 'Rabu';
+                break;
+            case 'Thursday':
+                $day_name = 'Kamis';
+                break;
+            case 'Friday':
+                $day_name = 'Jumat';
+                break;
+            case 'Saturday':
+                $day_name = 'Sabtu';
+                break;
+            case 'Sunday':
+                $day_name = 'Minggu';
+                break;
+            default:
+                $day_name = 'Invalid day';
+                break;
         }
         //Get the user today shift data
         $userShift = Shift::where('employee_name', $user->name)->where('day_name',$day_name)->get();
+        // get the user attendance data today
+        $entriesToday = Attendance::where('name', $user->name)
+            ->whereDate('created_at', $today->format('Y-m-d'))
+            ->count();
         // Shift empty condition
         if($userShift->count() == 0) {
             return redirect()->back()->with('error','Shift belum terdaftar, hubungi Head Bar untuk mendaftarkan shift');
         }
         else {
-            //Change start_time from shift data to Carbon type
-            $startTimeCarbon = Carbon::createFromFormat('H:i:s', $userShift[0]->start_time);
-            // Get time difference in hours and minutes
-            $timeDifference = $today->diffInMinutes($startTimeCarbon);
-            $minutesDifference = $timeDifference % 60; 
-            $hoursDifference = floor($timeDifference / 60);
-            
-            // Late and ealry condition
-            if ($today->isBefore($startTimeCarbon)) {
-                $attendDescription = 'Absen lebih awal ' . $hoursDifference . ' Jam ' . $minutesDifference . ' Menit';
-            } 
-            elseif ($today->isAfter($startTimeCarbon)) {
-                $attendDescription = 'Terlambat absen ' . $hoursDifference . ' Jam ' . $minutesDifference . ' Menit';
+            $status='';
+            $description = '';
+            $image_path = '';
+            if($request->attendanceStatus){
+                if ($request->hasFile('attendanceImage')) {
+                    $image = $request->file('attendanceImage');
+                    $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+                    $maxSize = 1.5 * 1024 * 1024;
+                    do {
+                        $compressedImage = Image::make($image)
+                            ->resize(800, null, function ($constraint) {$constraint->aspectRatio();})
+                            ->encode('webp', 40);
+                        $size = strlen($compressedImage->__toString());
+                    } while ($size > $maxSize);
+                    Storage::disk('public')->put('attendance/' . $filename, $compressedImage->__toString());
+                    $image_path = 'attendance/' . $filename;
+                }
+                $startTimeCarbon = Carbon::createFromFormat('H:i:s', $userShift[0]->start_time);
+                $timeDifference = $today->diffInMinutes($startTimeCarbon);
+                $minutesDifference = $timeDifference % 60; 
+                $hoursDifference = floor($timeDifference / 60);
 
-            } else {
-                $attendDescription = 'Berhasil absen tepat waktu';
-            }
-            // get the user attendance data today
-            $entriesToday = Attendance::where('name', $user->name)
-                ->whereDate('created_at', $today->format('Y-m-d'))
-                ->count();
-            // Attendance once a day
-            if ($entriesToday == 0) {
-                $description = '';
-                if($request->status == 1){
-                    $description = $attendDescription;
+                // Late and ealry condition
+                if ($today->isBefore($startTimeCarbon)) {
+                    $status = "hadir";
+                    $description = 'Absen lebih awal ' . $hoursDifference . ' Jam ' . $minutesDifference . ' Menit';
+                } 
+                elseif ($today->isAfter($startTimeCarbon)) {
+                    $status = "terlambat";
+                    $description = 'Terlambat absen ' . $hoursDifference . ' Jam ' . $minutesDifference . ' Menit';
+
+                } else {
+                    $status = "hadir";
+                    $description = 'Berhasil absen tepat waktu';
+                }
+                if ($entriesToday == 0) {
+                    $attendance = Attendance::create([  
+                        'name' => $user->name,
+                        'description' => $description,
+                        'image' => $image_path,
+                        'status' => $status,
+                        'latitude' =>$request->latitude,
+                        'longitude' =>$request->longitude,
+                    ]);
+                    if (!$attendance) {
+                        return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan presensi.');
+                    }
+                    else{
+                        return redirect()->back()->with('success', 'Presensi Sukses');
+                    }
                 }
                 else {
-                    $description = $request->description;
+                    return redirect()->back()->with('error', 'Anda sudah presensi hari ini.');
                 }
-                $attendance = Attendance::create([  
-                    'name' => $user->name,
-                    'description' => $description,
-                    'image' => $image_path,
-                    'status' => $request->status,
-                    'latitude' =>$request->latitude,
-                    'longitude' =>$request->longitude,
-                ]);
+            }
+            elseif($request->absentStatus){
+                if ($request->hasFile('absentImage')) {
+                    $image = $request->file('absentImage');
+                    $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+                    $maxSize = 1.5 * 1024 * 1024;
+                    do {
+                        $compressedImage = Image::make($image)
+                            ->resize(800, null, function ($constraint) {$constraint->aspectRatio();})
+                            ->encode('webp', 40);
+                        $size = strlen($compressedImage->__toString());
+                    } while ($size > $maxSize);
+                    Storage::disk('public')->put('attendance/' . $filename, $compressedImage->__toString());
+                    $image_path = 'attendance/' . $filename;
+                }
+                $status='ijin';
+                $description = $request->description;
+                $startDateCarbon = Carbon::createFromFormat('Y-m-d', $request->startDate);
+                $endDateCarbon = Carbon::createFromFormat('Y-m-d', $request->endDate);
+                $timeDifference = $startDateCarbon->diff($endDateCarbon);
+                $daysDifference = $timeDifference->days;
+                for ($day = 0; $day <= $daysDifference; $day++) {
+                    $attendance = Attendance::create([  
+                        'name' => $user->name,
+                        'description' => $description,
+                        'image' => $image_path,
+                        'status' => $status,
+                        'latitude' =>$request->absentLatitude,
+                        'longitude' =>$request->absentLongitude,
+                        'created_at' => $startDateCarbon->addDay($day),
+                    ]);
+                }
                 if (!$attendance) {
                     return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan absensi.');
                 }
                 else{
-                    return redirect()->back()->with('success', 'Absen sukses');
+                    return redirect()->back()->with('success', 'Absensi sukses');
                 }
-            }
-            else {
-                return redirect()->back()->with('error', 'Anda sudah absen hari ini.');
             }
         }
     }

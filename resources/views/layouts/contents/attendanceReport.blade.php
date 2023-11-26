@@ -36,14 +36,11 @@
                         @endphp
                         @if($shiftData->name == 'siang')
                         <div
-                            class="{{ $todayAttendance->status === 1 ? 'alert alert-success' : 'alert alert-danger' }}">
+                            class="{{ $todayAttendance->status === 'hadir' ? 'alert alert-success' : ($todayAttendance->status === 'terlambat' ? 'alert alert-warning' : 'alert alert-danger') }}">
                             <div class="row">
                                 <div class="col">
                                     <h5>{{$shiftData->employee_name}} -
-                                        {{$todayAttendance->status === 1 ? 'Hadir' : 'Absen'}}</h5>
-                                    <p>Shift dimulai pukul
-                                        {{ \Carbon\Carbon::createFromFormat('H:i:s', $shiftData->start_time) ->format('H:i') }}
-                                    </p>
+                                        {{ucwords($todayAttendance->status)}}</h5>
                                 </div>
                             </div>
                             <p>{{$todayAttendance->description}}</p>
@@ -59,15 +56,15 @@
                         @endphp
                         @if($shiftData->name == 'sore')
                         <div
-                            class="{{ $todayAttendance->status === 1 ? 'alert alert-success' : 'alert alert-danger' }}">
+                            class="{{ $todayAttendance->status === 'hadir' ? 'alert alert-success' : ($todayAttendance->status === 'terlambat' ? 'alert alert-warning' : 'alert alert-danger') }}">
                             <div class="row">
-                                <div class="col">
-                                    <h5>{{$shiftData->employee_name}} -
-                                        {{$todayAttendance->status === 1 ? 'Hadir' : 'Absen'}}</h5>
-                                    <p>Shift dimulai pukul
-                                        {{ \Carbon\Carbon::createFromFormat('H:i:s', $shiftData->start_time) ->format('H:i') }}
-                                    </p>
+                                <div class="row">
+                                    <div class="col">
+                                        <h5>{{$shiftData->employee_name}} -
+                                            {{ucwords($todayAttendance->status)}}</h5>
+                                    </div>
                                 </div>
+                                <p>{{$todayAttendance->description}}</p>
                             </div>
                             <p>{{$todayAttendance->description}}</p>
                         </div>
@@ -115,11 +112,15 @@
                         @endforeach
                     </div>
                 </div>
+
                 @endforeach
-                @foreach($allUserAttendanceThisMonth as $userName => $allUserAttendance)
-                @include('layouts/partials/attendanceDetailModal', ['allUserAttendanceThisMonth' =>
-                $allUserAttendanceThisMonth])
+                <!-- @foreach($groupedData as $month => $employeeName)
+                @foreach($employeeName as $name)
+                @include('layouts/partials/attendanceDetailModal', ['attendancesByMonth' =>
+                $attendancesByMonth->where('month', $month),'userName'=>
+                $name])
                 @endforeach
+                @endforeach -->
                 @else
                 <div id="alertContainer" class="alert alert-primary">
                     Belum ada presensi yang terdaftar.
@@ -155,9 +156,11 @@
                                     </div>
                                     <div class="col-12 col-md-6">
                                         <h5>{{ $attendance->name }}</h5>
-                                        <p style="{{ $attendance->status === 1 ? 'color:green;' : 'color:red;' }}">
-                                            {{ $attendance->status == 1 ? 'Hadir' : 'Absen' }}</p>
-                                        <p>Pukul: {{ \Carbon\Carbon::parse($attendance->created_at)->format('H:i') }}
+                                        <p
+                                            style="{{ $attendance->status === "hadir" ? 'color:green;' : ($attendance->status === "terlambat" ? 'color: #FFA500;' : 'color:red;') }}">
+                                            {{ ucwords($attendance->status) }}</p>
+                                        <p>Presensi Pukul :
+                                            {{ \Carbon\Carbon::parse($attendance->created_at)->format('H:i') }}
                                         </p>
                                         <a href="https://www.google.com/maps/search/?api=1&query={{ $attendance->latitude }},{{ $attendance->longitude }}"
                                             target="_blank" type="button" class="btn btn-primary">

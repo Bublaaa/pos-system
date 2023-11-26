@@ -9,6 +9,7 @@ use App\Models\Transaction;
 use App\Models\Stock;
 use App\Models\User;
 use App\Models\Salary;
+use App\Models\Position;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
@@ -18,9 +19,11 @@ use PDF;
 
 class OwnerController extends Controller
 {
-    public function register(){
-        return view('../auth.register'); 
+    public function register() {
+        $positionData = Position::get();
+        return view('auth.register')->with(['positionData' => $positionData]);
     }
+
     public function printReceipt($id)
     {
         try {

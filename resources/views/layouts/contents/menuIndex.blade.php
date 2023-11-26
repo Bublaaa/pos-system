@@ -3,7 +3,7 @@
 @section('content')
 <div class="wrapper">
     <section class="content">
-        <h2>Edit Menu</h2>
+        <h2>Daftar Menu</h2>
         <div class="row">
             @foreach ($menus as $menu)
             <div class="col-md-3 col-6 ">
