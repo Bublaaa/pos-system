@@ -25,7 +25,7 @@ class StockController extends Controller
             ->get();
         $boughtStocks = Stock::get();
         $overAllStockData = DB::table('stocks')
-            ->select('name', 'unit', DB::raw('SUM(CASE WHEN kind = "pembelian" THEN quantity ELSE -quantity END) AS Total'))
+            ->select('name', 'unit', DB::raw('SUM(CASE WHEN kind = \'pembelian\' THEN quantity ELSE -quantity END) AS Total'))
             ->groupBy('name', 'unit')
             ->get();
         return view('../layouts/contents/stockReport') ->with([
