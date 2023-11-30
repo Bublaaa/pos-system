@@ -13,6 +13,7 @@ use App\Http\Controllers\SalaryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\OwnerController;
 
 Auth::routes();
 
@@ -43,7 +44,7 @@ Route::prefix('owner')->middleware(['auth',OwnerMiddleware::class])->group(funct
     Route::resource('ingredient', IngredientController::class);
     Route::resource('salary', SalaryController::class);
     Route::get('/register', [App\Http\Controllers\OwnerController::class, 'register'])->name('register-new-employee');
-    Route::get('/salary-payment/{userName}', [App\Http\Controllers\OwnerController::class, 'salaryPayment'])->name('salary-payment');
+    Route::get('/salary-payment/{userName}/{attendancePercentage}', [App\Http\Controllers\OwnerController::class, 'salaryPayment'])->name('salary-payment');
     Route::post('/print-receipt/{id}', [App\Http\Controllers\OwnerController::class, 'printReceipt'])->name('print-receipt');
 });
 

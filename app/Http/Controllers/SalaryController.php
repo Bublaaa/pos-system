@@ -45,7 +45,7 @@ class SalaryController extends Controller
         $request->validate([
             'userName' => 'required|string|max:255',
             'basicSalary' => 'required',
-            'attendanceCount' => 'required',
+            'attendancePercentage' => 'required',
             'totalDaysInMonth' => 'required',
             'salary' => 'required',
         ]);
@@ -62,7 +62,7 @@ class SalaryController extends Controller
         else {
             $attendanceCount = (int) $request->attendanceCount;
             $totalDaysInMonth = (int) $request->totalDaysInMonth;
-            $attendancePercentage = round(($request->attendanceCount / $request->totalDaysInMonth) * 100);
+            $attendancePercentage = $request->attendancePercentage;
             $salary = Salary::create([  
                 'name' => $request->userName,
                 'basic_salary' => $request->basicSalary,

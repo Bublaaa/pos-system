@@ -8,7 +8,7 @@
     <h2>Pembayaran Gaji : {{ $userData->name }}</h2>
     <h4>Rekening : {{ $userData->bank_name }} - {{ $userData->account_number }}</h4>
     <input type="hidden" name="userName" id="userName" value="{{ $userData->name }}">
-    <input type="hidden" name="attendanceCount" id="attendanceCount" value="{{ $userAttendanceData->count() }}">
+    <input type="hidden" name="attendancePercentage" id="attendancePercentage" value="{{ $attendancePercentage }}">
     <input type="hidden" name="totalDaysInMonth" id="totalDaysInMonth" value="{{ $totalDaysInMonth }}">
     <div class="container">
         <div class="card">
@@ -35,7 +35,7 @@
                         <div class="form-group">
                             <label for="attendancePercentage">Persentasi kehadiran</label>
                             <h6 name="attendancePercentage" id="attendancePercentage">
-                                {{ round(($userAttendanceData->count() / $totalDaysInMonth) * 100) }}%</h6>
+                                {{ $attendancePercentage }}%</h6>
                         </div>
                     </div>
                     <div class="col-4">
@@ -65,13 +65,25 @@
 $('#basicSalary').on('input', function() {
     updateSalary();
 });
+$('#salary').on('input', function() {
+    updateSalaryOnInput();
+});
+
+function updateSalaryOnInput() {
+    const salaryText = document.getElementById('formattedSalary');
+
+    var salary = parseFloat($('#salary').val()) || 0;
+    salaryText.textContent = `${formatCurrency(salary)}`;
+
+    // $('#salary').val(calculatedSalary);
+}
 
 function updateSalary() {
     const basicSalaryText = document.getElementById('formattedBasicSalary');
     const salaryText = document.getElementById('formattedSalary');
 
     var basicSalary = parseFloat($('#basicSalary').val()) || 0;
-    var attendancePercentage = parseFloat('{{ round(($userAttendanceData->count() / $totalDaysInMonth) * 100) }}');
+    var attendancePercentage = parseFloat('{{ $attendancePercentage}}');
     var calculatedSalary = basicSalary * (attendancePercentage / 100);
 
     // Update the content of basicSalaryText and salaryText dynamically

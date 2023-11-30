@@ -1,6 +1,18 @@
 @extends('layouts.ownerView')
 
 @section('content')
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js">
+    </script>
+</head>
 <div class="container">
     <h2>Laporan Presensi</h2>
     <!-- Tabs link -->
@@ -66,7 +78,6 @@
                                 </div>
                                 <p>{{$todayAttendance->description}}</p>
                             </div>
-                            <p>{{$todayAttendance->description}}</p>
                         </div>
                         @endif
                         @endforeach
@@ -103,8 +114,8 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <a href="{{ route('salary-payment', ['userName' => $employeeName]) }}" type="button"
-                                        class="btn btn-primary">Bayar
+                                    <a href="{{ route('salary-payment', ['userName' => $employeeName,'attendancePercentage' => round(($totalAttendances / $totalDaysInMonth) * 100)]) }}"
+                                        type="button" class="btn btn-primary">Bayar
                                         Gaji</a>
                                 </div>
                             </div>

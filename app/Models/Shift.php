@@ -13,5 +13,6 @@ class Shift extends Model
         'start_time',
         'day_name',
         'employee_name',
+        'created_at',
     ];
 }

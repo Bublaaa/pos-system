@@ -23,6 +23,7 @@ class OwnerController extends Controller
         $positionData = Position::get();
         return view('auth.register')->with(['positionData' => $positionData]);
     }
+    
 
     public function printReceipt($id)
     {
@@ -90,7 +91,7 @@ class OwnerController extends Controller
         return capitalizeWords($convertedAmount . " Rupiah");
     }
 
-    public function salaryPayment($userName){
+    public function salaryPayment($userName,$attendancePercentage){
         $firstDayOfMonth = Carbon::now()->startOfMonth();
         $lastDayOfMonth = Carbon::now()->endOfMonth();
         
@@ -109,7 +110,7 @@ class OwnerController extends Controller
             'userData' => $userData,
             'ownerData' => $ownerData, 
             'totalDaysInMonth' => $totalDaysInMonth, 
-            'userAttendanceData' => $userAttendanceData
+            'attendancePercentage' => $attendancePercentage
         ]);
     }
 }
