@@ -13,26 +13,28 @@ use Illuminate\Http\Request;
 class StockController extends Controller
 {
     public function index()
-    {
-        $stockDataByKind = DB::table('stocks')
-            ->select('stocks.kind', 'stocks.name', DB::raw('SUM(CAST(stocks.quantity AS DECIMAL)) as total'), 'stocks.unit', 'transactions.user_name', 'transactions.created_at')
-            ->join('transactions', 'stocks.transaction_id', '=', DB::raw('CONVERT(transactions.id, CHAR)'))
-            ->groupBy('stocks.kind', 'stocks.name', 'stocks.unit', 'transactions.user_name', 'transactions.created_at')
-            ->orderBy('transactions.created_at', 'desc')
-            ->get();
+    {   
+        $transactions = Transaction::get();
+        $stocks = Stock::get();
+        $menus = Menu::get();
         $buyTransaction = Transaction::where('kind','pembelian')
             ->orderBy('created_at', 'desc')
             ->get();
-        $boughtStocks = Stock::get();
         $overAllStockData = DB::table('stocks')
             ->select('name', 'unit', DB::raw('SUM(CASE WHEN kind = \'pembelian\' THEN quantity ELSE -quantity END) AS Total'))
             ->groupBy('name', 'unit')
             ->get();
+        $sortedStock = Stock::select('transaction_id', 'name','unit', \DB::raw('SUM(quantity) as total_quantity'))
+            ->groupBy('transaction_id', 'name','unit')
+            ->get();
+        // dd($transactions);
         return view('../layouts/contents/stockReport') ->with([
             'overAllStockData' => $overAllStockData,
-            'stockDataByKind' => $stockDataByKind,
             'buyTransaction' => $buyTransaction,
-            'boughtStocks' => $boughtStocks,
+            'menus' => $menus,
+            'transactions' => $transactions,
+            'stocks' => $stocks,
+            'sortedStock' => $sortedStock,
         ]);
     }
     public function create()
@@ -73,5 +75,10 @@ class StockController extends Controller
     public function show(Stock $stock){}
     public function edit(Stock $stock){}
     public function update(Request $request, Stock $stock){}
-    public function destroy(Stock $stock){}
+    public function destroy($id){
+        Stock::where('transaction_id', $id)->delete();
+        Transaction::where('id', $id)->delete();
+
+        return redirect()->back()->with('success', 'Sukses hapus transaksi.');
+    }
 }

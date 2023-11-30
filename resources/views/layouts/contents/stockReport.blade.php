@@ -63,31 +63,121 @@
             <!-- All transaction -->
             <div class="tab-pane fade" id="kindContent">
                 <h3>Laporan stok tiap transaksi</h3>
-                @if($stockDataByKind->count() > 0)
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <td>Jenis Transaksi</td>
-                            <td>Oleh</td>
-                            <td>Nama Bahan</td>
-                            <td>Jumlah</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($stockDataByKind as $stock)
-                        <tr>
-                            <td>
-                                <p style="{{ $stock->kind === 'pembelian' ? 'color:green;' : 'color:red;' }}">
-                                    {{ $stock->kind === 'pembelian' ? 'Beli' : 'Jual' }}</p>
-                                <p>{{ \Carbon\Carbon::parse($stock->created_at)->format('d-M-y \P\u\k\u\l H:i') }}</p>
-                            </td>
-                            <td>{{ $stock->user_name }}</td>
-                            <td>{{ $stock->name }}</td>
-                            <td>{{ number_format($stock->total, 0, ',', '.') }} {{ $stock->unit }}</td>
-                        </tr>
+                @if($transactions->count() > 0)
+                @foreach ($transactions as $transaction)
+                @if($transaction->kind == 'pembelian')
+                <!-- Buy card -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-11 col-md-11">
+                                <div class="alert alert-success">
+                                    <p>{{ ucwords($transaction->kind) }}</p>
+                                </div>
+                            </div>
+                            <div class="col-1 col-md-1">
+                                <button type="button" class="btn btn-danger remove-row" data-toggle="modal"
+                                    data-target="#deleteModal{{ $transaction->id }}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <p>{{ \Carbon\Carbon::parse($transaction->created_at)->format('d-M-y \P\u\k\u\l H:i') }}
+                                </p>
+
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <p>{{ $transaction->user_name }}</p>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                @foreach($stocks->where('kind' , 'pembelian') as $stock)
+                                @if($stock->transaction_id == $transaction->id)
+                                <h5> {{ $stock->name }} {{$stock->quantity}} {{$stock->unit}} </h5>
+                                @endif
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @else
+                @php
+                $menu = $menus->where('id',$transaction->menu_id)->first();
+                @endphp
+                <!-- Sale -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-11 col-md-11">
+                                <div class="alert alert-danger">
+                                    <p>{{ ucwords($transaction->kind) }}</p>
+                                </div>
+                            </div>
+                            <div class="col-1 col-md-1">
+                                <button type="button" class="btn btn-danger remove-row" data-toggle="modal"
+                                    data-target="#deleteModal{{ $transaction->id }}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <p>{{ \Carbon\Carbon::parse($transaction->created_at)->format('d-M-y \P\u\k\u\l H:i') }}
+                                </p>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <p>{{ $transaction->user_name }}</p>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                @if($menu)
+                                <h5> {{ $transaction->quantity }} {{ $menu->name }}</h5>
+                                @if($transaction->temprature)
+                                <p>{{ $transaction->size }} - {{ $transaction->temprature }}</p>
+                                @endif
+                                @else
+                                <p>Menu sudah dihapus</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        @foreach($sortedStock->where('transaction_id',$transaction->id) as $stock)
+                        <div class="row">
+                            <div class="col-6 col-md-6">
+                                <p>{{ $stock->name }}</p>
+                            </div>
+                            <div class="col-6 col-md-6">
+                                <p>{{ $stock->total_quantity }} {{ $stock->unit }} </p>
+                            </div>
+                        </div>
                         @endforeach
-                    </tbody>
-                </table>
+                    </div>
+                </div>
+                @endif
+                <!-- delete modal -->
+                <div class="modal fade" id="deleteModal{{ $transaction->id }}" tabindex="-1" role="dialog"
+                    aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus Catatan Transaksi</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Apakah anda yakin ingin menghapus catatan transaksi ini?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <form action="{{ route('stock.destroy', $transaction->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
                 @else
                 <div id="alertContainer" class="alert alert-primary">
                     Belum ada transaksi yang tercatat.
@@ -119,7 +209,7 @@
                                         <h5>Pembelian dilakukan oleh :</h5>
                                         <p>{{$transaction->user_name}}</p>
                                         <h5>Bahan yang dibeli :</h5>
-                                        @foreach($boughtStocks as $stock)
+                                        @foreach($stocks as $stock)
                                         @if($transaction->id == $stock->transaction_id)
                                         <p>- {{$stock->name}} {{number_format($stock->quantity, 0, ',', '.')}}
                                             {{$stock->unit}}</p>
