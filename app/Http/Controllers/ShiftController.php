@@ -17,7 +17,9 @@ class ShiftController extends Controller
     public function index()
     {   
         $employees = User::where('position','!=', 'owner')->get();
-        $shifts = Shift::get();
+        $firstDayOfMonth = Carbon::now()->startOfMonth();
+        $lastDayOfMonth = Carbon::now()->endOfMonth();
+        $shifts = Shift::whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])->get();
         $now = Carbon::now();
         $totalDaysInMonth = $now->daysInMonth;
         $firstDayOfMonth = Carbon::createFromDate($now->year, $now->month, 1);
@@ -124,7 +126,7 @@ class ShiftController extends Controller
         $firstDayOfMonth = Carbon::now()->startOfMonth();
         $lastDayOfMonth = Carbon::now()->endOfMonth();
         $daysInMonth = Carbon::now()->daysInMonth;
-        $shiftData = Shift::where('employee_name', $request->userName)->get();
+        $shiftData = Shift::whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])->where('employee_name', $request->userName)->get();
         if($shiftData->count()==0){
             for($day = 0 ; $day<$daysInMonth; $day++){
                 $date = $firstDayOfMonth;
@@ -223,8 +225,16 @@ class ShiftController extends Controller
      */
     public function update(Request $request,$shift)
     {   
+        $start_time='';
         $shiftData = Shift::find($shift);
         if ($shiftData) {
+            if($request->shiftName == 'sore'){
+                $start_time = '15:00:00';
+            }
+            else {
+                $start_time = '10:00:00';
+            }
+            $shiftData->start_time = $start_time;
             $shiftData->name = $request->shiftName;
             $shiftData->save();
             return redirect()->back()->with('success', 'Sukses update shift');

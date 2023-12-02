@@ -21,68 +21,70 @@
 
             @if($employees->count() > 0)
             <div class="row">
-            </div>
-            @foreach($employees as $employee)
-            <div class="col-6 col-md-4">
-                @if($shifts->where('employee_name', $employee->name)->isEmpty())
-                <div class="alert alert-light">
-                    <h5>{{$employee->name}}</h5>
-                    <p> Shift karyawan belum terdaftar.</p>
-                    <input type="hidden" name="userName" id="userName" value="{{$employee->name}}">
-                    <button type="button" class="btn btn-success" data-toggle="modal"
-                        data-target="#addModal{{ str_replace(' ', '', $employee->name) }}">
-                        Masukkan shift
-                    </button>
+                @foreach($employees as $employee)
+                <div class="col-6 col-md-4">
+                    @if($shifts->where('employee_name', $employee->name)->isEmpty())
+                    <div class="alert alert-light">
+                        <h5>{{$employee->name}}</h5>
+                        <p> Shift karyawan belum terdaftar.</p>
+                        <input type="hidden" name="userName" id="userName" value="{{$employee->name}}">
+                        <button type="button" class="btn btn-success" data-toggle="modal"
+                            data-target="#addModal{{ str_replace(' ', '', $employee->name) }}">
+                            Masukkan shift
+                        </button>
+                    </div>
+                    @endif
                 </div>
-                @endif
-            </div>
-            <!-- Add shift modal -->
-            <div class="modal fade" id="addModal{{ str_replace(' ', '', $employee->name) }}" tabindex="-1" role="dialog"
-                aria-labelledby="addModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document" style="max-width: 80vw;">
-                    <div class=" modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="addModalLabel">Masukkan shift untuk {{ $employee->name }}</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form action="{{ route('shift.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="modal-body">
-                                <div class="row">
-                                    <input type="hidden" name="userName" id="userName" value="{{$employee->name}}">
-                                    @foreach($daysInWeek as $index => $dayName)
-                                    <div class="col-12 col-md">
-                                        <div class="form-group">
-                                            <label for="shift[{{$index}}]">{{$dayName}}</label>
-                                            <select name="shift[{{$index}}]"
-                                                class="form-control @error('shift[{{$index}}]') is-invalid @enderror"
-                                                id="shift[{{$index}}]">
-                                                <option value="siang">Siang
-                                                </option>
-                                                <option value="sore">Sore
-                                                </option>
-                                            </select>
-                                            @error('shift[{{$index}}]')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
+                <!-- Add shift modal -->
+                <div class="modal fade" id="addModal{{ str_replace(' ', '', $employee->name) }}" tabindex="-1"
+                    role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document" style="max-width: 80vw;">
+                        <div class=" modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addModalLabel">Masukkan shift untuk {{ $employee->name }}
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form action="{{ route('shift.store') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <input type="hidden" name="userName" id="userName" value="{{$employee->name}}">
+                                        @foreach($daysInWeek as $index => $dayName)
+                                        <div class="col-12 col-md">
+                                            <div class="form-group">
+                                                <label for="shift[{{$index}}]">{{$dayName}}</label>
+                                                <select name="shift[{{$index}}]"
+                                                    class="form-control @error('shift[{{$index}}]') is-invalid @enderror"
+                                                    id="shift[{{$index}}]">
+                                                    <option value="siang">Siang
+                                                    </option>
+                                                    <option value="sore">Sore
+                                                    </option>
+                                                </select>
+                                                @error('shift[{{$index}}]')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
                                         </div>
+                                        @endforeach
                                     </div>
-                                    @endforeach
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-success">Simpan</button>
-                            </div>
-                        </form>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-success">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
+                @endforeach
             </div>
-            @endforeach
+
             @else
             <div id="alertContainer" class="alert alert-primary">
                 Belum ada akun karyawan yang terdaftar.

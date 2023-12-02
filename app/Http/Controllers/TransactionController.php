@@ -88,6 +88,7 @@ class TransactionController extends Controller
         $isTransactionPossible = false;
         for ($i = 0; $i < count($ingredientsArray); $i++) {
             $stockFound = false;
+            $emptyIngredient = '';
             for ($j = 0; $j < count($availableStock); $j++) {
                 if ($availableStock[$j]->name == $ingredientsArray[$i]['name']) {
                     $stockFound = true;
@@ -98,10 +99,13 @@ class TransactionController extends Controller
                         $isTransactionPossible = true;
                     }
                 }
+                else {
+                    $emptyIngredient = $ingredientsArray[$i]['name'];
+                }
             }
 
             if (!$stockFound) {
-                return redirect()->back()->with('error', "Stok kosong");
+                return redirect()->back()->with('error', "Stok {$emptyIngredient} kosong");
             }
         }
         if($isTransactionPossible == true){

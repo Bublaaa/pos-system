@@ -57,6 +57,7 @@ class AttendanceController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
         $todayShiftData = Shift::where('day_name',$day_name)
+            ->whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])
             ->get();
 
         $allUserAttendanceThisMonth = Attendance::whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])
@@ -165,7 +166,10 @@ class AttendanceController extends Controller
                 break;
         }
         //Get the user today shift data
-        $userShift = Shift::where('employee_name', $user->name)->where('day_name',$day_name)->get();
+        $userShift = Shift::where('employee_name', $user->name)
+            ->whereRaw("DATE_FORMAT(created_at, '%Y-%m-%d') = ?", [$today->format('Y-m-d')])
+            ->get();
+
         // get the user attendance data today
         $entriesToday = Attendance::where('name', $user->name)
             ->whereDate('created_at', $today->format('Y-m-d'))
