@@ -25,10 +25,18 @@ class TransactionController extends Controller
         $tempratureAvailable =  Topping::select('name', 'menu_id')
             ->groupBy(['name', 'menu_id'])
             ->get();
+        $ingredients = Ingredient::get();
+        $stocks = DB::table('stocks')
+            ->select('name', 'unit', DB::raw('SUM(CASE WHEN kind = \'pembelian\' THEN quantity ELSE -quantity END) AS Total'))
+            ->groupBy('name', 'unit')
+            ->get();
+
         return view('../layouts/contents/dashboard')->with([
             'menus' => $menus,
             'sizeAvailable' => $sizeAvailable,
             'tempratureAvailable' => $tempratureAvailable,
+            'ingredients' => $ingredients,
+            'stocks' => $stocks,
         ]);
     }
 

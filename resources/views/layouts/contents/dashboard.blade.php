@@ -24,7 +24,37 @@
                     <img class="product-img" src="{{ asset('storage/'.$menu->image) }}"
                         style="max-width: 300px; max-height: 175px; width: 100%; height: auto; object-fit: cover;">
                     <div class="card-body">
-                        <p class="card-title">{{ $menu['name'] }}</p>
+                        <div class="row">
+
+                            <p class="card-title">{{ $menu['name'] }}</p>
+                            @for($ingredientIndex = 0; $ingredientIndex < $ingredients->where('menu_id',
+                                $menu->id)->count(); $ingredientIndex++)
+                                @php
+                                $ingredient = $ingredients->where('menu_id',
+                                $menu->id)->values()->get($ingredientIndex);
+                                $ingredientName = $ingredient->name;
+                                $ingredientAvailable = false;
+                                @endphp
+
+                                @for($stockIndex = 0; $stockIndex < $stocks->count();
+                                    $stockIndex++)
+                                    @php
+                                    $stockIngredient = $stocks->values()->get($stockIndex)->name;
+                                    @endphp
+
+                                    @if($ingredientName === $stockIngredient)
+                                    @php
+                                    $ingredientAvailable = true;
+                                    break;
+                                    @endphp
+                                    @endif
+                                    @endfor
+                                    @endfor
+                                    @if($ingredientAvailable == false)
+                                    <p style="color:red;"> Stok {{ $ingredientName }} Kosong</p>
+                                    @endif
+                        </div>
+
                     </div>
                 </div>
             </div>
