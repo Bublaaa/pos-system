@@ -10,8 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js">
-    </script>
+
 </head>
 <!-- Tambah menu baru -->
 <div class="row">
@@ -494,7 +493,14 @@ $(document).ready(function() {
         }
     });
 
-
+    function updateRequiredAttribute() {
+        var isIcedChecked = $('#iced').is(':checked');
+        $('#regularNormalIce').prop('required', isIcedChecked);
+        $('#regularLessIce').prop('required', isIcedChecked);
+        $('#largeNormalIce').prop('required', isIcedChecked);
+        $('#largeLessIce').prop('required', isIcedChecked);
+    }
+    updateRequiredAttribute();
     // Large checkbox toggle
     $('#largeIngredientsCard').css('display', $('#large').prop('checked') ? 'block' : 'none');
 
@@ -508,6 +514,7 @@ $(document).ready(function() {
     $('#iced').on('change', function() {
         $('#regularIceLevel').css('display', $(this).prop('checked') ? 'flex' : 'none');
         $('#largeIceLevel').css('display', $(this).prop('checked') ? 'flex' : 'none');
+        updateRequiredAttribute();
     });
 
     // Prevent regular option to be unchecked
