@@ -22,8 +22,8 @@
             @if($employees->count() > 0)
             <div class="row">
                 @foreach($employees as $employee)
+                @if($shifts->where('employee_name', $employee->name)->isEmpty())
                 <div class="col-6 col-md-4">
-                    @if($shifts->where('employee_name', $employee->name)->isEmpty())
                     <div class="alert alert-light">
                         <h5>{{$employee->name}}</h5>
                         <p> Shift karyawan belum terdaftar.</p>
@@ -33,8 +33,8 @@
                             Masukkan shift
                         </button>
                     </div>
-                    @endif
                 </div>
+                @endif
                 <!-- Add shift modal -->
                 <div class="modal fade" id="addModal{{ str_replace(' ', '', $employee->name) }}" tabindex="-1"
                     role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
