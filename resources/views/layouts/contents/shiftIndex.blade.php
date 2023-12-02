@@ -23,7 +23,7 @@
             <div class="row">
                 @foreach($employees as $employee)
                 @if($shifts->where('employee_name', $employee->name)->isEmpty())
-                <div class="col-6 col-md-4">
+                <div class="col-12 col-md-4">
                     <div class="alert alert-light">
                         <h5>{{$employee->name}}</h5>
                         <p> Shift karyawan belum terdaftar.</p>
@@ -138,19 +138,19 @@
                     </table>
                 </div>
                 <div class="row px-5">
-                    <div class="col-4 col-md-4">
+                    <div class="col-12 col-md-4">
                         <p>Tekan kotak nama untuk mengubah shift</p>
                     </div>
-                    <div class="col-4 col-md-4">
+                    <div class="col-12 col-md-4">
 
                     </div>
-                    <div class="col-4 col-md-2">
+                    <div class="col-12 col-md-2">
                         <div class="alert alert-primary">
 
                         </div>
                         <p>Sudah ditambahkan</p>
                     </div>
-                    <div class="col-4 col-md-2">
+                    <div class="col-12 col-md-2">
                         <div class="alert alert-success">
 
                         </div>

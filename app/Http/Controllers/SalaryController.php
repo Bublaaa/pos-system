@@ -15,9 +15,10 @@ class SalaryController extends Controller
     public function index()
     {
         $salariesByMonth = Salary::selectRaw('MONTH(created_at) as month, YEAR(created_at) as year')
-        ->groupByRaw('YEAR(created_at), MONTH(created_at)')
-        ->get();
-
+            ->groupByRaw('YEAR(created_at), MONTH(created_at)')
+            ->orderByDesc('year') // Order by year in descending order
+            ->orderByDesc('month') // Then order by month in descending order
+            ->get();
         // Retrieve detailed salary data for each month
         foreach ($salariesByMonth as $month) {
         $month->salaries = Salary::whereMonth('created_at', $month->month)

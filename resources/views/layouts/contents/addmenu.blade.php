@@ -132,10 +132,10 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-8">
                                 <h5>Bahan baku ukuran regular</h5>
                             </div>
-                            <div class="col-6 text-right">
+                            <div class="col-4 text-right">
                                 <button name="addIngredient" id="addIngredient" type="button" class="btn btn-primary">
                                     <i class="fas fa-plus"></i>
                                 </button>
@@ -143,7 +143,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container" id="ingredientContainer">
+                        <div id="ingredientContainer">
                             <div class="row">
                                 <div class="col-4 col-md-4">
                                     <p>Nama</p>
@@ -245,10 +245,10 @@
                 <div class="card" id="largeIngredientsCard" style="display:none;">
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-8">
                                 <h5>Bahan baku ukuran besar</h5>
                             </div>
-                            <div class="col-6 text-right">
+                            <div class="col-4 text-right">
                                 <button name="addIngredientLarge" id="addIngredientLarge" type="button"
                                     class="btn btn-primary">
                                     <i class="fas fa-plus"></i>
@@ -257,7 +257,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="container" id="largeIngredientContainer">
+                        <div id="largeIngredientContainer">
                             <div class="row">
                                 <div class="col-4 col-md-4">
                                     <p>Nama</p>

@@ -27,30 +27,30 @@ class AttendanceController extends Controller
         $todayDayName = $today->format('l');
         // Translate day from table into indonesian
         switch ($todayDayName) {
-        case 'Monday':
-            $day_name = 'Senin';
-            break;
-        case 'Tuesday':
-            $day_name = 'Selasa';
-            break;
-        case 'Wednesday':
-            $day_name = 'Rabu';
-            break;
-        case 'Thursday':
-            $day_name = 'Kamis';
-            break;
-        case 'Friday':
-            $day_name = 'Jumat';
-            break;
-        case 'Saturday':
-            $day_name = 'Sabtu';
-            break;
-        case 'Sunday':
-            $day_name = 'Minggu';
-            break;
-        default:
-            $day_name = 'Invalid day';
-            break;
+            case 'Monday':
+                $day_name = 'Senin';
+                break;
+            case 'Tuesday':
+                $day_name = 'Selasa';
+                break;
+            case 'Wednesday':
+                $day_name = 'Rabu';
+                break;
+            case 'Thursday':
+                $day_name = 'Kamis';
+                break;
+            case 'Friday':
+                $day_name = 'Jumat';
+                break;
+            case 'Saturday':
+                $day_name = 'Sabtu';
+                break;
+            case 'Sunday':
+                $day_name = 'Minggu';
+                break;
+            default:
+                $day_name = 'Invalid day';
+                break;
         }
 
         $todayAttendanceData = Attendance::whereDate('created_at', now()->toDateString())
@@ -70,14 +70,16 @@ class AttendanceController extends Controller
                 return Carbon::parse($date->created_at)->format('m'); // grouping by month and day
             });
             
-        $attendances = DB::table('attendances')
+       $attendances = DB::table('attendances')
             ->select(DB::raw('EXTRACT(MONTH FROM created_at) as month'), 'name', DB::raw('COUNT(*) as total_attendances'))
             ->where(function ($query) {
                 $query->where('status', 'hadir')
-                        ->orWhere('status', 'terlambat');
+                    ->orWhere('status', 'terlambat');
             })
             ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'), 'name')
+            ->orderByDesc('month') // Order by the extracted month instead of created_at
             ->get();
+
         $attendancesByMonth = DB::table('attendances')
             ->select(
                 DB::raw('DATE_FORMAT(created_at, "%M") as month'), // Format the month name

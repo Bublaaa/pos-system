@@ -145,10 +145,10 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-8">
                             <h5>Edit bahan ukuran reguler</h5>
                         </div>
-                        <div class="col-6 text-right">
+                        <div class="col-4 text-right">
                             <button name="addIngredient" id="addIngredient" type="button" class="btn btn-primary">
                                 <i class="fas fa-plus"></i>
                             </button>
@@ -156,7 +156,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="container" id="ingredientContainer">
+                    <div id="ingredientContainer">
                         <div class="row">
                             <div class="col-3">
                                 <p>Nama</p>
@@ -172,8 +172,8 @@
                         </div>
                         <!-- Regular Ingredient Field -->
                         @foreach($ingredients as $index => $ingredient)
-                        <div class="row">
-                            <div class="col-4 col-md-4">
+                        <div class="row mb-2">
+                            <div class="col-4 col-md-4 ">
                                 <!-- Regular Ingredient Name -->
                                 <div class="form-group">
                                     <input type="text" name="ingredients[{{$index}}][name]"
@@ -279,10 +279,10 @@
             <div class="card" id="largeIngredientsCard" style="display:none;">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-8">
                             <h5>Edit bahan ukuran besar</h5>
                         </div>
-                        <div class="col-6 text-right">
+                        <div class="col-4 text-right">
                             <button name="addIngredientLarge" id="addIngredientLarge" type="button"
                                 class="btn btn-primary">
                                 <i class="fas fa-plus"></i>
@@ -291,7 +291,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="container" id="largeIngredientContainer">
+                    <div id="largeIngredientContainer">
                         <div class="row">
                             <div class="col-4 col-md-4">
                                 <p>Nama</p>
@@ -306,7 +306,7 @@
                             </div>
                         </div>
                         @if($largeIngredients->count() == 0)
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-4 col-md-4">
                                 <div class="form-group">
                                     <input type="text" name="largeIngredients[0][name]"
