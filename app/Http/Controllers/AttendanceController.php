@@ -266,8 +266,9 @@ class AttendanceController extends Controller
                         'status' => $status,
                         'latitude' =>$request->absentLatitude,
                         'longitude' =>$request->absentLongitude,
-                        'created_at' => $startDateCarbon->addDay($day),
+                        'created_at' => $startDateCarbon,
                     ]);
+                    $startDateCarbon->addDay(1);
                 }
                 if (!$attendance) {
                     return redirect()->back()->with('error', 'Terjadi kesalahan saat menambahkan absensi.');

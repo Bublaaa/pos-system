@@ -154,8 +154,9 @@ class OwnerController extends Controller
                 'status' => $request->status,
                 'latitude' =>$request->latitude,
                 'longitude' =>$request->longitude,
-                'created_at' => $startDateCarbon->addDay($day),
+                'created_at' => $startDateCarbon,
             ]);
+            $startDateCarbon->addDay(1);
         }
         return redirect()->back()->with('success', 'Sukses');
     }
