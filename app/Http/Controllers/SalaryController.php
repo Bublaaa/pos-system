@@ -15,7 +15,6 @@ class SalaryController extends Controller
     public function index(){
         $salariesByMonth = Salary::selectRaw('year,month')
             ->groupByRaw('year, month')
-            ->orderByDesc('month')
             ->orderByDesc('year')
             ->get();
 
