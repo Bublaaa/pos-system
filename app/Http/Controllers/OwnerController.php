@@ -91,26 +91,31 @@ class OwnerController extends Controller
         return capitalizeWords($convertedAmount . " Rupiah");
     }
 
-    public function salaryPayment($userName,$attendancePercentage){
-        $firstDayOfMonth = Carbon::now()->startOfMonth();
-        $lastDayOfMonth = Carbon::now()->endOfMonth();
-        
+    public function salaryPayment($userName, $attendancePercentage, $month, $year){
+        function getDaysInMonthByName($year, $monthName)
+        {
+            // Convert month name to numeric representation
+            $month = Carbon::parse("1 $monthName")->month;
+
+            // Calculate the number of days in the month
+            $firstDayOfMonth = Carbon::createFromDate($year, $month, 1);
+            $lastDayOfMonth = $firstDayOfMonth->copy()->endOfMonth();
+
+            return $firstDayOfMonth->diffInDays($lastDayOfMonth) + 1;
+        }
+        $daysInMonth = getDaysInMonthByName($year, $month);
         $currentMonth = Carbon::now();
-        $totalDaysInMonth = $currentMonth->daysInMonth;
-        $currentMonthName = $currentMonth->format('F');
-
-        $presentAttendanceData = Attendance::whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])->where('status', 1)->get();
-        $userAttendanceData = $presentAttendanceData->where('name' , $userName);
-
-        
         $ownerData = auth()->user();
         $userData = User::where('name', $userName)->first();
+        
         return view('../layouts/contents/salaryPayment')->with([
-            'currentMonth' => $currentMonthName,
+            'month' => $month,
+            'year' => $year, // Include the year in the data
             'userData' => $userData,
-            'ownerData' => $ownerData, 
-            'totalDaysInMonth' => $totalDaysInMonth, 
-            'attendancePercentage' => $attendancePercentage
+            'ownerData' => $ownerData,
+            'daysInMonth' => $daysInMonth,
+            'attendancePercentage' => $attendancePercentage,
         ]);
     }
+
 }

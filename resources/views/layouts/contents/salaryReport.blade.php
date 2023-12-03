@@ -21,13 +21,17 @@
             {{ \Carbon\Carbon::createFromDate($month->year, $month->month, 1)->format('F Y') }}
         </h5>
         @foreach($month->salaries as $salary)
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-6">
             <div class="card">
                 <div class="card-body">
                     <div class="row">
                         <h5>{{ $salary->name }}</h5>
                         <p>Gaji pokok : Rp. {{ number_format($salary->basic_salary, 0, ',', '.') }}</p>
                         <p>Persentasi absen : {{ ($salary->attendance_precentage) }}% </p>
+                        @if($salary->additional_salary)
+                        <p>{{ $salary->additional_salary_name }} : Rp.
+                            {{ number_format($salary->additional_salary, 0, ',', '.') }}</p>
+                        @endif
                         <h5>Rp. {{ number_format($salary->salary, 0, ',', '.') }}</h5>
                         <div class="row">
                             <div class="col-8 col-md-6">

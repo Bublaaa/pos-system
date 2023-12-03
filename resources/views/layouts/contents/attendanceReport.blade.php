@@ -92,45 +92,43 @@
             <!-- Monthly attendance tab -->
             <div class="tab-pane fade" id="monthlyAttendance">
                 @if(count($groupedData) > 0)
-                @foreach($groupedData as $month => $employeeData)
+                @foreach($groupedData as $year => $yearlyData)
                 <div class="row">
-                    <h4 class="text-center py-2">{{ $month }}</h4>
-                    <div class="row">
-                        @foreach($employeeData as $employeeName => $totalAttendances)
-                        <div class="col-12 col-md-3">
-                            <div class="card" data-toggle="modal"
-                                data-target="#detailModal{{ str_replace(' ', '', $employeeName) }}" tabindex="1">
-                                <div class="col p-3">
-                                    <h4>{{ $employeeName }}</h4>
-                                    <h6>{{ round(($totalAttendances / $totalDaysInMonth) * 100) }}%</h6>
-                                    </h6>
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar"
-                                            style="width: {{ round($totalAttendances / $totalDaysInMonth * 100) }}%;"
-                                            aria-valuenow="{{ round($totalAttendances / $totalDaysInMonth * 100) }}"
-                                            aria-valuemin="0" aria-valuemax="100">
+                    <h4 class="text-center">Tahun {{ $year }}</h3>
+                        @foreach($yearlyData as $month => $employeeData)
+                        <div class="row">
+                            <h4 class="py-2">{{ $month }}</h4>
+                            <div class="row">
+                                @foreach($employeeData as $employeeName => $totalAttendances)
+                                <div class="col-12 col-md-3">
+                                    <div class="card" data-toggle="modal"
+                                        data-target="#detailModal{{ str_replace(' ', '', $employeeName) }}"
+                                        tabindex="1">
+                                        <div class="col p-3">
+                                            <h4>{{ $employeeName }}</h4>
+                                            <h6>{{ round(($totalAttendances / $totalDaysInMonth) * 100) }}%</h6>
+                                            </h6>
+                                            <div class="progress">
+                                                <div class="progress-bar" role="progressbar"
+                                                    style="width: {{ round($totalAttendances / $totalDaysInMonth * 100) }}%;"
+                                                    aria-valuenow="{{ round($totalAttendances / $totalDaysInMonth * 100) }}"
+                                                    aria-valuemin="0" aria-valuemax="100">
+                                                </div>
+                                            </div>
                                         </div>
+                                        <div class="card-footer">
+                                            <a href="{{ route('salary-payment', ['userName' => $employeeName, 'attendancePercentage' => round(($totalAttendances / $totalDaysInMonth) * 100), 'month' => $month, 'year' => $year]) }}"
+                                                type="button" class="btn btn-primary">Bayar Gaji</a>
+                                        </div>
+
                                     </div>
                                 </div>
-                                <div class="card-footer">
-                                    <a href="{{ route('salary-payment', ['userName' => $employeeName,'attendancePercentage' => round(($totalAttendances / $totalDaysInMonth) * 100)]) }}"
-                                        type="button" class="btn btn-primary">Bayar
-                                        Gaji</a>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
                         @endforeach
-                    </div>
                 </div>
-
                 @endforeach
-                <!-- @foreach($groupedData as $month => $employeeName)
-                @foreach($employeeName as $name)
-                @include('layouts/partials/attendanceDetailModal', ['attendancesByMonth' =>
-                $attendancesByMonth->where('month', $month),'userName'=>
-                $name])
-                @endforeach
-                @endforeach -->
                 @else
                 <div id="alertContainer" class="alert alert-primary">
                     Belum ada presensi yang terdaftar.

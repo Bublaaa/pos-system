@@ -13,5 +13,9 @@ class Salary extends Model
         'basic_salary',
         'attendance_precentage',
         'salary',
+        'additional_salary_name',
+        'additional_salary',
+        'month',
+        'year',
     ];
 }

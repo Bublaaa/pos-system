@@ -70,15 +70,17 @@ class AttendanceController extends Controller
                 return Carbon::parse($date->created_at)->format('m'); // grouping by month and day
             });
             
-       $attendances = DB::table('attendances')
-            ->select(DB::raw('EXTRACT(MONTH FROM created_at) as month'), 'name', DB::raw('COUNT(*) as total_attendances'))
+        $attendances = DB::table('attendances')
+            ->select(DB::raw('EXTRACT(MONTH FROM created_at) as month'), DB::raw('EXTRACT(YEAR FROM created_at) as year'), 'name', DB::raw('COUNT(*) as total_attendances'))
             ->where(function ($query) {
                 $query->where('status', 'hadir')
                     ->orWhere('status', 'terlambat');
             })
-            ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'), 'name')
-            ->orderByDesc('month') // Order by the extracted month instead of created_at
+            ->groupBy(DB::raw('EXTRACT(YEAR FROM created_at)'), DB::raw('EXTRACT(MONTH FROM created_at)'), 'name')
+            ->orderByDesc('year')
+            ->orderByDesc('month')
             ->get();
+
 
         $attendancesByMonth = DB::table('attendances')
             ->select(
@@ -108,13 +110,13 @@ class AttendanceController extends Controller
         $groupedData = [];
         foreach ($attendances as $data) {
             $month = date("F", mktime(0, 0, 0, $data->month, 1));
+            $year = $data->year;
             $employeeName = $data->name;
             $totalAttendances = $data->total_attendances;
 
             // Group by month
-            $groupedData[$month][$employeeName] = $totalAttendances;
+            $groupedData[$year][$month][$employeeName] = $totalAttendances;
         }
-        // dd($attendancesByMonth);
         return view('../layouts/contents/attendanceReport', [
             'totalDaysInMonth' => $totalDaysInMonth,
             'attendancesByMonth' => $attendancesByMonth,

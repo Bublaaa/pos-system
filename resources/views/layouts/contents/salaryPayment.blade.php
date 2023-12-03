@@ -21,10 +21,36 @@
         <h5>Rekening : {{ $userData->bank_name }} - {{ $userData->account_number }}</h5>
         <input type="hidden" name="userName" id="userName" value="{{ $userData->name }}">
         <input type="hidden" name="attendancePercentage" id="attendancePercentage" value="{{ $attendancePercentage }}">
-        <input type="hidden" name="totalDaysInMonth" id="totalDaysInMonth" value="{{ $totalDaysInMonth }}">
+        <input type="hidden" name="month" id="month" value="{{ $month }}">
+        <input type="hidden" name="year" id="year" value="{{ $year }}">
         <div class="card">
             <div class="card-body">
-                <h2>{{ $currentMonth }}</h2>
+                <h2>{{ $month }}</h2>
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <div class="form-group">
+                            <label for="basicSalary">Gaji Pokok</label>
+                            <input type="number" name="basicSalary"
+                                class="form-control @error('basicSalary') is-invalid @enderror" id="basicSalary"
+                                placeholder="Jumlah gaji pokok"
+                                value="{{ $userData->basic_salary !== null ? $userData->basic_salary : old('basicSalary') }}"
+                                inputmode="numeric" max="10000000" min="1" required=true>
+                            @error('basicSalary')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                            <p id=formattedBasicSalary></p>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="form-group">
+                            <label for="attendancePercentage">Persentasi kehadiran</label>
+                            <h6 name="attendancePercentage" id="attendancePercentage">
+                                {{ $attendancePercentage }}%</h6>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-12 col-md-4">
                         <div class="form-group">
@@ -53,31 +79,6 @@
                             </span>
                             @enderror
                             <p id=formattedAdditionalSalary></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12 col-md-4">
-                        <div class="form-group">
-                            <label for="basicSalary">Gaji Pokok</label>
-                            <input type="number" name="basicSalary"
-                                class="form-control @error('basicSalary') is-invalid @enderror" id="basicSalary"
-                                placeholder="Jumlah gaji pokok"
-                                value="{{ $userData->basic_salary !== null ? $userData->basic_salary : old('basicSalary') }}"
-                                inputmode="numeric" max="10000000" min="1" required=true>
-                            @error('basicSalary')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                            <p id=formattedBasicSalary></p>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <div class="form-group">
-                            <label for="attendancePercentage">Persentasi kehadiran</label>
-                            <h6 name="attendancePercentage" id="attendancePercentage">
-                                {{ $attendancePercentage }}%</h6>
                         </div>
                     </div>
                     <div class="col-12 col-md-4">
