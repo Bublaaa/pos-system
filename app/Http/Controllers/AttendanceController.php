@@ -21,7 +21,6 @@ class AttendanceController extends Controller
         $firstDayOfMonth = Carbon::now()->startOfMonth();
         $lastDayOfMonth = Carbon::now()->endOfMonth();
         $currentMonth = Carbon::now();
-        $totalDaysInMonth = $currentMonth->daysInMonth;
         
         $today = now();
         $todayDayName = $today->format('l');
@@ -118,7 +117,6 @@ class AttendanceController extends Controller
             $groupedData[$year][$month][$employeeName] = $totalAttendances;
         }
         return view('../layouts/contents/attendanceReport', [
-            'totalDaysInMonth' => $totalDaysInMonth,
             'attendancesByMonth' => $attendancesByMonth,
             'groupedData' => $groupedData,
             'todayAttendanceData' => $todayAttendanceData,
