@@ -46,6 +46,9 @@ Route::prefix('owner')->middleware(['auth',OwnerMiddleware::class])->group(funct
     Route::get('/register', [App\Http\Controllers\OwnerController::class, 'register'])->name('register-new-employee');
     Route::get('/salary-payment/{userName}/{attendancePercentage}/{month}/{year}', [App\Http\Controllers\OwnerController::class, 'salaryPayment'])->name('salary-payment');
     Route::post('/print-receipt/{id}', [App\Http\Controllers\OwnerController::class, 'printReceipt'])->name('print-receipt');
+    Route::get('/insertDataPage', [App\Http\Controllers\OwnerController::class, 'insertDataPage'])->name('insertDataPage');
+    Route::post('/insertData', [App\Http\Controllers\OwnerController::class, 'insertData'])->name('insertData');
+
 });
 
 

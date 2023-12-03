@@ -17,6 +17,13 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use PDF;
 
+
+use Stevebauman\Location\Facades\Location;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
+use App\Http\Controllers\DateTime;
+use App\Models\Shift;
+
 class OwnerController extends Controller
 {
     public function register() {
@@ -117,5 +124,39 @@ class OwnerController extends Controller
             'attendancePercentage' => $attendancePercentage,
         ]);
     }
-
+    public function insertDataPage(){
+        return view('../layouts/contents/insertAttendanceData');
+    }
+    public function insertData(Request $request){
+        $image_path = '';
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+            $maxSize = 1.5 * 1024 * 1024;
+            do {
+                $compressedImage = Image::make($image)
+                    ->resize(800, null, function ($constraint) {$constraint->aspectRatio();})
+                    ->encode('webp', 40);
+                $size = strlen($compressedImage->__toString());
+            } while ($size > $maxSize);
+            Storage::disk('public')->put('attendance/' . $filename, $compressedImage->__toString());
+            $image_path = 'attendance/' . $filename;
+        };
+        $startDateCarbon = Carbon::createFromFormat('Y-m-d', $request->startDate);
+        $endDateCarbon = Carbon::createFromFormat('Y-m-d', $request->endDate);
+        $timeDifference = $startDateCarbon->diff($endDateCarbon);
+        $daysDifference = $timeDifference->days;
+        for ($day = 0; $day <= $daysDifference; $day++) {
+            $attendance = Attendance::create([  
+                'name' => $request->name,
+                'description' => $request->description,
+                'image' => $image_path,
+                'status' => $request->status,
+                'latitude' =>$request->latitude,
+                'longitude' =>$request->longitude,
+                'created_at' => $startDateCarbon->addDay($day),
+            ]);
+        }
+        return redirect()->back()->with('success', 'Sukses');
+    }
 }
