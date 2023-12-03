@@ -106,18 +106,18 @@
                                         tabindex="1">
                                         <div class="col p-3">
                                             <h4>{{ $employeeName }}</h4>
-                                            <h6>{{ round(($totalAttendances / $totalDaysInMonth) * 100) }}%</h6>
+                                            <h6>{{ ceil(($totalAttendances / $totalDaysInMonth) * 100) }}%</h6>
                                             </h6>
                                             <div class="progress">
                                                 <div class="progress-bar" role="progressbar"
-                                                    style="width: {{ round($totalAttendances / $totalDaysInMonth * 100) }}%;"
-                                                    aria-valuenow="{{ round($totalAttendances / $totalDaysInMonth * 100) }}"
+                                                    style="width: {{ ceil($totalAttendances / $totalDaysInMonth * 100) }}%;"
+                                                    aria-valuenow="{{ ceil($totalAttendances / $totalDaysInMonth * 100) }}"
                                                     aria-valuemin="0" aria-valuemax="100">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="card-footer">
-                                            <a href="{{ route('salary-payment', ['userName' => $employeeName, 'attendancePercentage' => round(($totalAttendances / $totalDaysInMonth) * 100), 'month' => $month, 'year' => $year]) }}"
+                                            <a href="{{ route('salary-payment', ['userName' => $employeeName, 'attendancePercentage' => ceil(($totalAttendances / $totalDaysInMonth) * 100), 'month' => $month, 'year' => $year]) }}"
                                                 type="button" class="btn btn-primary">Bayar Gaji</a>
                                         </div>
 
