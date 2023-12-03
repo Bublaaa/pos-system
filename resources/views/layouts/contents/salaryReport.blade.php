@@ -26,22 +26,31 @@
                 <div class="card-body">
                     <div class="row">
                         <h5>{{ $salary->name }}</h5>
-                        <p>Gaji pokok : Rp. {{ number_format($salary->basic_salary, 0, ',', '.') }}</p>
-                        <p>Persentasi absen : {{ ($salary->attendance_precentage) }}% </p>
-                        @if($salary->additional_salary)
-                        <p>{{ $salary->additional_salary_name }} : Rp.
-                            {{ number_format($salary->additional_salary, 0, ',', '.') }}</p>
-                        @endif
-                        <h5>Rp. {{ number_format($salary->salary, 0, ',', '.') }}</h5>
+                        <div class="col-6 col-md-6">
+                            <p>Gaji pokok :</p>
+                            <p>Persentasi presensi :</p>
+                            @if($salary->additional_salary)
+                            <p>{{ $salary->additional_salary_name }} : </p>
+                            @endif
+                            <h5>Total gaji :</h5>
+                        </div>
+                        <div class="col-6 col-md-6 text-right">
+                            <p>Rp. {{ number_format($salary->basic_salary, 0, ',', '.') }}</p>
+                            <p>{{ ($salary->attendance_precentage) }}% </p>
+                            @if($salary->additional_salary)
+                            <p>Rp. {{ number_format($salary->additional_salary, 0, ',', '.') }}</p>
+                            @endif
+                            <h5>Rp. {{ number_format($salary->salary, 0, ',', '.') }}</h5>
+                        </div>
                         <div class="row">
-                            <div class="col-8 col-md-6">
+                            <div class="col-10 col-md-4">
                                 <form action="{{ route('print-receipt', ['id' => $salary->id]) }}" method="POST"
                                     target="_blank">
                                     @csrf
                                     <button type="submit" class="btn btn-primary">Cetak Kwitansi</button>
                                 </form>
                             </div>
-                            <div class="col-1 col-md-1">
+                            <div class="col-2 col-md-1">
                                 <button type="button" class="btn btn-danger remove-row" data-toggle="modal"
                                     data-target="#deleteModal{{ $salary->id }}">
                                     <i class="fas fa-trash"></i>

@@ -88,7 +88,7 @@
         <button class="btn btn-primary" type="submit">Simpan</button>
     </div>
 </div>
-<h2>Tambah Posisi Baru</h2>
+<!-- <h2>Tambah Posisi Baru</h2>
 <div class="card">
     <form action="{{ route('position.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -125,7 +125,7 @@
             <button class="btn btn-primary" type="submit">Tambah</button>
         </div>
     </form>
-</div>
+</div> -->
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 

@@ -64,10 +64,10 @@ class RegisterController extends Controller
 
     public function store(Request $request)
     {
-        $profileImagePath = '';
-        if ($request->hasFile('profile_image')) {
-             $profileImagePath = $request->profile_image = $request->file('profile_image')->store('images/' . $request->profile_image, 'public');
-        } 
+        // $profileImagePath = '';
+        // if ($request->hasFile('profile_image')) {
+        //      $profileImagePath = $request->profile_image = $request->file('profile_image')->store('images/' . $request->profile_image, 'public');
+        // } 
         $this->validator($request->all())->validate();
         
         $requestArray = $request->all();
@@ -109,7 +109,6 @@ class RegisterController extends Controller
             'position' => $data['position'],
             'username' => $data['username'],
             'password' => Hash::make($data['password']),
-            'profile_image' =>   'images/' . $data['profile_image'],
             'phone_number' => $data['phone_number'],
             'address' => ucwords($data['address']),
             'basic_salary' => $data['basic_salary'],
