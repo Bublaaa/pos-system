@@ -14,6 +14,9 @@
     </script>
 </head>
 <div class="container">
+    <div class="alert alert-warning">
+        Pastikan GPS dalam kondisi hidup dan berikan akses lokasi pada situs ini.
+    </div>
     <h2>Presensi</h2>
     <div class="card">
         <div class="card-body">

@@ -136,6 +136,10 @@ class AttendanceController extends Controller
     }
     
     public function store(Request $request){
+        // dd($request->latitude);
+        if($request->latitude == "" || $request->longitude == "" || $request->absentLongitude == ""|| $request->absentLatitude == ""){
+            return redirect()->back()->with('error','Patikan GPS hidup dan berikan akses lokasi preangkat pada situs ini, lalu muat ulang situs ini');
+        }
         // Get the logged in user
         $user = Auth::user();
         // Get today date
