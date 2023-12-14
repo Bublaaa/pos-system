@@ -55,8 +55,9 @@ class AttendanceController extends Controller
         $todayAttendanceData = Attendance::whereDate('created_at', now()->toDateString())
             ->orderBy('created_at', 'desc')
             ->get();
+        // dd($todayAttendanceData);
         $todayShiftData = Shift::where('day_name',$day_name)
-            ->whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])
+            ->where('created_at',  $today->format('Y-m-d'))
             ->get();
 
         $allUserAttendanceThisMonth = Attendance::whereBetween('created_at', [$firstDayOfMonth, $lastDayOfMonth])
