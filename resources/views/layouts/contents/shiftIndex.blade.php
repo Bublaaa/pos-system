@@ -126,7 +126,8 @@
                                     @foreach($shifts->where('name',
                                     'sore') as $shift)
                                     @if(date('j', strtotime($shift->created_at)) == $day)
-                                    <div class="alert alert-success" style="cursor: pointer;" data-toggle="modal"
+                                    <div class="{{ $shift->updated_at->format('Y-m-d') === $now->format('Y-m-d') ? 'alert alert-success' : 'alert alert-primary' }}"
+                                        style="cursor: pointer;" data-toggle="modal"
                                         data-target="#updateModal{{ str_replace(' ', '', $shift->employee_name) . '-' . $shift->created_at->format('Y-m-d') }}">
                                         <p>{{$shift->employee_name}}</p>
                                     </div>

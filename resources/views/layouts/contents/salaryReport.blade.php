@@ -26,7 +26,7 @@
                         <h5>{{ $salary->name }}</h5>
                         <div class="col-6 col-md-6">
                             <p>Gaji pokok :</p>
-                            <p>Persentasi presensi :</p>
+                            <p>Persentase presensi :</p>
                             @if($salary->additional_salary)
                             <p>{{ $salary->additional_salary_name }} : </p>
                             @endif
