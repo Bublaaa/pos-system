@@ -136,10 +136,6 @@ class AttendanceController extends Controller
     }
     
     public function store(Request $request){
-        // dd($request->latitude);
-        if($request->latitude == "" || $request->longitude == "" || $request->absentLongitude == ""|| $request->absentLatitude == ""){
-            return redirect()->back()->with('error','Patikan GPS hidup dan berikan akses lokasi preangkat pada situs ini, lalu muat ulang situs ini');
-        }
         // Get the logged in user
         $user = Auth::user();
         // Get today date
@@ -189,6 +185,9 @@ class AttendanceController extends Controller
             $description = '';
             $image_path = '';
             if($request->attendanceStatus){
+                if($request->latitude == "" || $request->longitude == ""){
+                    return redirect()->back()->with('error','Patikan GPS hidup dan berikan akses lokasi preangkat pada situs ini, lalu muat ulang situs ini');
+                }
                 if ($request->hasFile('attendanceImage')) {
                     $image = $request->file('attendanceImage');
                     $filename = uniqid() . '.' . $image->getClientOriginalExtension();
@@ -241,6 +240,9 @@ class AttendanceController extends Controller
                 }
             }
             elseif($request->absentStatus){
+                if($request->absentLongitude == ""|| $request->absentLatitude == ""){
+                    return redirect()->back()->with('error','Patikan GPS hidup dan berikan akses lokasi preangkat pada situs ini, lalu muat ulang situs ini');
+                }
                 if ($request->hasFile('absentImage')) {
                     $image = $request->file('absentImage');
                     $filename = uniqid() . '.' . $image->getClientOriginalExtension();
